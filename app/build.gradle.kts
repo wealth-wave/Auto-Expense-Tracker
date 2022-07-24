@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = Versions.Sdk.targetSdkVersion
 
     defaultConfig {
         applicationId = "app.expense.tracker"
-        minSdk = 28
-        targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Versions.Sdk.minSdkVersion
+        targetSdk = Versions.Sdk.targetSdkVersion
+        versionCode = Versions.App.versionCode
+        versionName = Versions.App.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -22,7 +22,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -30,13 +33,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = Versions.jvm
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = Versions.kotlinCompilerVersion
     }
     packagingOptions {
         resources {
@@ -47,17 +50,20 @@ android {
 
 dependencies {
 
-    implementation(Deps.appCompat)
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.compose.ui:ui:1.3.0-alpha01")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.1.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
-    implementation("androidx.activity:activity-compose:1.5.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.0-alpha01")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.3.0-alpha01")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0-alpha01")
+    Deps.Compose.dependencies.forEach {
+        implementation(it)
+    }
+    Deps.Compose.androidTestDependencies.forEach {
+        androidTestImplementation(it)
+    }
+    Deps.Compose.debugDependencies.forEach {
+        debugImplementation(it)
+    }
+    Deps.Test.testDependencies.forEach {
+        testImplementation(it)
+    }
+    Deps.Test.androidTestDependencies.forEach {
+        androidTestImplementation(it)
+    }
 }

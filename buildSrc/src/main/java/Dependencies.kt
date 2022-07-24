@@ -10,11 +10,45 @@ object BuildPlugins {
  * To define dependencies
  */
 object Deps {
-    val appCompat by lazy { "androidx.appcompat:appcompat:${Versions.appCompat}" }
-    val timber by lazy { "com.jakewharton.timber:timber:${Versions.timber}" }
     val kotlin by lazy { "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}" }
-    val materialDesign by lazy { "com.google.android.material:material:${Versions.material}" }
-    val constraintLayout by lazy { "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}" }
-    val junit by lazy { "junit:junit:${Versions.jUnit}" }
 
+    object Compose {
+
+        val dependencies by lazy {
+            listOf(
+                "androidx.compose.ui:ui:1.3.0-alpha01",
+                "androidx.compose.material3:material3:1.0.0-alpha14",
+                "androidx.compose.ui:ui-tooling-preview:1.1.1",
+                "androidx.activity:activity-compose:1.5.0"
+            )
+        }
+
+        val debugDependencies by lazy {
+            listOf(
+                "androidx.compose.ui:ui-tooling:1.3.0-alpha01",
+                "androidx.compose.ui:ui-test-manifest:1.3.0-alpha01"
+            )
+        }
+
+        val androidTestDependencies by lazy {
+            listOf(
+                "androidx.compose.ui:ui-test-junit4:1.3.0-alpha01"
+            )
+        }
+    }
+
+    object Test {
+        val testDependencies by lazy {
+            listOf(
+                "junit:junit:${Versions.jUnit}"
+            )
+        }
+
+        val androidTestDependencies by lazy {
+            listOf(
+                "androidx.test.ext:junit:1.1.3",
+                "androidx.test.espresso:espresso-core:3.4.0"
+            )
+        }
+    }
 }
