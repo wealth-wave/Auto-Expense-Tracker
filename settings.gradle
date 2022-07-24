@@ -16,3 +16,4 @@ rootProject.name = "AutoExpenseTracker"
 include ':app'
 include ':domain'
 include ':api'
+include ':presentation'
