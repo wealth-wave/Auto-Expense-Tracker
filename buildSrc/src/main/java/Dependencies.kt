@@ -37,6 +37,18 @@ object Deps {
         }
     }
 
+    object Room {
+        private const val room_version = "2.4.2"
+
+        val dependencies by lazy {
+            listOf("androidx.room:room-runtime:$room_version")
+        }
+
+        val annotationDependencies by lazy {
+            listOf("androidx.room:room-compiler:$room_version")
+        }
+    }
+
     object Test {
         val testDependencies by lazy {
             listOf(

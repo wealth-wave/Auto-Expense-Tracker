@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = Versions.Sdk.targetSdkVersion
 
     defaultConfig {
-        minSdk = 28
-        targetSdk = 32
+        minSdk = Versions.Sdk.minSdkVersion
+        targetSdk = Versions.Sdk.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,6 +34,12 @@ android {
 }
 
 dependencies {
+    Deps.Room.dependencies.forEach {
+        implementation(it)
+    }
+    Deps.Room.annotationDependencies.forEach {
+        annotationProcessor(it)
+    }
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
