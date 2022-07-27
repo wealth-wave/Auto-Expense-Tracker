@@ -1,4 +1,4 @@
-package app.expense.domain.services
+package app.expense.domain
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package app.expense.domain.models.merchant
+package app.expense.domain.merchant
 
 class Merchant(
     val id: String,

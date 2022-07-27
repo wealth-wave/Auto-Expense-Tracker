@@ -1,4 +1,4 @@
-package app.expense.domain.models
+package app.expense.domain
 
 class Money(
     val value: Double,

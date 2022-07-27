@@ -1,6 +1,6 @@
-package app.expense.domain.models.account
+package app.expense.domain.account
 
-import app.expense.domain.models.Money
+import app.expense.domain.Money
 
 class Account(
     val id: String,

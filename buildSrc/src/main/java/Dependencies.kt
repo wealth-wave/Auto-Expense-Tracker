@@ -52,14 +52,16 @@ object Deps {
     object Test {
         val testDependencies by lazy {
             listOf(
-                "junit:junit:${Versions.jUnit}"
+                "junit:junit:${Versions.jUnit}",
+                "io.mockk:mockk:${Versions.mockk}",
+                "com.google.truth:truth:${Versions.truth}"
             )
         }
 
         val androidTestDependencies by lazy {
             listOf(
                 "androidx.test.ext:junit:1.1.3",
-                "androidx.test.espresso:espresso-core:3.4.0"
+                "androidx.test.espresso:espresso-core:3.4.0",
             )
         }
     }

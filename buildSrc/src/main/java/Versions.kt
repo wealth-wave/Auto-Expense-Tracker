@@ -20,4 +20,6 @@ object Versions {
     const val material = "1.3.0"
     const val constraintLayout = "1.1.3"
     const val jUnit = "4.12"
+    const val mockk = "1.12.4"
+    const val truth = "1.1.3"
 }

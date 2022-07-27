@@ -1,6 +1,6 @@
-package app.expense.domain.models.expense
+package app.expense.domain.expense
 
-import app.expense.domain.models.Money
+import app.expense.domain.Money
 
 class Expense(
     val id: String,
@@ -8,6 +8,7 @@ class Expense(
     val type: String,
     val merchantId: String,
     val merchantName: String,
+    val merchantType: String,
     val time: Long,
     val referenceId: String,
     val accountId: String,

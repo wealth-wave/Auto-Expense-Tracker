@@ -1,9 +1,13 @@
-package app.expense.domain.services
+package app.expense.domain.expense
 
 import app.expense.domain.Message
-import app.expense.domain.models.expense.Expense
+import app.expense.domain.smsTemplate.SMSTemplateProvider
 
-class ExpenseDetector {
+class ExpenseDetector(private val smsTemplateProvider: SMSTemplateProvider) {
+
+    private val smsTemplates by lazy {
+        smsTemplateProvider.getTemplates()
+    }
 
     /*
     Sample SMS

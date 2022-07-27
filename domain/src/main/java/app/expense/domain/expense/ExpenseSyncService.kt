@@ -1,9 +1,8 @@
-package app.expense.domain.services
+package app.expense.domain.expense
 
 import app.expense.api.ExpenseSyncAPI
 import app.expense.api.SMSReadAPI
 import app.expense.domain.Message
-import app.expense.domain.models.expense.Expense
 import app.expense.model.ExpenseDTO
 
 class ExpenseSyncService(
