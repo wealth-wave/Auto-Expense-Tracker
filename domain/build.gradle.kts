@@ -38,4 +38,5 @@ dependencies {
     }
     implementation(project(":api"))
     implementation(project(":contract"))
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
 }

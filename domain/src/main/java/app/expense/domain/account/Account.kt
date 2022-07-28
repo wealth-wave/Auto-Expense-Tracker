@@ -1,12 +1,11 @@
 package app.expense.domain.account
 
 class Account(
-    val id: String,
+    val id: Long,
     val name: String,
-    val type: String,
     val referenceId: String
 ) {
-    fun balanceAmount(): Money {
+    fun balanceAmount(): Double {
         TODO()
     }
 }
