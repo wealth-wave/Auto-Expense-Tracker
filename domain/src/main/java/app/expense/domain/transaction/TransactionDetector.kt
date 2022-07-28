@@ -1,9 +1,9 @@
-package app.expense.domain.expense
+package app.expense.domain.transaction
 
 import app.expense.domain.Message
 import app.expense.domain.smsTemplate.SMSTemplateProvider
 
-class ExpenseDetector(private val smsTemplateProvider: SMSTemplateProvider) {
+class TransactionDetector(private val smsTemplateProvider: SMSTemplateProvider) {
 
     private val smsTemplates by lazy {
         smsTemplateProvider.getTemplates()
@@ -15,7 +15,7 @@ class ExpenseDetector(private val smsTemplateProvider: SMSTemplateProvider) {
     INR 602.00 sent from your Account XXXXXXXX1234 Mode: UPI | To: cashfree@amdbank Date: July 21, 2022 Not done by you? Call 080-121212122 -ABC Bank
     Rs 500.00 debited from your A/c using UPI on 17-07-2022 12:17:24 and VPA upid.aa@oababi credited (UPI Ref No 121212121212)-ABC Bank
     */
-    fun detectExpense(message: Message): Expense? {
+    fun detectTransactions(message: Message): Transaction? {
         TODO()
     }
 }

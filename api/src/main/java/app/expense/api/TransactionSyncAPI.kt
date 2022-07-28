@@ -1,12 +1,12 @@
 package app.expense.api
 
 import android.content.SharedPreferences
-import app.expense.db.ExpenseDao
-import app.expense.model.ExpenseDTO
+import app.expense.db.TransactionDao
+import app.expense.model.TransactionDTO
 
-class ExpenseSyncAPI(
+class TransactionSyncAPI(
     private val sharedPreferences: SharedPreferences,
-    private val expenseDao: ExpenseDao
+    private val transactionDao: TransactionDao
 ) {
 
     fun getLastSyncedTime(): Long? {
@@ -18,8 +18,8 @@ class ExpenseSyncAPI(
         return lastSyncTime
     }
 
-    suspend fun storeExpenses(expenses: List<ExpenseDTO>) {
-        expenseDao.insertAll(expenses)
+    suspend fun storeTransactions(transactions: List<TransactionDTO>) {
+        transactionDao.insertAll(transactions)
     }
 
     fun setLastSyncedTime(time: Long) {

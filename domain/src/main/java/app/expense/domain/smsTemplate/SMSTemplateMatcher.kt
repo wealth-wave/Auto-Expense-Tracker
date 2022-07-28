@@ -12,7 +12,7 @@ class SMSTemplateMatcher {
         val smsWords = smsString.split(" ")
 
         var cursorPos = -1
-        for (templateWord in templateWords) {
+        templateWords.forEach { templateWord ->
             if (isPlaceHolderWord(templateWord).not()) {
                 var isPassed = false
                 smsWords.forEachIndexed { index, smsWord ->
@@ -29,6 +29,29 @@ class SMSTemplateMatcher {
         }
 
         return true
+    }
+
+    fun placeHolderValueMap(smsTemplate: SMSTemplate, smsMessage: SMSMessage): Map<String, String> {
+        val placeHolderValueMap = mutableMapOf<String, String>()
+
+        val templateString = smsTemplate.template
+        val smsString = smsMessage.body
+
+        val templateWords = templateString.split(" ")
+        val smsWords = smsString.split(" ")
+
+
+        templateWords.forEachIndexed { templateWordIndex, templateWord ->
+            if (isPlaceHolderWord(templateWord)) {
+
+            }
+            smsWords.forEachIndexed { smsWordIndex, smsWord ->
+
+            }
+        }
+
+
+        return placeHolderValueMap
     }
 
     private fun isPlaceHolderWord(word: String): Boolean {

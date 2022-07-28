@@ -37,4 +37,5 @@ dependencies {
         testImplementation(it)
     }
     implementation(project(":api"))
+    implementation(project(":contract"))
 }
