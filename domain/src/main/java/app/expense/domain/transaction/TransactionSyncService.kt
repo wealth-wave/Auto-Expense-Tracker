@@ -1,7 +1,7 @@
 package app.expense.domain.transaction
 
-import app.expense.api.TransactionSyncAPI
 import app.expense.api.SMSReadAPI
+import app.expense.api.TransactionSyncAPI
 import app.expense.domain.Message
 import app.expense.model.TransactionDTO
 
@@ -15,7 +15,11 @@ class TransactionSyncService(
         val lastSyncedTime = transactionSyncAPI.getLastSyncedTime()
         val transactions: List<Transaction> =
             smsReadAPI.getAllSms(lastSyncedTime).mapNotNull { smsMessage ->
-                Message(from = smsMessage.address, content = smsMessage.body).let { message ->
+                Message(
+                    from = smsMessage.address,
+                    content = smsMessage.body,
+                    time = smsMessage.time
+                ).let { message ->
                     transactionDetector.detectTransactions(message)
                 }
             }
