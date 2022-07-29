@@ -21,4 +21,12 @@ class SMSTemplateMatcherTest {
 
         assertThat(smsTemplateMatcher.isMatch(smsTemplate, smsMessage)).isTrue()
     }
+
+    @Test
+    fun `Should Map the placeholder with values`() {
+        every { smsTemplate.template }.returns("INR {amount} spent on {account_name} Card {account_id} on 24-Jul-22 at {merchant_name}. Avl Lmt: INR 1,11,992.80. To dispute,call 18002662/SMS BLOCK 1111 to 3434343434")
+        every { smsMessage.body }.returns("INR 2,007.00 spent on ABCDE Bank Card XX1234 on 24-Jul-22 at GoDaddy. Avl Lmt: INR 1,11,992.80. To dispute,call 18002662/SMS BLOCK 1111 to 3434343434")
+
+        assertThat(smsTemplateMatcher.placeHolderValueMap(smsTemplate, smsMessage)).isNotEmpty()
+    }
 }

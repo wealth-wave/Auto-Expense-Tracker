@@ -37,19 +37,21 @@ class SMSTemplateMatcher {
         val templateString = smsTemplate.template
         val smsString = smsMessage.body
 
-        val templateWords = templateString.split(" ")
-        val smsWords = smsString.split(" ")
+        val templateWordList =
+            "\\{(.*?)}".toRegex().findAll(templateString).toList().map { it.value }
+        templateWordList.forEach { templateWord ->
+            val templateAccompanies = templateString.split(templateWord)
+            val preAccompany =
+                (templateAccompanies.firstOrNull() ?: "").split("}").lastOrNull() ?: ""
+            val postAccompany =
+                (templateAccompanies.getOrNull(1) ?: "").split("{").firstOrNull() ?: ""
 
+            val value = (smsString.split(preAccompany).getOrNull(1) ?: "").split(postAccompany)
+                .firstOrNull()
+                ?: ""
 
-        templateWords.forEachIndexed { templateWordIndex, templateWord ->
-            if (isPlaceHolderWord(templateWord)) {
-
-            }
-            smsWords.forEachIndexed { smsWordIndex, smsWord ->
-
-            }
+            placeHolderValueMap[templateWord] = value
         }
-
 
         return placeHolderValueMap
     }
