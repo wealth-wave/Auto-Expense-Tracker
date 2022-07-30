@@ -38,7 +38,8 @@ class SMSTemplateMatcher {
         val smsString = smsMessage.body
 
         val templateWordList =
-            "\\{(.*?)}".toRegex().findAll(templateString).toList().map { it.value }
+            buildString { append("\\{(.*?)\\}") }.toRegex().findAll(templateString).toList()
+                .map { it.value }
         templateWordList.forEach { templateWord ->
             val templateAccompanies = templateString.split(templateWord)
             val preAccompany =

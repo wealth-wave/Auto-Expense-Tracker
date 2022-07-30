@@ -10,8 +10,8 @@ class SMSReadAPI(private val contentResolver: ContentResolver) {
         val smsMessages = mutableListOf<SMSMessage>()
 
         val projections = arrayOf("_id", "address", "body", "person", "date")
-        val selection = if (upTo != null) "date" else null
-        val selectionArgs = if (upTo != null) arrayOf(upTo.toString()) else null
+        val selection = if (upTo != null) /*"date"*/null else null
+        val selectionArgs = if (upTo != null) /*arrayOf(upTo.toString())*/null else null
         val sortOrder = "date DESC"
 
         val cursor = contentResolver.query(
