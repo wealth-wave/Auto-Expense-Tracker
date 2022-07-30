@@ -11,6 +11,7 @@ class TransactionSyncService(
 ) {
 
     suspend fun sync() {
+        val startTime = System.currentTimeMillis()
         val lastSyncedTime = transactionSyncAPI.getLastSyncedTime()
         val transactions: List<Transaction> =
             smsReadAPI.getAllSms(lastSyncedTime).mapNotNull { smsMessage ->
@@ -31,7 +32,7 @@ class TransactionSyncService(
             )
         })
 
-        transactionSyncAPI.setLastSyncedTime(System.currentTimeMillis())
+        transactionSyncAPI.setLastSyncedTime(startTime)
 
     }
 }
