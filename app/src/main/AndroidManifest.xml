@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="app.expense.tracker">
 
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +26,14 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".services.SMSReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

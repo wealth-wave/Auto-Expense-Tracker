@@ -47,8 +47,9 @@ dependencies {
     //Truth
     testImplementation(Deps.Truth.TEST)
 
-    implementation(project(":api"))
-    implementation(project(":contract"))
+    //Modules
+    implementation(project(Deps.Modules.API))
+    implementation(project(Deps.Modules.CONTRACT))
 }
 
 kapt {

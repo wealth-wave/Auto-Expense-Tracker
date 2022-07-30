@@ -67,4 +67,11 @@ object Deps {
     object WorkManager {
         const val RUNTIME = "androidx.work:work-runtime-ktx:2.7.1"
     }
+
+    object Modules {
+        const val PRESENTATION = ":presentation"
+        const val DOMAIN = ":domain"
+        const val API = ":api"
+        const val CONTRACT = ":contract"
+    }
 }

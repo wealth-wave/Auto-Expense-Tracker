@@ -34,10 +34,14 @@ android {
 }
 
 dependencies {
+    //Room
     implementation(Deps.Room.RUNTIME)
     annotationProcessor(Deps.Room.ANNOTATION_COMPILER)
-    implementation(project(":contract"))
+
+    //Junit
     testImplementation(Deps.JUnit.TEST)
     androidTestImplementation(Deps.JUnit.ANDROID_TEST)
-    androidTestImplementation(Deps.Espresso.ANDROID_TEST)
+
+    //Modules
+    implementation(project(Deps.Modules.CONTRACT))
 }

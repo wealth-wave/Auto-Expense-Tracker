@@ -38,4 +38,8 @@ dependencies {
 
     //Test
     testImplementation(Deps.JUnit.TEST)
+
+    //Modules
+    implementation(project(Deps.Modules.DOMAIN))
+    implementation(project(Deps.Modules.CONTRACT))
 }
