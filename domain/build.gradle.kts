@@ -34,9 +34,9 @@ android {
 }
 
 dependencies {
-    //Hilt
-    implementation(Deps.Hilt.HILT)
-    kapt(Deps.Hilt.KAPT)
+    //Koin
+    implementation(Deps.Koin.DEP_ANDROID)
+    kapt(Deps.Koin.TEST)
 
     //Junit
     testImplementation(Deps.JUnit.TEST)

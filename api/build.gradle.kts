@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -36,7 +37,12 @@ android {
 dependencies {
     //Room
     implementation(Deps.Room.RUNTIME)
-    annotationProcessor(Deps.Room.ANNOTATION_COMPILER)
+    implementation(Deps.Room.KTX)
+    kapt(Deps.Room.KAPT_COMPILER)
+
+    //Koin
+    implementation(Deps.Koin.DEP_ANDROID)
+    testImplementation(Deps.Koin.TEST)
 
     //Junit
     testImplementation(Deps.JUnit.TEST)
@@ -44,4 +50,8 @@ dependencies {
 
     //Modules
     implementation(project(Deps.Modules.CONTRACT))
+}
+
+kapt {
+    correctErrorTypes = true
 }

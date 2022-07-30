@@ -37,7 +37,8 @@ object Deps {
         private const val ROOM_VERSION = "2.4.2"
 
         const val RUNTIME = "androidx.room:room-runtime:$ROOM_VERSION"
-        const val ANNOTATION_COMPILER = "androidx.room:room-compiler:$ROOM_VERSION"
+        const val KTX = "androidx.room:room-ktx:$ROOM_VERSION"
+        const val KAPT_COMPILER = "androidx.room:room-compiler:$ROOM_VERSION"
     }
 
     object JUnit {
@@ -59,9 +60,20 @@ object Deps {
 
     object Hilt {
         private const val HILT_VERSION = "2.38.1"
+        private const val HILT_WORKER_VERSION = "1.0.0"
 
         const val HILT = "com.google.dagger:hilt-android:$HILT_VERSION"
         const val KAPT = "com.google.dagger:hilt-android-compiler:$HILT_VERSION"
+        const val WORKER = "androidx.hilt:hilt-work:$HILT_WORKER_VERSION"
+        const val KAPT_WORKER = "androidx.hilt:hilt-compiler:$HILT_WORKER_VERSION"
+    }
+
+    object Koin {
+        private const val VERSION = "3.2.0"
+
+        const val DEP_CORE = "io.insert-koin:koin-core:$VERSION"
+        const val DEP_ANDROID = "io.insert-koin:koin-android:$VERSION"
+        const val TEST = "io.insert-koin:koin-test:$VERSION"
     }
 
     object WorkManager {
