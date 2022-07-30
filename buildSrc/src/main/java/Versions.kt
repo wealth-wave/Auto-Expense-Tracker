@@ -22,4 +22,6 @@ object Versions {
     const val jUnit = "4.12"
     const val mockk = "1.12.4"
     const val truth = "1.1.3"
+    const val hilt = "2.38.1"
+    const val workManager = "2.7.1"
 }

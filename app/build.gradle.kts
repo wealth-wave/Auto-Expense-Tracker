@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
@@ -60,10 +61,20 @@ dependencies {
     Deps.Compose.debugDependencies.forEach {
         debugImplementation(it)
     }
+    Deps.Hilt.dependencies.forEach {
+        implementation(it)
+    }
+    Deps.Hilt.kapt.forEach {
+        kapt(it)
+    }
     Deps.Test.testDependencies.forEach {
         testImplementation(it)
     }
     Deps.Test.androidTestDependencies.forEach {
         androidTestImplementation(it)
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }

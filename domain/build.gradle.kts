@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -36,7 +37,20 @@ dependencies {
     Deps.Test.testDependencies.forEach {
         testImplementation(it)
     }
+    Deps.Hilt.dependencies.forEach {
+        implementation(it)
+    }
+    Deps.WorkManager.dependencies.forEach {
+        implementation(it)
+    }
+    Deps.Hilt.kapt.forEach {
+        kapt(it)
+    }
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
     implementation(project(":api"))
     implementation(project(":contract"))
-    implementation("androidx.test.ext:junit-ktx:1.1.3")
+}
+
+kapt {
+    correctErrorTypes = true
 }

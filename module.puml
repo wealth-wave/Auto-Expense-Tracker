@@ -1,0 +1,19 @@
+@startuml
+
+component App
+note right of App : Android Application Module holding\nAndroid Frontend and Service related logics
+
+component Presentation
+note right of Presentation: Presentation Module holding\nViewModel and Presentation logics
+
+component Domain
+note right of Domain: Domain logic module\nholds pure domain related logics
+
+component Api
+note right of Api: API Module\nholds logic of Android DB and Network call related stuff
+
+App --> Presentation
+Presentation --> Domain
+App --> Domain: Only from Android Services
+Domain --> Api
+@enduml

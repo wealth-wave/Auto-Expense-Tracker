@@ -65,4 +65,13 @@ object Deps {
             )
         }
     }
+
+    object Hilt {
+        val dependencies by lazy { listOf("com.google.dagger:hilt-android:${Versions.hilt}") }
+        val kapt by lazy { listOf("com.google.dagger:hilt-android-compiler:${Versions.hilt}") }
+    }
+
+    object WorkManager {
+        val dependencies by lazy { listOf("androidx.work:work-runtime-ktx:${Versions.workManager}") }
+    }
 }

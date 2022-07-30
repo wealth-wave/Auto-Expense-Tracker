@@ -6,7 +6,7 @@
 
     <application>
         <receiver
-            android:name="app.expense.domain.SMSReceiver"
+            android:name="app.expense.domain.app.expense.tracker.services.SMSReceiver"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>

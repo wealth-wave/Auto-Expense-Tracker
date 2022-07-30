@@ -1,5 +1,8 @@
 package app.expense.domain.transaction
 
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
 import app.expense.api.SMSReadAPI
 import app.expense.api.TransactionSyncAPI
 import app.expense.domain.Message
@@ -9,7 +12,9 @@ class TransactionSyncService(
     private val transactionSyncAPI: TransactionSyncAPI,
     private val smsReadAPI: SMSReadAPI,
     private val transactionDetector: TransactionDetector
-) {
+): Service() {
+
+
 
     suspend fun sync() {
         val lastSyncedTime = transactionSyncAPI.getLastSyncedTime()
@@ -39,5 +44,9 @@ class TransactionSyncService(
 
         transactionSyncAPI.setLastSyncedTime(System.currentTimeMillis())
 
+    }
+
+    override fun onBind(p0: Intent?): IBinder? {
+        TODO("Not yet implemented")
     }
 }
