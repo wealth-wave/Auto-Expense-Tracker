@@ -9,10 +9,10 @@ class SMSReadAPI(private val contentResolver: ContentResolver) {
     fun getAllSms(upTo: Long?): List<SMSMessage> {
         val smsMessages = mutableListOf<SMSMessage>()
 
-        val projections = arrayOf("_id", "address", "body", "person", "timed")
-        val selection = if (upTo != null) "timed" else null
+        val projections = arrayOf("_id", "address", "body", "person", "date")
+        val selection = if (upTo != null) "date" else null
         val selectionArgs = if (upTo != null) arrayOf(upTo.toString()) else null
-        val sortOrder = "timed DESC"
+        val sortOrder = "date DESC"
 
         val cursor = contentResolver.query(
             Uri.parse("content://sms/inbox"),
@@ -25,7 +25,7 @@ class SMSReadAPI(private val contentResolver: ContentResolver) {
         while (cursor.moveToNext()) {
             val address = cursor.getString(cursor.getColumnIndexOrThrow("address"))
             val body = cursor.getString(cursor.getColumnIndexOrThrow("body"))
-            val time = cursor.getLong(cursor.getColumnIndexOrThrow("timed"))
+            val time = cursor.getLong(cursor.getColumnIndexOrThrow("date"))
 
             smsMessages.add(SMSMessage(address, body, time))
         }

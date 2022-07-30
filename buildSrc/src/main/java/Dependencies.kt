@@ -9,6 +9,7 @@ object BuildPlugins {
 
     const val ANDROID = "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
     const val KOTLIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
+    const val HILT = "com.google.dagger.hilt.android"
 }
 
 /**
@@ -66,14 +67,6 @@ object Deps {
         const val KAPT = "com.google.dagger:hilt-android-compiler:$HILT_VERSION"
         const val WORKER = "androidx.hilt:hilt-work:$HILT_WORKER_VERSION"
         const val KAPT_WORKER = "androidx.hilt:hilt-compiler:$HILT_WORKER_VERSION"
-    }
-
-    object Koin {
-        private const val VERSION = "3.2.0"
-
-        const val DEP_CORE = "io.insert-koin:koin-core:$VERSION"
-        const val DEP_ANDROID = "io.insert-koin:koin-android:$VERSION"
-        const val TEST = "io.insert-koin:koin-test:$VERSION"
     }
 
     object WorkManager {

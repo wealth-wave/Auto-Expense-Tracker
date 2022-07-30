@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id(BuildPlugins.HILT)
 }
 
 android {
@@ -40,9 +41,9 @@ dependencies {
     implementation(Deps.Room.KTX)
     kapt(Deps.Room.KAPT_COMPILER)
 
-    //Koin
-    implementation(Deps.Koin.DEP_ANDROID)
-    testImplementation(Deps.Koin.TEST)
+    //Hilt
+    implementation(Deps.Hilt.HILT)
+    kapt(Deps.Hilt.KAPT)
 
     //Junit
     testImplementation(Deps.JUnit.TEST)

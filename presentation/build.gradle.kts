@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id(BuildPlugins.HILT)
+    kotlin("kapt")
 }
 
 android {
@@ -39,7 +41,15 @@ dependencies {
     //Test
     testImplementation(Deps.JUnit.TEST)
 
+    //Hilt
+    implementation(Deps.Hilt.HILT)
+    kapt(Deps.Hilt.KAPT)
+
     //Modules
     implementation(project(Deps.Modules.DOMAIN))
     implementation(project(Deps.Modules.CONTRACT))
+}
+
+kapt {
+    correctErrorTypes = true
 }

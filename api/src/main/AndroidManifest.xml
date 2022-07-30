@@ -3,6 +3,5 @@
     package="app.expense.api">
 
     <uses-permission android:name="android.permission.READ_SMS" />
-    <application android:name="app.expense.ApiApp" />
 
 </manifest>
