@@ -1,6 +1,6 @@
 package app.expense.domain.transaction
 
-import app.expense.domain.Message
+import app.expense.contract.SMSMessage
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
 
@@ -19,12 +19,12 @@ class TransactionDetector(
     INR 602.00 sent from your Account XXXXXXXX1234 Mode: UPI | To: cashfree@amdbank Date: July 21, 2022 Not done by you? Call 080-121212122 -ABC Bank
     Rs 500.00 debited from your A/c using UPI on 17-07-2022 12:17:24 and VPA upid.aa@oababi credited (UPI Ref No 121212121212)-ABC Bank
     */
-    fun detectTransactions(message: Message): Transaction? {
+    fun detectTransactions(smsMessage: SMSMessage): Transaction? {
         val matchingSmsTemplate = smsTemplates.find { smsTemplate ->
-            smsTemplateMatcher.isMatch(smsTemplate, message)
+            smsTemplateMatcher.isMatch(smsTemplate, smsMessage)
         } ?: return null
 
-        val placeHolderMap = smsTemplateMatcher.placeHolderValueMap(matchingSmsTemplate, message)
+        val placeHolderMap = smsTemplateMatcher.placeHolderValueMap(matchingSmsTemplate, smsMessage)
 
         return Transaction(
             amount = getAmount(placeHolderMap[matchingSmsTemplate.amountKey]) ?: return null,
@@ -33,17 +33,17 @@ class TransactionDetector(
             fromName = placeHolderMap[matchingSmsTemplate.fromNameKey] ?: return null,
             toId = placeHolderMap[matchingSmsTemplate.toIdKey] ?: return null,
             toName = placeHolderMap[matchingSmsTemplate.toNameKey] ?: return null,
-            time = message.time,
+            time = smsMessage.time,
             referenceId = getReferenceId(
                 placeHolderMap[matchingSmsTemplate.referenceKey],
-                message
+                smsMessage
             ) ?: return null
         )
     }
 
-    private fun getReferenceId(referenceId: String?, message: Message): String? {
+    private fun getReferenceId(referenceId: String?, smsMessage: SMSMessage): String? {
         if (referenceId == null) {
-            return message.content.hashCode().toString()
+            return smsMessage.body.hashCode().toString()
         }
 
         return referenceId

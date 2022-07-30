@@ -1,6 +1,6 @@
 package app.expense.domain.smsTemplate
 
-import app.expense.model.SMSMessage
+import app.expense.contract.SMSMessage
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk

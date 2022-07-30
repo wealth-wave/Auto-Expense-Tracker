@@ -5,14 +5,14 @@ plugins {
 }
 
 android {
-    compileSdk = Versions.Sdk.targetSdkVersion
+    compileSdk = ConfigData.targetSdkVersion
 
     defaultConfig {
         applicationId = "app.expense.tracker"
-        minSdk = Versions.Sdk.minSdkVersion
-        targetSdk = Versions.Sdk.targetSdkVersion
-        versionCode = Versions.App.versionCode
-        versionName = Versions.App.versionName
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
+        versionCode = ConfigData.versionCode
+        versionName = ConfigData.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -34,13 +34,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = Versions.jvm
+        jvmTarget = ConfigData.jvmVersion
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.kotlinCompilerVersion
+        kotlinCompilerExtensionVersion = ConfigData.kotlinCompilerVersion
     }
     packagingOptions {
         resources {
@@ -51,28 +51,37 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.8.0")
-    Deps.Compose.dependencies.forEach {
-        implementation(it)
-    }
-    Deps.Compose.androidTestDependencies.forEach {
-        androidTestImplementation(it)
-    }
-    Deps.Compose.debugDependencies.forEach {
-        debugImplementation(it)
-    }
-    Deps.Hilt.dependencies.forEach {
-        implementation(it)
-    }
-    Deps.Hilt.kapt.forEach {
-        kapt(it)
-    }
-    Deps.Test.testDependencies.forEach {
-        testImplementation(it)
-    }
-    Deps.Test.androidTestDependencies.forEach {
-        androidTestImplementation(it)
-    }
+    //Core
+    implementation(Deps.Core.DEPENDENCY)
+
+    //Compose
+    implementation(Deps.Compose.UI)
+    implementation(Deps.Compose.MATERIAL3)
+    implementation(Deps.Compose.PREVIEW)
+    implementation(Deps.Compose.ACTIVITY)
+    debugImplementation(Deps.Compose.DEBUG_TOOLING)
+    debugImplementation(Deps.Compose.DEBUG_MANIFEST)
+    androidTestImplementation(Deps.Compose.ANDROID_UI_TEST)
+
+    //WorkManager
+    implementation(Deps.WorkManager.RUNTIME)
+
+    //Hilt
+    implementation(Deps.Hilt.HILT)
+    kapt(Deps.Hilt.KAPT)
+
+    //Junit
+    testImplementation(Deps.JUnit.TEST)
+    androidTestImplementation(Deps.JUnit.ANDROID_TEST)
+
+    //Espresso
+    androidTestImplementation(Deps.Espresso.ANDROID_TEST)
+
+    //Mock
+    testImplementation(Deps.Mockk.TEST)
+
+    //Truth
+    testImplementation(Deps.Truth.TEST)
 }
 
 kapt {

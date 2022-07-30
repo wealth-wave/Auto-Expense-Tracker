@@ -2,7 +2,7 @@ package app.expense.api
 
 import android.content.ContentResolver
 import android.net.Uri
-import app.expense.model.SMSMessage
+import app.expense.contract.SMSMessage
 
 class SMSReadAPI(private val contentResolver: ContentResolver) {
 

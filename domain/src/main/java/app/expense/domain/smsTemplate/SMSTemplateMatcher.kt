@@ -1,12 +1,12 @@
 package app.expense.domain.smsTemplate
 
-import app.expense.domain.Message
+import app.expense.contract.SMSMessage
 
 class SMSTemplateMatcher {
 
-    fun isMatch(smsTemplate: SMSTemplate, smsMessage: Message): Boolean {
+    fun isMatch(smsTemplate: SMSTemplate, smsMessage: SMSMessage): Boolean {
         val templateString = smsTemplate.template
-        val smsString = smsMessage.content
+        val smsString = smsMessage.body
 
         val templateWords = templateString.split(" ")
         val smsWords = smsString.split(" ")
@@ -31,11 +31,11 @@ class SMSTemplateMatcher {
         return true
     }
 
-    fun placeHolderValueMap(smsTemplate: SMSTemplate, message: Message): Map<String, String> {
+    fun placeHolderValueMap(smsTemplate: SMSTemplate, smsMessage: SMSMessage): Map<String, String> {
         val placeHolderValueMap = mutableMapOf<String, String>()
 
         val templateString = smsTemplate.template
-        val smsString = message.content
+        val smsString = smsMessage.body
 
         val templateWordList =
             "\\{(.*?)}".toRegex().findAll(templateString).toList().map { it.value }

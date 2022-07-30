@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdk = Versions.Sdk.targetSdkVersion
+    compileSdk = ConfigData.targetSdkVersion
 
     defaultConfig {
-        minSdk = Versions.Sdk.minSdkVersion
-        targetSdk = Versions.Sdk.targetSdkVersion
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,14 +34,10 @@ android {
 }
 
 dependencies {
-    Deps.Room.dependencies.forEach {
-        implementation(it)
-    }
-    Deps.Room.annotationDependencies.forEach {
-        annotationProcessor(it)
-    }
+    implementation(Deps.Room.RUNTIME)
+    annotationProcessor(Deps.Room.ANNOTATION_COMPILER)
     implementation(project(":contract"))
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation(Deps.JUnit.TEST)
+    androidTestImplementation(Deps.JUnit.ANDROID_TEST)
+    androidTestImplementation(Deps.Espresso.ANDROID_TEST)
 }

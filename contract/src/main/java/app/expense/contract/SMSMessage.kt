@@ -1,4 +1,4 @@
-package app.expense.model
+package app.expense.contract
 
 data class SMSMessage(
     val address: String,

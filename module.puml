@@ -12,8 +12,15 @@ note right of Domain: Domain logic module\nholds pure domain related logics
 component Api
 note right of Api: API Module\nholds logic of Android DB and Network call related stuff
 
+component Contract
+note right of Contract: Modile for\nholding contract related data class
+
+
 App --> Presentation
 Presentation --> Domain
 App --> Domain: Only from Android Services
 Domain --> Api
+Domain --> Contract
+Api --> Contract
+Presentation -> Contract
 @enduml

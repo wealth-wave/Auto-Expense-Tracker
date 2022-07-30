@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdk = Versions.Sdk.targetSdkVersion
+    compileSdk = ConfigData.targetSdkVersion
 
     defaultConfig {
-        minSdk = Versions.Sdk.minSdkVersion
-        targetSdk = Versions.Sdk.targetSdkVersion
+        minSdk = ConfigData.minSdkVersion
+        targetSdk = ConfigData.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,19 +34,19 @@ android {
 }
 
 dependencies {
-    Deps.Test.testDependencies.forEach {
-        testImplementation(it)
-    }
-    Deps.Hilt.dependencies.forEach {
-        implementation(it)
-    }
-    Deps.WorkManager.dependencies.forEach {
-        implementation(it)
-    }
-    Deps.Hilt.kapt.forEach {
-        kapt(it)
-    }
-    implementation("androidx.test.ext:junit-ktx:1.1.3")
+    //Hilt
+    implementation(Deps.Hilt.HILT)
+    kapt(Deps.Hilt.KAPT)
+
+    //Junit
+    testImplementation(Deps.JUnit.TEST)
+
+    //Mockk
+    testImplementation(Deps.Mockk.TEST)
+
+    //Truth
+    testImplementation(Deps.Truth.TEST)
+
     implementation(project(":api"))
     implementation(project(":contract"))
 }

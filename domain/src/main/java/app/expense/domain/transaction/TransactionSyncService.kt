@@ -5,28 +5,21 @@ import android.content.Intent
 import android.os.IBinder
 import app.expense.api.SMSReadAPI
 import app.expense.api.TransactionSyncAPI
-import app.expense.domain.Message
 import app.expense.model.TransactionDTO
 
 class TransactionSyncService(
     private val transactionSyncAPI: TransactionSyncAPI,
     private val smsReadAPI: SMSReadAPI,
     private val transactionDetector: TransactionDetector
-): Service() {
-
+) : Service() {
 
 
     suspend fun sync() {
         val lastSyncedTime = transactionSyncAPI.getLastSyncedTime()
         val transactions: List<Transaction> =
             smsReadAPI.getAllSms(lastSyncedTime).mapNotNull { smsMessage ->
-                Message(
-                    from = smsMessage.address,
-                    content = smsMessage.body,
-                    time = smsMessage.time
-                ).let { message ->
-                    transactionDetector.detectTransactions(message)
-                }
+                transactionDetector.detectTransactions(smsMessage)
+
             }
 
         transactionSyncAPI.storeTransactions(transactions.map { transaction ->
