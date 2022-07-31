@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import app.expense.api.SMSReadAPI
 import app.expense.api.TransactionSyncAPI
+import app.expense.api.TransactionsReadAPI
 import app.expense.db.DaoProvider
 import app.expense.db.TransactionDao
 import dagger.Module
@@ -42,5 +43,11 @@ class ApiModule {
     @Provides
     fun provideSmsReadApi(@ApplicationContext context: Context): SMSReadAPI {
         return SMSReadAPI(context.contentResolver)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTransactionsReadApi(transactionDao: TransactionDao): TransactionsReadAPI {
+        return TransactionsReadAPI(transactionDao)
     }
 }

@@ -60,18 +60,26 @@ dependencies {
     implementation(Deps.Compose.MATERIAL3)
     implementation(Deps.Compose.PREVIEW)
     implementation(Deps.Compose.ACTIVITY)
+    implementation(Deps.Compose.VIEW_MODEL)
     debugImplementation(Deps.Compose.DEBUG_TOOLING)
     debugImplementation(Deps.Compose.DEBUG_MANIFEST)
     androidTestImplementation(Deps.Compose.ANDROID_UI_TEST)
 
+    //Navigation
+    implementation(Deps.Navigation.NAV_COMPOSE)
+
     //WorkManager
     implementation(Deps.WorkManager.RUNTIME)
+
+    //Coroutines
+    implementation(Deps.Coroutines.DEP)
 
     //Hilt
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
     implementation(Deps.Hilt.WORKER)
     kapt(Deps.Hilt.KAPT_WORKER)
+    implementation(Deps.Hilt.NAVIGATION_COMPOSE)
 
     //Junit
     testImplementation(Deps.JUnit.TEST)

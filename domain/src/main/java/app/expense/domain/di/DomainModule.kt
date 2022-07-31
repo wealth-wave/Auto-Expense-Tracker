@@ -2,6 +2,8 @@ package app.expense.domain.di
 
 import app.expense.api.SMSReadAPI
 import app.expense.api.TransactionSyncAPI
+import app.expense.api.TransactionsReadAPI
+import app.expense.domain.TransactionFetchService
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
 import app.expense.domain.transaction.TransactionDetector
@@ -40,5 +42,10 @@ class DomainModule {
         transactionDetector: TransactionDetector
     ): TransactionSyncService {
         return TransactionSyncService(transactionSyncAPI, smsReadAPI, transactionDetector)
+    }
+
+    @Provides
+    fun transactionFetchService(transactionsReadAPI: TransactionsReadAPI): TransactionFetchService {
+        return TransactionFetchService(transactionsReadAPI)
     }
 }

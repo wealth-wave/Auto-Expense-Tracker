@@ -22,6 +22,10 @@ object Deps {
         const val DEPENDENCY = "androidx.core:core-ktx:1.8.0"
     }
 
+    object Coroutines {
+        const val DEP = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    }
+
     object Compose {
         private const val COMPOSE_VERSION = "1.3.0-alpha01"
 
@@ -29,6 +33,7 @@ object Deps {
         const val MATERIAL3 = "androidx.compose.material3:material3:1.0.0-alpha14"
         const val PREVIEW = "androidx.compose.ui:ui-tooling-preview:1.1.1"
         const val ACTIVITY = "androidx.activity:activity-compose:1.5.0"
+        const val VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0"
         const val DEBUG_TOOLING = "androidx.compose.ui:ui-tooling:$COMPOSE_VERSION"
         const val DEBUG_MANIFEST = "androidx.compose.ui:ui-test-manifest:$COMPOSE_VERSION"
         const val ANDROID_UI_TEST = "androidx.compose.ui:ui-test-junit4:$COMPOSE_VERSION"
@@ -59,14 +64,20 @@ object Deps {
         const val ANDROID_TEST = "androidx.test.espresso:espresso-core:3.4.0"
     }
 
+    object Navigation {
+        const val NAV_COMPOSE = "androidx.navigation:navigation-compose:2.5.1"
+    }
+
     object Hilt {
         private const val HILT_VERSION = "2.38.1"
-        private const val HILT_WORKER_VERSION = "1.0.0"
+        private const val HILT_OTHER_JETPACK_VERSION = "1.0.0"
 
         const val HILT = "com.google.dagger:hilt-android:$HILT_VERSION"
         const val KAPT = "com.google.dagger:hilt-android-compiler:$HILT_VERSION"
-        const val WORKER = "androidx.hilt:hilt-work:$HILT_WORKER_VERSION"
-        const val KAPT_WORKER = "androidx.hilt:hilt-compiler:$HILT_WORKER_VERSION"
+        const val WORKER = "androidx.hilt:hilt-work:$HILT_OTHER_JETPACK_VERSION"
+        const val KAPT_WORKER = "androidx.hilt:hilt-compiler:$HILT_OTHER_JETPACK_VERSION"
+        const val NAVIGATION_COMPOSE =
+            "androidx.hilt:hilt-navigation-compose:$HILT_OTHER_JETPACK_VERSION"
     }
 
     object WorkManager {

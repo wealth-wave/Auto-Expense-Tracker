@@ -38,6 +38,9 @@ dependencies {
     //Core
     implementation(Deps.Core.DEPENDENCY)
 
+    //Coroutines
+    implementation(Deps.Coroutines.DEP)
+
     //Test
     testImplementation(Deps.JUnit.TEST)
 
