@@ -60,6 +60,7 @@ dependencies {
     implementation(Deps.Compose.MATERIAL3)
     implementation(Deps.Compose.PREVIEW)
     implementation(Deps.Compose.ACTIVITY)
+    implementation(Deps.Compose.RUNTIME)
     implementation(Deps.Compose.VIEW_MODEL)
     debugImplementation(Deps.Compose.DEBUG_TOOLING)
     debugImplementation(Deps.Compose.DEBUG_MANIFEST)

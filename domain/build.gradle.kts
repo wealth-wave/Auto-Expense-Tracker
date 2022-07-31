@@ -39,6 +39,9 @@ dependencies {
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
 
+    //Coroutines
+    implementation(Deps.Coroutines.DEP)
+
     //Junit
     testImplementation(Deps.JUnit.TEST)
 

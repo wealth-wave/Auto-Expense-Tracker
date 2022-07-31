@@ -6,7 +6,7 @@ import app.expense.domain.TransactionFetchService
 import app.expense.presentation.viewStates.TransactionViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -17,11 +17,10 @@ class TransactionViewModel @Inject constructor(private val transactionFetchServi
     fun getTransactions(): Flow<TransactionViewState> {
         val time = System.currentTimeMillis()
         val upTo = time - TimeUnit.DAYS.toMillis(30)
-        return flow {
-            val transactions = transactionFetchService.getTransactions(upTo)
+        return transactionFetchService.getTransactions(upTo).map { transactions ->
             val expenses =
                 transactions.filter { it.type == TransactionType.DEBIT }.sumOf { it.amount }
-            emit(TransactionViewState(expenses, transactions))
+            TransactionViewState(expenses, transactions)
         }
     }
 }

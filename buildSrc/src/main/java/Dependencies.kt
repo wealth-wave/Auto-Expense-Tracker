@@ -33,6 +33,8 @@ object Deps {
         const val MATERIAL3 = "androidx.compose.material3:material3:1.0.0-alpha14"
         const val PREVIEW = "androidx.compose.ui:ui-tooling-preview:1.1.1"
         const val ACTIVITY = "androidx.activity:activity-compose:1.5.0"
+        const val RUNTIME = "androidx.compose.runtime:runtime:$COMPOSE_VERSION"
+        const val FOUNDATION = "androidx.compose.foundation:foundation:$COMPOSE_VERSION"
         const val VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0"
         const val DEBUG_TOOLING = "androidx.compose.ui:ui-tooling:$COMPOSE_VERSION"
         const val DEBUG_MANIFEST = "androidx.compose.ui:ui-test-manifest:$COMPOSE_VERSION"

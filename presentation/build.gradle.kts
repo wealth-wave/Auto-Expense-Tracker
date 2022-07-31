@@ -38,6 +38,9 @@ dependencies {
     //Core
     implementation(Deps.Core.DEPENDENCY)
 
+    //Compose
+    implementation(Deps.Compose.RUNTIME)
+
     //Coroutines
     implementation(Deps.Coroutines.DEP)
 

@@ -2,7 +2,7 @@ package app.expense.domain.transaction
 
 import app.expense.contract.TransactionType
 
-class Transaction(
+data class Transaction(
     val id: Long? = null,
     val amount: Double,
     val fromId: String,

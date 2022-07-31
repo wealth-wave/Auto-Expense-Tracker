@@ -3,6 +3,7 @@ package app.expense.domain.transaction
 import app.expense.api.SMSReadAPI
 import app.expense.api.TransactionSyncAPI
 import app.expense.model.TransactionDTO
+import java.util.concurrent.TimeUnit
 
 class TransactionSyncService(
     private val transactionSyncAPI: TransactionSyncAPI,
@@ -13,6 +14,7 @@ class TransactionSyncService(
     suspend fun sync() {
         val startTime = System.currentTimeMillis()
         val lastSyncedTime = transactionSyncAPI.getLastSyncedTime()
+            ?: (System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2))
         val transactions: List<Transaction> =
             smsReadAPI.getAllSms(lastSyncedTime).mapNotNull { smsMessage ->
                 transactionDetector.detectTransactions(smsMessage)

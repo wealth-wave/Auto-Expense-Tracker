@@ -2,11 +2,12 @@ package app.expense.api
 
 import app.expense.db.TransactionDao
 import app.expense.model.TransactionDTO
+import kotlinx.coroutines.flow.Flow
 
 class TransactionsReadAPI(
     private val transactionDao: TransactionDao
 ) {
-    suspend fun getTransactions(upTo: Long): List<TransactionDTO> {
+    fun getTransactions(upTo: Long): Flow<List<TransactionDTO>> {
         return transactionDao.fetchTransactions(upTo)
     }
 }
