@@ -20,7 +20,9 @@ class TransactionViewModel @Inject constructor(private val transactionFetchServi
         return transactionFetchService.getTransactions(upTo).map { transactions ->
             val expenses =
                 transactions.filter { it.type == TransactionType.DEBIT }.sumOf { it.amount }
-            TransactionViewState(expenses, transactions)
+            val incomes =
+                transactions.filter { it.type == TransactionType.CREDIT }.sumOf { it.amount }
+            TransactionViewState(expenses = expenses, incomes =incomes, transactions = transactions)
         }
     }
 }
