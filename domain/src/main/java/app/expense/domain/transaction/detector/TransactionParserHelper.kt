@@ -149,6 +149,26 @@ class TransactionParserHelper {
 
     }
 
+    fun getAmountSpent(processedMessage: String): Double? {
+        val messageArray = processedMessage.split(" ").filter { s -> s != "" }
+        val index = messageArray.indexOf("rs.")
+
+        if (index != -1) {
+            var money = messageArray[index + 1]
+            money = money.replace(",", "")
+
+            return if (money.toDoubleOrNull() == null) {
+                money = messageArray[index + 2]
+                money = money.replace(",", "")
+                money.toDoubleOrNull()
+            } else {
+                money.toDoubleOrNull()
+            }
+        }
+
+        return null
+    }
+
     private fun trimLeadingAndTrailingChars(word: String): String {
         var wordToTrim = word
         if (wordToTrim.last().isDigit().not()) {
