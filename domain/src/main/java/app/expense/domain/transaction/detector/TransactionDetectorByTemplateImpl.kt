@@ -1,13 +1,14 @@
-package app.expense.domain.transaction
+package app.expense.domain.transaction.detector
 
 import app.expense.contract.SMSMessage
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
+import app.expense.domain.transaction.Transaction
 
-class TransactionDetector(
+class TransactionDetectorByTemplateImpl(
     private val smsTemplateProvider: SMSTemplateProvider,
     private val smsTemplateMatcher: SMSTemplateMatcher
-) {
+) : TransactionDetector() {
 
     private val smsTemplates by lazy {
         smsTemplateProvider.getTemplates()
@@ -19,7 +20,7 @@ class TransactionDetector(
     INR 602.00 sent from your Account XXXXXXXX1234 Mode: UPI | To: cashfree@amdbank Date: July 21, 2022 Not done by you? Call 080-121212122 -ABC Bank
     Rs 500.00 debited from your A/c using UPI on 17-07-2022 12:17:24 and VPA upid.aa@oababi credited (UPI Ref No 121212121212)-ABC Bank
     */
-    fun detectTransactions(smsMessage: SMSMessage): Transaction? {
+    override fun detectTransactions(smsMessage: SMSMessage): Transaction? {
         val matchingSmsTemplate = smsTemplates.find { smsTemplate ->
             smsTemplateMatcher.isMatch(smsTemplate, smsMessage)
         } ?: return null

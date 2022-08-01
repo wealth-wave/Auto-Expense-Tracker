@@ -2,6 +2,7 @@ package app.expense.domain.transaction
 
 import app.expense.api.SMSReadAPI
 import app.expense.api.TransactionSyncAPI
+import app.expense.domain.transaction.detector.TransactionDetector
 import app.expense.model.TransactionDTO
 import java.util.concurrent.TimeUnit
 

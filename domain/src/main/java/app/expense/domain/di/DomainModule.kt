@@ -6,7 +6,8 @@ import app.expense.api.TransactionsReadAPI
 import app.expense.domain.TransactionFetchService
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
-import app.expense.domain.transaction.TransactionDetector
+import app.expense.domain.transaction.detector.TransactionDetector
+import app.expense.domain.transaction.detector.TransactionDetectorByTemplateImpl
 import app.expense.domain.transaction.TransactionSyncService
 import dagger.Module
 import dagger.Provides
@@ -32,7 +33,7 @@ class DomainModule {
         smsTemplateProvider: SMSTemplateProvider,
         smsTemplateMatcher: SMSTemplateMatcher
     ): TransactionDetector {
-        return TransactionDetector(smsTemplateProvider, smsTemplateMatcher)
+        return TransactionDetectorByTemplateImpl(smsTemplateProvider, smsTemplateMatcher)
     }
 
     @Provides
