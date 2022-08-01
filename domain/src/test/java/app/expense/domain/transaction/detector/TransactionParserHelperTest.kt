@@ -74,4 +74,12 @@ class TransactionParserHelperTest {
             )
         )
     }
+
+    @Test
+    fun `Should return balance`() {
+        val processedMessage =
+            "update your ac 1234 credited with rs. 15,160.00 on 12341234 by ac linked to mobile no 12(imps ref  123123) available bal rs. 2,088,505.04"
+
+        assertThat(transactionParserHelper.getBalance(processedMessage)).isEqualTo(2088505.04)
+    }
 }

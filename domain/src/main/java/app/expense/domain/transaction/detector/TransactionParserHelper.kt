@@ -8,6 +8,13 @@ class TransactionParserHelper {
         const val CREDIT_PATTERN = "credited|credit|deposited"
         const val DEBIT_PATTERN = "debited|debit|deducted"
         const val MISC_PATTERN = "payment|spent"
+        val balanceKeywords = arrayOf(
+            "avbl bal",
+            "available balance",
+            "a/c bal",
+            "available bal",
+            "avl bal",
+        )
     }
 
     /**
@@ -97,6 +104,51 @@ class TransactionParserHelper {
 
     }
 
+    fun getBalance(processedMessage: String): Double? {
+        var indexOfKeyWord = -1
+
+        run breaking@{
+            balanceKeywords.forEach { balanceKeyWord ->
+                indexOfKeyWord = processedMessage.indexOf(balanceKeyWord)
+
+                if (indexOfKeyWord != -1) {
+                    indexOfKeyWord += balanceKeyWord.length
+                    return@breaking
+                }
+            }
+        }
+
+
+        var index = indexOfKeyWord
+        var indexOfRs = -1
+        var nextThreeChars = processedMessage.substring(index, index + 3)
+
+        index += 3
+
+        while (index < processedMessage.length) {
+            nextThreeChars = nextThreeChars.slice(IntRange(1, 2))
+            nextThreeChars += processedMessage[index]
+
+            if (nextThreeChars == "rs.") {
+                indexOfRs = index + 2
+                break
+            }
+
+            ++index
+        }
+
+        if (indexOfRs == -1) {
+            return null
+        }
+
+        return extractBalance(
+            indexOfRs,
+            processedMessage,
+            processedMessage.length
+        )?.toDoubleOrNull()
+
+    }
+
     private fun trimLeadingAndTrailingChars(word: String): String {
         var wordToTrim = word
         if (wordToTrim.last().isDigit().not()) {
@@ -128,5 +180,39 @@ class TransactionParserHelper {
         }
 
         return null
+    }
+
+    private fun extractBalance(ind: Int, message: String, length: Int): String? {
+        var index = ind
+        var balance = ""
+        var sawNumber = false
+        var invalidCharCount = 0
+        var char: Char
+
+        while (index < length) {
+            char = message[index]
+
+            if ('0' <= char || char >= '9') {
+                sawNumber = true
+                balance += char
+            } else {
+                if (sawNumber == true) {
+                    if (char == '.') {
+                        if (invalidCharCount == 1) {
+                            break
+                        } else {
+                            balance += char
+                            invalidCharCount += 1
+                        }
+                    } else if (char != ',') {
+                        break
+                    }
+                }
+            }
+
+            ++index
+        }
+
+        return balance
     }
 }
