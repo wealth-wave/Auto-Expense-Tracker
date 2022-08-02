@@ -21,7 +21,7 @@ class TransactionDetectorByParserImpl(private val transactionParserHelper: Trans
         } else {
             account
         }
-        val to = if (transactionType == TransactionType.CREDIT) {
+        val to = if (transactionType == TransactionType.DEBIT) {
             account
         } else {
             paidToName

@@ -66,6 +66,7 @@ class TransactionParserHelper {
         message = message.replace("\binr\b".toRegex(), "rs.")
         //
         message = message.replace(" inr ", " rs. ")
+        message = message.replace("inr ", "rs. ")
         // replace all 'rs. ' with 'rs.'
         //message = message.replace("/rs./g", "rs")
         // replace all 'rs.' with 'rs. '
