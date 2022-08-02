@@ -16,11 +16,9 @@ class TransactionDetectorByParserImpl(private val transactionParserHelper: Trans
             transactionParserHelper.getTransactionType(processedMessage) ?: return null
 
 
-        Log.d("XDFCE", "Identified transaction type $transactionType")
         val account = transactionParserHelper.getAccount(processedMessage)?.second
         val spent = transactionParserHelper.getAmountSpent(processedMessage)
 
-        Log.d("XDFCE", "Identified spent ${spent ?: -1}")
         val paidToName = transactionParserHelper.getPaidName(processedMessage)
 
         val from = if (transactionType == TransactionType.DEBIT) {
@@ -46,7 +44,6 @@ class TransactionDetectorByParserImpl(private val transactionParserHelper: Trans
                 referenceMessageSender = smsMessage.address
             )
         }
-        Log.d("XDFCE", "problem with sms ${smsMessage.body}")
 
         return null
     }

@@ -11,7 +11,7 @@ class TransactionParserHelper {
         val TRANS_KEYWORDS = arrayOf("debited", "credited", "payment", "spent")
         const val CREDIT_PATTERN = "credited|credit|deposited"
         const val DEBIT_PATTERN = "debited|debit|deducted"
-        const val MISC_PATTERN = "payment|spent"
+        const val MISC_PATTERN = "payment|spent|paying"
         val balanceKeywords = arrayOf(
             "avbl bal",
             "available balance",
@@ -71,6 +71,8 @@ class TransactionParserHelper {
         //
         message = message.replace(" inr ", " rs. ")
         message = message.replace("inr ", "rs. ")
+
+        message = message.replace(" rs.", " rs. ")
         // replace all 'rs. ' with 'rs.'
         //message = message.replace("/rs./g", "rs")
         // replace all 'rs.' with 'rs. '

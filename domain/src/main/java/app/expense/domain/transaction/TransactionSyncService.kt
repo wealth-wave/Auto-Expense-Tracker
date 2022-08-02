@@ -38,7 +38,8 @@ class TransactionSyncService(
             )
         })
 
-        transactionSyncAPI.setLastSyncedTime(startTime)
-
+        transactions.map { it.time }.maxOrNull()?.let { lastMessageTime ->
+            transactionSyncAPI.setLastSyncedTime(lastMessageTime)
+        }
     }
 }
