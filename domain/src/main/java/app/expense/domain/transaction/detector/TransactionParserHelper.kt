@@ -43,31 +43,32 @@ class TransactionParserHelper {
         // convert to lower case
         message = message.lowercase()
         // remove '-'
-        message = message.replace("-", "")
+        message = message.replace("-", " ")
         // remove ':'
-        message = message.replace(":", "")
+        message = message.replace(":", " ")
         // remove '/'
-        message = message.replace("/", "")
+        message = message.replace("/", " ")
         // remove 'ending'
-        message = message.replace("\bending\b".toRegex(), "")
+        message = message.replace(" ending ", " ")
         // replace 'xx'
         message = message.replace("x|[*]".toRegex(), "")
         // // remove 'is' 'with'
-        message = message.replace("\bis\b|\bwith\b".toRegex(), "")
+        message = message.replace(" is ", " ")
         // replace 'is'
-        message = message.replace("\bis\b".toRegex(), "")
+        message = message.replace(" is " , " ")
         // replace 'with'
-        message = message.replace("\bwith\b".toRegex(), "")
+        message = message.replace(" with ".toRegex(), " ")
         // remove 'no.'
         message = message.replace("no.", "")
         // replace all ac, acct, account with ac
-        message = message.replace("\bac\b|\bacct\b|\baccount\b".toRegex(), "ac")
+        message = message.replace(" acct ", " ac ")
+        message = message.replace(" account ", " ac ")
         // replace all 'rs' with 'rs. '
-        message = message.replace("\brs\b".toRegex(), "rs.")
+        message = message.replace(" rs ", " rs. ")
         // replace all 'rs ' with 'rs. '
         // message = message.replace("/rs/g", "rs.")
         // replace all inr with rs.
-        message = message.replace("\binr\b".toRegex(), "rs.")
+        message = message.replace(" inr ".toRegex(), " rs. ")
         //
         message = message.replace(" inr ", " rs. ")
         message = message.replace("inr ", "rs. ")
