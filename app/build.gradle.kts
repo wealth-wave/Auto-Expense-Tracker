@@ -62,6 +62,7 @@ dependencies {
     implementation(Deps.Compose.ACTIVITY)
     implementation(Deps.Compose.RUNTIME)
     implementation(Deps.Compose.FOUNDATION)
+    implementation(Deps.Compose.CONSTRAINT)
     implementation(Deps.Compose.VIEW_MODEL)
     debugImplementation(Deps.Compose.DEBUG_TOOLING)
     debugImplementation(Deps.Compose.DEBUG_MANIFEST)
@@ -99,6 +100,7 @@ dependencies {
     //Modules
     implementation(project(Deps.Modules.PRESENTATION))
     implementation(project(Deps.Modules.DOMAIN))
+    implementation(project(Deps.Modules.CONTRACT))
 }
 
 kapt {
