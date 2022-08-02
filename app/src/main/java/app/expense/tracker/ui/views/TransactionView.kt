@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -54,7 +54,7 @@ fun TransactionView(
         viewModel.getTransactions().collectAsState(initial = TransactionViewState())
 
     ConstraintLayout(modifier = Modifier.padding(all = Dp(10f))) {
-        val (dropDown, spent, income, balance, divider, transactions) = createRefs()
+        val (dropDown, spent, income, balance, divider, transText, transactions) = createRefs()
         var expanded by remember { mutableStateOf(false) }
 
         ExposedDropdownMenuBox(
@@ -113,15 +113,24 @@ fun TransactionView(
                 .width(2.dp)
                 .height(60.dp)
         )
-
-        RecentTransactionsView(
-            transactions = transactionViewState.value.transactions,
-            modifier = Modifier.constrainAs(transactions) {
-                top.linkTo(spent.bottom)
+        Text(text = "Latest Transactions", modifier = Modifier.constrainAs(transText) {
+            top.linkTo(income.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }, style = MaterialTheme.typography.bodyLarge)
+        LazyColumn(modifier = Modifier
+            .constrainAs(transactions) {
+                top.linkTo(transText.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
-            })
+            }
+            .fillMaxHeight(0.7f)) {
+            items(transactionViewState.value.transactions.size) { index ->
+                val transaction = transactionViewState.value.transactions[index]
+                TransactionItemView(transaction = transaction)
+            }
+        }
     }
 }
 
@@ -162,21 +171,12 @@ private fun BalanceView(totalBalance: Double, modifier: Modifier) {
 }
 
 @Composable
-private fun RecentTransactionsView(transactions: List<Transaction>, modifier: Modifier) {
-    Column(modifier = modifier) {
-        Text(text = "Latest Transactions", style = MaterialTheme.typography.bodyLarge)
-        LazyColumn {
-            items(transactions.size) { index ->
-                val transaction = transactions[index]
-                TransactionItemView(transaction = transaction)
-            }
-        }
-    }
-}
-
-@Composable
 private fun TransactionItemView(transaction: Transaction) {
-    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 1.dp)
+    ) {
         val (logo, name, category, amount, type) = createRefs()
         Box(
             modifier = Modifier
@@ -194,17 +194,19 @@ private fun TransactionItemView(transaction: Transaction) {
         ) {
             Text(
                 text = transaction.toName?.firstOrNull()?.toString() ?: "OT",
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(all = 10.dp)
             )
         }
 
         Column(
-            modifier = Modifier.constrainAs(name) {
-                start.linkTo(logo.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-                end.linkTo(amount.start)
-            },
+            modifier = Modifier
+                .constrainAs(name) {
+                    start.linkTo(logo.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                }
+                .padding(start = 10.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Text(
@@ -216,11 +218,15 @@ private fun TransactionItemView(transaction: Transaction) {
         Text(
             text = transaction.amount.toString(),
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.constrainAs(amount) {
-                end.linkTo(type.start)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            })
+            modifier = Modifier
+                .constrainAs(amount) {
+                    end.linkTo(type.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                }
+                .padding(end = 10.dp)
+        )
+
 
         Box(
             modifier = Modifier

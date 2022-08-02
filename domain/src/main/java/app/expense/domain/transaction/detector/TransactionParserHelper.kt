@@ -217,12 +217,13 @@ class TransactionParserHelper {
 
     private fun trimLeadingAndTrailingChars(word: String): String {
         var wordToTrim = word
-        if (wordToTrim.last().isDigit().not()) {
+        if (wordToTrim.lastOrNull()?.isDigit()?.not() == true) {
             wordToTrim = wordToTrim.slice(IntRange(0, -1))
         }
-        if (wordToTrim.first().isDigit().not()) {
+        if (wordToTrim.firstOrNull()?.isDigit()?.not() == true) {
             wordToTrim = wordToTrim.slice(IntRange(0, 1))
         }
+
 
         return wordToTrim
     }

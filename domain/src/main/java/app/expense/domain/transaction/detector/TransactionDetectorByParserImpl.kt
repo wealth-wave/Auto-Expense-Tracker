@@ -1,5 +1,6 @@
 package app.expense.domain.transaction.detector
 
+import android.util.Log
 import app.expense.contract.SMSMessage
 import app.expense.contract.TransactionType
 import app.expense.domain.transaction.Transaction
@@ -11,9 +12,15 @@ class TransactionDetectorByParserImpl(private val transactionParserHelper: Trans
     override fun detectTransactions(smsMessage: SMSMessage): Transaction? {
         val processedMessage = transactionParserHelper.processMessage(smsMessage.body)
 
-        val transactionType = transactionParserHelper.getTransactionType(processedMessage)
+        val transactionType =
+            transactionParserHelper.getTransactionType(processedMessage) ?: return null
+
+
+        Log.d("XDFCE", "Identified transaction type $transactionType")
         val account = transactionParserHelper.getAccount(processedMessage)?.second
         val spent = transactionParserHelper.getAmountSpent(processedMessage)
+
+        Log.d("XDFCE", "Identified spent ${spent ?: -1}")
         val paidToName = transactionParserHelper.getPaidName(processedMessage)
 
         val from = if (transactionType == TransactionType.DEBIT) {
@@ -39,6 +46,7 @@ class TransactionDetectorByParserImpl(private val transactionParserHelper: Trans
                 referenceMessageSender = smsMessage.address
             )
         }
+        Log.d("XDFCE", "problem with sms ${smsMessage.body}")
 
         return null
     }
