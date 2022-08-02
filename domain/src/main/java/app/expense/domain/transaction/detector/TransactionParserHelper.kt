@@ -2,6 +2,10 @@ package app.expense.domain.transaction.detector
 
 import app.expense.contract.TransactionType
 
+/**
+ * This class is a complete port of https://github.com/minimal-scouser/trny/blob/main/engine.js
+ * Needs to be Improved
+ */
 class TransactionParserHelper {
     companion object {
         val TRANS_KEYWORDS = arrayOf("debited", "credited", "payment", "spent")
