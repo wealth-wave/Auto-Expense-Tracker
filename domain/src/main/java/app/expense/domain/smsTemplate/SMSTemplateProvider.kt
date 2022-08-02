@@ -12,9 +12,7 @@ class SMSTemplateProvider {
                 transactionType = TransactionType.DEBIT,
                 amountKey = "{amount}",
                 fromNameKey = "{account_name}",
-                fromIdKey = "{account_id}",
                 toNameKey = "{merchant_name}",
-                toIdKey = "{merchant_name}",
                 referenceKey = null
             ),
             //INR 602.00 sent from your Account XXXXXXXX1234 Mode: UPI | To: cashfree@amdbank Date: July 21, 2022 Not done by you? Call 080-121212122 -ABC Bank
@@ -23,9 +21,7 @@ class SMSTemplateProvider {
                 transactionType = TransactionType.DEBIT,
                 amountKey = "{amount}",
                 fromNameKey = "{account_name}",
-                fromIdKey = "{account_id}",
                 toNameKey = "{merchant_name}",
-                toIdKey = "{merchant_name}",
                 referenceKey = null
             ),
         )

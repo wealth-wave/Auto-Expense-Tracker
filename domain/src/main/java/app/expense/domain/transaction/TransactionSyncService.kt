@@ -28,13 +28,13 @@ class TransactionSyncService(
         transactionSyncAPI.storeTransactions(transactions.map { transaction ->
             TransactionDTO(
                 amount = transaction.amount,
-                fromId = transaction.fromId,
                 fromName = transaction.fromName,
-                toId = transaction.toId,
                 toName = transaction.toName,
                 time = transaction.time,
                 type = transaction.type,
-                referenceId = transaction.referenceId
+                referenceId = transaction.referenceId,
+                referenceMessage = transaction.referenceMessage,
+                referenceMessageSender = transaction.referenceMessageSender
             )
         })
 

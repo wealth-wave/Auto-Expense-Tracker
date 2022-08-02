@@ -18,14 +18,14 @@ class TransactionParserHelper {
     }
 
     /**
-     * @param message Make sure it is in lowercase
+     * @param processedMessage Make sure it is in lowercase
      */
-    fun getTransactionType(message: String): TransactionType? {
-        if (CREDIT_PATTERN.toRegex().containsMatchIn(message)) {
+    fun getTransactionType(processedMessage: String): TransactionType? {
+        if (CREDIT_PATTERN.toRegex().containsMatchIn(processedMessage)) {
             return TransactionType.CREDIT
         } else if (DEBIT_PATTERN.toRegex()
-                .containsMatchIn(message) || MISC_PATTERN.toRegex()
-                .containsMatchIn(message)
+                .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
+                .containsMatchIn(processedMessage)
         ) {
             return TransactionType.DEBIT
         }
@@ -104,6 +104,48 @@ class TransactionParserHelper {
 
     }
 
+    fun getPaidName(processedMessage: String): String? {
+        val messageArray = processedMessage.split(" ").filter { s -> s != "" }
+
+        var atIndex = -1
+
+        run breaking@{
+            messageArray.forEachIndexed { index, messageWord ->
+                if (messageWord == "at") {
+                    atIndex = index
+                    return@breaking
+                }
+            }
+        }
+
+        if (atIndex == -1) {
+            return null
+        }
+        var paidName = ""
+        for (i in atIndex + 1 until messageArray.size) {
+            val word = messageArray[i]
+            if (word == "on") {
+                break
+            } else if (word.contains(".")) {
+                if (paidName.isNotEmpty()) {
+                    paidName += " "
+                }
+                paidName += word.replace(".", "")
+                break
+            } else {
+                if (paidName.isNotEmpty()) {
+                    paidName += " "
+                }
+                paidName += word
+            }
+        }
+
+        if (paidName.isNotBlank() && paidName.isNotEmpty()) {
+            return paidName
+        }
+        return null
+    }
+
     fun getBalance(processedMessage: String): Double? {
         var indexOfKeyWord = -1
 
@@ -146,7 +188,6 @@ class TransactionParserHelper {
             processedMessage,
             processedMessage.length
         )?.toDoubleOrNull()
-
     }
 
     fun getAmountSpent(processedMessage: String): Double? {

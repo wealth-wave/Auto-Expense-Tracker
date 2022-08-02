@@ -34,7 +34,9 @@ fun TransactionView(
             items(transactions.size) { index ->
                 val transaction = transactions[index]
                 Row {
-                    Text(text = transaction.fromName)
+                    Text(text = transaction.fromName ?: "")
+                    Text(text = "  ")
+                    Text(text = transaction.toName ?: "")
                     Text(text = "  ")
                     Text(text = transaction.amount.toString())
                 }

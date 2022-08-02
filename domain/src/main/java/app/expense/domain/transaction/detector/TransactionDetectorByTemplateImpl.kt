@@ -30,15 +30,15 @@ class TransactionDetectorByTemplateImpl(
         return Transaction(
             amount = getAmount(placeHolderMap[matchingSmsTemplate.amountKey]) ?: return null,
             type = matchingSmsTemplate.transactionType,
-            fromId = placeHolderMap[matchingSmsTemplate.fromIdKey] ?: return null,
             fromName = placeHolderMap[matchingSmsTemplate.fromNameKey] ?: return null,
-            toId = placeHolderMap[matchingSmsTemplate.toIdKey] ?: return null,
             toName = placeHolderMap[matchingSmsTemplate.toNameKey] ?: return null,
             time = smsMessage.time,
             referenceId = getReferenceId(
                 placeHolderMap[matchingSmsTemplate.referenceKey],
                 smsMessage
-            ) ?: return null
+            ) ?: return null,
+            referenceMessage = smsMessage.body,
+            referenceMessageSender = smsMessage.address
         )
     }
 

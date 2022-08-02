@@ -9,8 +9,6 @@ data class SMSTemplate(
     val transactionType: TransactionType,
     val amountKey: String,
     val fromNameKey: String,
-    val fromIdKey: String,
     val toNameKey: String,
-    val toIdKey: String,
     val referenceKey: String?
 )

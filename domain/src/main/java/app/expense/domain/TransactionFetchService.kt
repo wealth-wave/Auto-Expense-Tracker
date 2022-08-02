@@ -9,17 +9,17 @@ class TransactionFetchService(private val transactionsReadAPI: TransactionsReadA
 
     fun getTransactions(upTo: Long): Flow<List<Transaction>> {
         return transactionsReadAPI.getTransactions(upTo).map { transactions ->
-            transactions.map { transaction ->
+            transactions.map { transactionDto ->
                 Transaction(
-                    id = transaction.id,
-                    amount = transaction.amount,
-                    fromId = transaction.fromId,
-                    fromName = transaction.fromName,
-                    toId = transaction.toId,
-                    toName = transaction.toName,
-                    time = transaction.time,
-                    type = transaction.type,
-                    referenceId = transaction.referenceId
+                    id = transactionDto.id,
+                    amount = transactionDto.amount,
+                    fromName = transactionDto.fromName,
+                    toName = transactionDto.toName,
+                    time = transactionDto.time,
+                    type = transactionDto.type,
+                    referenceId = transactionDto.referenceId,
+                    referenceMessage = transactionDto.referenceMessage,
+                    referenceMessageSender = transactionDto.referenceMessageSender
                 )
             }
         }

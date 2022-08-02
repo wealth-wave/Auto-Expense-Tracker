@@ -90,4 +90,20 @@ class TransactionParserHelperTest {
 
         assertThat(transactionParserHelper.getAmountSpent(processedMessage)).isEqualTo(15160.0)
     }
+
+    @Test
+    fun `Should return paid name`() {
+        val processedMessage =
+            "thank you for using your kotak debit card 1234 for rs. 56.00 at yz on 12345.avl bal rs. 7,281.19.you?visit kotak.comfraud"
+
+        assertThat(transactionParserHelper.getPaidName(processedMessage)).isEqualTo("yz")
+    }
+
+    @Test
+    fun `Should return paid name as null`() {
+        val processedMessage =
+            "update your ac 1234 credited with rs. 15,160.00 on 12341234 by ac linked to mobile no 12(imps ref  123123) available bal rs. 2,088,505.04"
+
+        assertThat(transactionParserHelper.getPaidName(processedMessage)).isNull()
+    }
 }

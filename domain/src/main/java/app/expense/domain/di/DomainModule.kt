@@ -6,9 +6,10 @@ import app.expense.api.TransactionsReadAPI
 import app.expense.domain.TransactionFetchService
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
-import app.expense.domain.transaction.detector.TransactionDetector
-import app.expense.domain.transaction.detector.TransactionDetectorByTemplateImpl
 import app.expense.domain.transaction.TransactionSyncService
+import app.expense.domain.transaction.detector.TransactionDetector
+import app.expense.domain.transaction.detector.TransactionDetectorByParserImpl
+import app.expense.domain.transaction.detector.TransactionParserHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,11 +30,21 @@ class DomainModule {
     }
 
     @Provides
-    fun provideTransactionDetector(
-        smsTemplateProvider: SMSTemplateProvider,
-        smsTemplateMatcher: SMSTemplateMatcher
-    ): TransactionDetector {
-        return TransactionDetectorByTemplateImpl(smsTemplateProvider, smsTemplateMatcher)
+    fun provideTransactionParserHelper(): TransactionParserHelper {
+        return TransactionParserHelper()
+    }
+
+//    @Provides
+//    fun provideTransactionDetector(
+//        smsTemplateProvider: SMSTemplateProvider,
+//        smsTemplateMatcher: SMSTemplateMatcher
+//    ): TransactionDetector {
+//        return TransactionDetectorByTemplateImpl(smsTemplateProvider, smsTemplateMatcher)
+//    }
+
+    @Provides
+    fun provideTransactionDetector(transactionParserHelper: TransactionParserHelper): TransactionDetector {
+        return TransactionDetectorByParserImpl(transactionParserHelper)
     }
 
     @Provides
