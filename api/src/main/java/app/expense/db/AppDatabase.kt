@@ -2,9 +2,11 @@ package app.expense.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import app.expense.model.TransactionDTO
+import app.expense.model.ExpenseDTO
+import app.expense.model.SuggestionDTO
 
-@Database(entities = [TransactionDTO::class], version = 1)
+@Database(entities = [SuggestionDTO::class, ExpenseDTO::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun transactionDao(): TransactionDao
+    abstract fun suggestionDAO(): SuggestionDAO
+    abstract fun expenseDAO(): ExpenseDAO
 }

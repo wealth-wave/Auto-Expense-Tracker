@@ -11,14 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
@@ -30,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -38,23 +33,22 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import app.expense.contract.TransactionType
-import app.expense.domain.transaction.Transaction
-import app.expense.presentation.viewModels.TransactionViewModel
-import app.expense.presentation.viewStates.TransactionViewState
+import app.expense.domain.suggestion.Suggestion
+import app.expense.presentation.viewModels.ExpenseViewModel
+import app.expense.presentation.viewStates.SuggestionViewState
 import app.expense.tracker.ui.utils.ColorGenerator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransactionView(
+fun ExpenseView(
     navController: NavController,
-    viewModel: TransactionViewModel = hiltViewModel()
+    viewModel: ExpenseViewModel = hiltViewModel()
 ) {
-    val transactionViewState =
-        viewModel.getTransactions().collectAsState(initial = TransactionViewState())
+    val suggestionViewState =
+        viewModel.getSuggestions().collectAsState(initial = SuggestionViewState())
 
     ConstraintLayout(modifier = Modifier.padding(all = Dp(10f))) {
-        val (dropDown, spent, income, balance, divider, transText, transactions) = createRefs()
+        val (dropDown, spent, income, balance, divider, transText, expenses) = createRefs()
         var expanded by remember { mutableStateOf(false) }
 
         ExposedDropdownMenuBox(
@@ -73,7 +67,7 @@ fun TransactionView(
             }
         }
         SpentView(
-            totalExpense = transactionViewState.value.expenses,
+            totalExpense = suggestionViewState.value.expenses,
             modifier = Modifier
                 .constrainAs(spent) {
                     top.linkTo(dropDown.bottom)
@@ -83,24 +77,7 @@ fun TransactionView(
                 .fillMaxWidth(.5f)
         )
 
-        IncomeView(
-            totalIncome = transactionViewState.value.incomes,
-            modifier = Modifier
-                .constrainAs(income) {
-                    top.linkTo(spent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(balance.start)
-                }
-                .fillMaxWidth(.5f)
-        )
 
-        BalanceView(
-            totalBalance = transactionViewState.value.incomes - transactionViewState.value.expenses,
-            modifier = Modifier.constrainAs(balance) {
-                top.linkTo(spent.bottom)
-                start.linkTo(income.end)
-                end.linkTo(parent.end)
-            })
 
         Divider(
             modifier = Modifier
@@ -113,22 +90,22 @@ fun TransactionView(
                 .width(2.dp)
                 .height(60.dp)
         )
-        Text(text = "Latest Transactions", modifier = Modifier.constrainAs(transText) {
+        Text(text = "Latest Expenses", modifier = Modifier.constrainAs(transText) {
             top.linkTo(income.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }, style = MaterialTheme.typography.bodyLarge)
         LazyColumn(modifier = Modifier
-            .constrainAs(transactions) {
+            .constrainAs(expenses) {
                 top.linkTo(transText.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom)
             }
             .fillMaxHeight(0.7f)) {
-            items(transactionViewState.value.transactions.size) { index ->
-                val transaction = transactionViewState.value.transactions[index]
-                TransactionItemView(transaction = transaction)
+            items(suggestionViewState.value.suggestions.size) { index ->
+                val suggestion = suggestionViewState.value.suggestions[index]
+                ExpenseItemView(suggestion = suggestion)
             }
         }
     }
@@ -147,31 +124,7 @@ private fun SpentView(totalExpense: Double, modifier: Modifier) {
 }
 
 @Composable
-private fun IncomeView(totalIncome: Double, modifier: Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Income", style = MaterialTheme.typography.bodySmall)
-        Text(text = totalIncome.toString(), style = MaterialTheme.typography.displaySmall)
-    }
-}
-
-@Composable
-private fun BalanceView(totalBalance: Double, modifier: Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Balance", style = MaterialTheme.typography.bodySmall)
-        Text(text = totalBalance.toString(), style = MaterialTheme.typography.displaySmall)
-    }
-}
-
-@Composable
-private fun TransactionItemView(transaction: Transaction) {
+private fun ExpenseItemView(suggestion: Suggestion) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -182,7 +135,7 @@ private fun TransactionItemView(transaction: Transaction) {
             modifier = Modifier
                 .background(
                     ColorGenerator.MATERIAL.getColor(
-                        transaction.fromName ?: "OTHER"
+                        suggestion.toName ?: "OTHER"
                     ), CircleShape
                 )
                 .constrainAs(logo) {
@@ -193,7 +146,7 @@ private fun TransactionItemView(transaction: Transaction) {
                 }
         ) {
             Text(
-                text = transaction.toName?.firstOrNull()?.toString() ?: "OT",
+                text = suggestion.toName?.firstOrNull()?.toString() ?: "OT",
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.padding(all = 10.dp)
             )
@@ -210,13 +163,13 @@ private fun TransactionItemView(transaction: Transaction) {
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = transaction.toName ?: "Others",
+                text = suggestion.toName ?: "Others",
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
 
         Text(
-            text = transaction.amount.toString(),
+            text = suggestion.amount.toString(),
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier
                 .constrainAs(amount) {
@@ -226,22 +179,6 @@ private fun TransactionItemView(transaction: Transaction) {
                 }
                 .padding(end = 10.dp)
         )
-
-
-        Box(
-            modifier = Modifier
-                .background(color = Color.LightGray, shape = CircleShape)
-                .constrainAs(type) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                }) {
-            if (transaction.type == TransactionType.DEBIT) {
-                Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "")
-            } else {
-                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "")
-            }
-        }
     }
 }
 
@@ -250,7 +187,7 @@ private fun TransactionItemView(transaction: Transaction) {
  */
 @Preview
 @Composable
-fun PreviewTransactionView() {
+fun PreviewExpenseView() {
     val navController = rememberNavController()
-    TransactionView(navController)
+    ExpenseView(navController)
 }

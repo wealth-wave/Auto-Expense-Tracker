@@ -1,12 +1,12 @@
 package app.expense.api
 
 import android.content.SharedPreferences
-import app.expense.db.TransactionDao
-import app.expense.model.TransactionDTO
+import app.expense.db.SuggestionDAO
+import app.expense.model.SuggestionDTO
 
-class TransactionSyncAPI(
+class SuggestionSyncAPI(
     private val sharedPreferences: SharedPreferences,
-    private val transactionDao: TransactionDao
+    private val suggestionDAO: SuggestionDAO
 ) {
 
     fun getLastSyncedTime(): Long? {
@@ -18,8 +18,8 @@ class TransactionSyncAPI(
         return lastSyncTime
     }
 
-    suspend fun storeTransactions(transactions: List<TransactionDTO>) {
-        transactionDao.insertAll(transactions)
+    suspend fun storeSuggestions(suggestions: List<SuggestionDTO>) {
+        suggestionDAO.insertAll(suggestions)
     }
 
     fun setLastSyncedTime(time: Long) {
@@ -27,6 +27,6 @@ class TransactionSyncAPI(
     }
 
     companion object {
-        private const val LAST_SYNC_TIME_KEY = "LAST_SYNC_TIME"
+        private const val LAST_SYNC_TIME_KEY = "SUGGESTIONS_LAST_SYNC_TIME"
     }
 }

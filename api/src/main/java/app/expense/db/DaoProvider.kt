@@ -8,5 +8,7 @@ class DaoProvider(context: Context) {
         Room.databaseBuilder(context, AppDatabase::class.java, "expense_db").build()
     }
 
-    fun getTransactionDao() = db.transactionDao()
+    fun suggestionDAO() = db.suggestionDAO()
+
+    fun expenseDAO() = db.expenseDAO()
 }

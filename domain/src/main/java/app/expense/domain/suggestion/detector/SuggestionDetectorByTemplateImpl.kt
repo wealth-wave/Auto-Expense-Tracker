@@ -1,14 +1,14 @@
-package app.expense.domain.transaction.detector
+package app.expense.domain.suggestion.detector
 
 import app.expense.contract.SMSMessage
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
-import app.expense.domain.transaction.Transaction
+import app.expense.domain.suggestion.Suggestion
 
-class TransactionDetectorByTemplateImpl(
+class SuggestionDetectorByTemplateImpl(
     private val smsTemplateProvider: SMSTemplateProvider,
     private val smsTemplateMatcher: SMSTemplateMatcher
-) : TransactionDetector() {
+) : SuggestionDetector() {
 
     private val smsTemplates by lazy {
         smsTemplateProvider.getTemplates()
@@ -20,34 +20,20 @@ class TransactionDetectorByTemplateImpl(
     INR 602.00 sent from your Account XXXXXXXX1234 Mode: UPI | To: cashfree@amdbank Date: July 21, 2022 Not done by you? Call 080-121212122 -ABC Bank
     Rs 500.00 debited from your A/c using UPI on 17-07-2022 12:17:24 and VPA upid.aa@oababi credited (UPI Ref No 121212121212)-ABC Bank
     */
-    override fun detectTransactions(smsMessage: SMSMessage): Transaction? {
+    override fun detectSuggestions(smsMessage: SMSMessage): Suggestion? {
         val matchingSmsTemplate = smsTemplates.find { smsTemplate ->
             smsTemplateMatcher.isMatch(smsTemplate, smsMessage)
         } ?: return null
 
         val placeHolderMap = smsTemplateMatcher.placeHolderValueMap(matchingSmsTemplate, smsMessage)
 
-        return Transaction(
+        return Suggestion(
             amount = getAmount(placeHolderMap[matchingSmsTemplate.amountKey]) ?: return null,
-            type = matchingSmsTemplate.transactionType,
-            fromName = placeHolderMap[matchingSmsTemplate.fromNameKey] ?: return null,
             toName = placeHolderMap[matchingSmsTemplate.toNameKey] ?: return null,
             time = smsMessage.time,
-            referenceId = getReferenceId(
-                placeHolderMap[matchingSmsTemplate.referenceKey],
-                smsMessage
-            ) ?: return null,
             referenceMessage = smsMessage.body,
             referenceMessageSender = smsMessage.address
         )
-    }
-
-    private fun getReferenceId(referenceId: String?, smsMessage: SMSMessage): String? {
-        if (referenceId == null) {
-            return smsMessage.body.hashCode().toString()
-        }
-
-        return referenceId
     }
 
     private fun getAmount(amountInString: String?): Double? {

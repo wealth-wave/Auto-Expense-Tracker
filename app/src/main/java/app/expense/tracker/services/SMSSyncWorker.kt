@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import app.expense.domain.transaction.TransactionSyncService
+import app.expense.domain.suggestion.SuggestionSyncService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
@@ -13,11 +13,11 @@ import dagger.assisted.AssistedInject
 class SMSSyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val transactionSyncService: TransactionSyncService
+    private val suggestionSyncService: SuggestionSyncService
 ) : CoroutineWorker(appContext, workerParameters) {
 
     override suspend fun doWork(): Result {
-        transactionSyncService.sync()
+        suggestionSyncService.sync()
         return Result.success()
     }
 }

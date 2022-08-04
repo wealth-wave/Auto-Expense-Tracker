@@ -3,10 +3,11 @@ package app.expense.di
 import android.content.Context
 import android.content.SharedPreferences
 import app.expense.api.SMSReadAPI
-import app.expense.api.TransactionSyncAPI
-import app.expense.api.TransactionsReadAPI
+import app.expense.api.SuggestionSyncAPI
+import app.expense.api.SuggestionsReadAPI
 import app.expense.db.DaoProvider
-import app.expense.db.TransactionDao
+import app.expense.db.ExpenseDAO
+import app.expense.db.SuggestionDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,17 +27,23 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideTransactionDao(@ApplicationContext context: Context): TransactionDao {
-        return DaoProvider(context).getTransactionDao()
+    fun provideSuggestionDao(@ApplicationContext context: Context): SuggestionDAO {
+        return DaoProvider(context).suggestionDAO()
     }
 
     @Singleton
     @Provides
-    fun provideTransactionSyncApi(
+    fun provideExpenseDao(@ApplicationContext context: Context): ExpenseDAO {
+        return DaoProvider(context).expenseDAO()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSuggestionSyncApi(
         sharedPreferences: SharedPreferences,
-        transactionDao: TransactionDao
-    ): TransactionSyncAPI {
-        return TransactionSyncAPI(sharedPreferences, transactionDao)
+        suggestionDao: SuggestionDAO
+    ): SuggestionSyncAPI {
+        return SuggestionSyncAPI(sharedPreferences, suggestionDao)
     }
 
     @Singleton
@@ -47,7 +54,7 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideTransactionsReadApi(transactionDao: TransactionDao): TransactionsReadAPI {
-        return TransactionsReadAPI(transactionDao)
+    fun provideSuggestionsReadApi(suggestionDao: SuggestionDAO): SuggestionsReadAPI {
+        return SuggestionsReadAPI(suggestionDao)
     }
 }

@@ -1,15 +1,15 @@
 package app.expense.domain.di
 
 import app.expense.api.SMSReadAPI
-import app.expense.api.TransactionSyncAPI
-import app.expense.api.TransactionsReadAPI
-import app.expense.domain.TransactionFetchService
+import app.expense.api.SuggestionSyncAPI
+import app.expense.api.SuggestionsReadAPI
+import app.expense.domain.SuggestionFetchService
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
-import app.expense.domain.transaction.TransactionSyncService
-import app.expense.domain.transaction.detector.TransactionDetector
-import app.expense.domain.transaction.detector.TransactionDetectorByParserImpl
-import app.expense.domain.transaction.detector.TransactionParserHelper
+import app.expense.domain.suggestion.SuggestionSyncService
+import app.expense.domain.suggestion.detector.SuggestionDetector
+import app.expense.domain.suggestion.detector.SuggestionDetectorByParserImpl
+import app.expense.domain.suggestion.detector.SuggestionParserHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,34 +30,26 @@ class DomainModule {
     }
 
     @Provides
-    fun provideTransactionParserHelper(): TransactionParserHelper {
-        return TransactionParserHelper()
-    }
-
-//    @Provides
-//    fun provideTransactionDetector(
-//        smsTemplateProvider: SMSTemplateProvider,
-//        smsTemplateMatcher: SMSTemplateMatcher
-//    ): TransactionDetector {
-//        return TransactionDetectorByTemplateImpl(smsTemplateProvider, smsTemplateMatcher)
-//    }
-
-    @Provides
-    fun provideTransactionDetector(transactionParserHelper: TransactionParserHelper): TransactionDetector {
-        return TransactionDetectorByParserImpl(transactionParserHelper)
+    fun provideSuggestionParserHelper(): SuggestionParserHelper {
+        return SuggestionParserHelper()
     }
 
     @Provides
-    fun transactionSyncService(
-        transactionSyncAPI: TransactionSyncAPI,
+    fun provideSuggestionDetector(suggestionParserHelper: SuggestionParserHelper): SuggestionDetector {
+        return SuggestionDetectorByParserImpl(suggestionParserHelper)
+    }
+
+    @Provides
+    fun suggestionSyncService(
+        suggestionSyncAPI: SuggestionSyncAPI,
         smsReadAPI: SMSReadAPI,
-        transactionDetector: TransactionDetector
-    ): TransactionSyncService {
-        return TransactionSyncService(transactionSyncAPI, smsReadAPI, transactionDetector)
+        suggestionDetector: SuggestionDetector
+    ): SuggestionSyncService {
+        return SuggestionSyncService(suggestionSyncAPI, smsReadAPI, suggestionDetector)
     }
 
     @Provides
-    fun transactionFetchService(transactionsReadAPI: TransactionsReadAPI): TransactionFetchService {
-        return TransactionFetchService(transactionsReadAPI)
+    fun suggestionFetchService(suggestionsReadAPI: SuggestionsReadAPI): SuggestionFetchService {
+        return SuggestionFetchService(suggestionsReadAPI)
     }
 }

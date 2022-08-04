@@ -1,55 +1,48 @@
-package app.expense.domain.transaction.detector
+package app.expense.domain.suggestion.detector
 
 import app.expense.contract.SMSMessage
-import app.expense.contract.TransactionType
-import app.expense.domain.transaction.Transaction
+import app.expense.domain.suggestion.Suggestion
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
-class TransactionDetectorByParserImplTest {
+class SuggestionDetectorByParserImplTest {
 
-    private lateinit var transactionDetectorByParserImpl: TransactionDetectorByParserImpl
+    private lateinit var suggestionDetectorByParserImpl: SuggestionDetectorByParserImpl
 
     @Before
     fun setUp() {
-        //Not giving mocked object of TransactionParserHelper and instead testing the entire integration.
-        transactionDetectorByParserImpl = TransactionDetectorByParserImpl(TransactionParserHelper())
+        //Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
+        suggestionDetectorByParserImpl = SuggestionDetectorByParserImpl(SuggestionParserHelper())
     }
 
     @Test
-    fun `Should return transaction for given messages`() {
+    fun `Should return suggestion for given messages`() {
         val smsMessage = SMSMessage(
             address = "HDFC",
             body = "Thanks for paying Rs.21,660.00 from A/c XXXX1111 to CBDTTAX via HDFC Bank NetBanking. Call 18002586161 if txn not done by you.",
             time = 1L
         )
 
-        assertThat(transactionDetectorByParserImpl.detectTransactions(smsMessage)).isEqualTo(
-            Transaction(
+        assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isEqualTo(
+            Suggestion(
                 amount = 21660.00,
-                type = TransactionType.DEBIT,
-                fromName = null,
                 toName = "1111",
                 time = 1L,
                 referenceMessage = "Thanks for paying Rs.21,660.00 from A/c XXXX1111 to CBDTTAX via HDFC Bank NetBanking. Call 18002586161 if txn not done by you.",
-                referenceId = "-523368276",
                 referenceMessageSender = "HDFC"
             )
         )
     }
 
     @Test
-    fun `Should return transaction for given messages list`() {
+    fun `Should return suggestions for given messages list`() {
         val messages = arrayOf(
-            "an Amount of Rs 500 has been deposited from your Account ending with 3187",
             "an Amount of Rs 500 has been deducted from your Account ending with 3187",
             "Your a/c XX0123 is debited on 12/34/1234 by INR 3,211.00 towards purchase. Avl Bal: INR 5,603.54.",
             "Dear Customer, Rs.248,759.00 is debited from A/c XXXX1234 for BillPay/Credit Card payment via Example Bank NetBanking. Call XXXXXXXX123XXX if txn not done by you",
-            "UPDATE: Your A/c XX1234 credited with INR 15,160.00 on 12-34-1234 by A/c linked to mobile no XX12XX(IMPS Ref No. XX123XXXXX123) Available bal: INR 2,088,505.04",
             "Dear Customer, You have made a payment of Rs. 46000 using NEFT via IMPS from your Account XXXXXXXX0123 with reference number XXX123XXX on xyz 12, 3456 at 12:34.",
             "Acct XX126 debited with INR 46,000.00 on 12-34-1234 & Acct XX123 credited. IMPS: XXX123XX. Call XX0026XX for dispute or SMS BLOCK 126 to XXX1236XXX",
-            "Dear bank cardmember, Payment of Rs 248759 was credited to your card ending 12344 on 12/34/1234.",
             "Alert: You've spent INR 555.00 on your Delhi Exapmle Bank card **91XXX at BD JIO MONEY on 12/34/1234 at 11:07AM IST. Please call XXX041XXX if this was not made by you.",
             "Thank you for making a payment of Rs. 3499.00 towards your Example Bank Card. This payment will be reflected as a credit on your Card account within 2 working days. Your payment reference number is XXX123456XXX. For any details you may log on to bankexample.com or our mobile app",
             "Your Debit card annual fee of Rs. 399.00 has been debited from your account.",
@@ -63,7 +56,7 @@ class TransactionDetectorByParserImplTest {
 
         messages.forEach {
             val smsMessage = SMSMessage(address = "HDFC", body = it, time = 1L)
-            assertThat(transactionDetectorByParserImpl.detectTransactions(smsMessage)).isNotNull()
+            assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isNotNull()
         }
     }
 
