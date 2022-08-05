@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import app.expense.tracker.services.SMSSyncWorker
 import app.expense.tracker.ui.theme.AutoExpenseTrackerTheme
 import app.expense.tracker.ui.views.dashboard.DashboardScreen
+import app.expense.tracker.ui.views.expense.AddExpenseScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +37,21 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    DashboardScreen(navController)
+                    NavHost(navController = navController, startDestination = "dashBoard") {
+                        composable("dashBoard") { DashboardScreen(navController) }
+                        composable("addExpense") { AddExpenseScreen(navController) }
+                        composable(
+                            "suggestExpense/{suggestionId}",
+                            arguments = listOf(navArgument("suggestionId") {
+                                type = NavType.LongType
+                            })
+                        ) { backStackEntry ->
+                            AddExpenseScreen(
+                                navController = navController,
+                                suggestionId = backStackEntry.arguments?.getLong("suggestionId")
+                            )
+                        }
+                    }
                 }
             }
         }

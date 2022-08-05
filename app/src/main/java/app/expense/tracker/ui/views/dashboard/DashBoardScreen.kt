@@ -44,7 +44,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import app.expense.domain.expense.Expense
@@ -57,8 +56,7 @@ import app.expense.presentation.viewStates.DateRange
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    navController: NavController,
-    viewModel: DashBoardViewModel = hiltViewModel()
+    navController: NavController
 ) {
     val dateRangeState =
         remember { mutableStateOf<DateRange>(DateRange.ThisMonth) }
@@ -85,7 +83,7 @@ fun DashboardScreen(
                 },
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate("addExpense") },
                         containerColor = BottomAppBarDefaults.FloatingActionButtonContainerColor,
                         elevation = BottomAppBarDefaults.FloatingActionButtonElevation
                     ) {
@@ -104,7 +102,7 @@ fun DashboardScreen(
 private fun ScreenViewContent(
     expenseDateRange: DateRange,
     paddingValues: PaddingValues,
-    viewModel: DashBoardViewModel = viewModel()
+    viewModel: DashBoardViewModel = hiltViewModel()
 ) {
     val dashBoardViewState = viewModel.getDashBoardViewState(expenseDateRange)
         .collectAsState(initial = DashBoardViewState())
@@ -271,6 +269,5 @@ private fun ExpenseItemView(expense: Expense) {
 @Composable
 fun PreviewDashBoardView() {
     val navController = rememberNavController()
-    val viewModel: DashBoardViewModel = viewModel()
-    DashboardScreen(navController, viewModel)
+    DashboardScreen(navController)
 }

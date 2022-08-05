@@ -64,6 +64,7 @@ dependencies {
     implementation(Deps.Compose.FOUNDATION)
     implementation(Deps.Compose.CONSTRAINT)
     implementation(Deps.Compose.VIEW_MODEL)
+    implementation(Deps.Material.DEPENDENCY)
     debugImplementation(Deps.Compose.DEBUG_TOOLING)
     debugImplementation(Deps.Compose.DEBUG_MANIFEST)
     androidTestImplementation(Deps.Compose.ANDROID_UI_TEST)

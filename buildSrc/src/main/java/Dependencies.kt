@@ -26,6 +26,10 @@ object Deps {
         const val DEP = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     }
 
+    object Material {
+        const val DEPENDENCY = "com.google.android.material:material:1.6.1"
+    }
+
     object Compose {
         private const val COMPOSE_VERSION = "1.3.0-alpha01"
 
