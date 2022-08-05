@@ -1,11 +1,13 @@
 package app.expense.domain.di
 
+import app.expense.api.ExpenseAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
-import app.expense.api.SuggestionsReadAPI
-import app.expense.domain.SuggestionFetchService
+import app.expense.api.SuggestionsAPI
+import app.expense.domain.expense.ExpenseService
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
+import app.expense.domain.suggestion.SuggestionFetchService
 import app.expense.domain.suggestion.SuggestionSyncService
 import app.expense.domain.suggestion.detector.SuggestionDetector
 import app.expense.domain.suggestion.detector.SuggestionDetectorByParserImpl
@@ -49,7 +51,12 @@ class DomainModule {
     }
 
     @Provides
-    fun suggestionFetchService(suggestionsReadAPI: SuggestionsReadAPI): SuggestionFetchService {
-        return SuggestionFetchService(suggestionsReadAPI)
+    fun suggestionFetchService(suggestionsAPI: SuggestionsAPI): SuggestionFetchService {
+        return SuggestionFetchService(suggestionsAPI)
+    }
+
+    @Provides
+    fun expenseService(expenseAPI: ExpenseAPI): ExpenseService {
+        return ExpenseService(expenseAPI)
     }
 }

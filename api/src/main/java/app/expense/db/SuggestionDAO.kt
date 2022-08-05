@@ -12,6 +12,12 @@ interface SuggestionDAO {
     @Insert
     suspend fun insertAll(suggestions: List<SuggestionDTO>)
 
+    @Query("SELECT * FROM `suggestion` WHERE time < :from AND time > :upTo")
+    fun fetchSuggestions(from: Long, upTo: Long): Flow<List<SuggestionDTO>>
+
     @Query("SELECT * FROM `suggestion` WHERE time > :upTo")
     fun fetchSuggestions(upTo: Long): Flow<List<SuggestionDTO>>
+
+    @Query("DELETE FROM `suggestion` WHERE id = :id")
+    suspend fun deleteSuggestionById(id: Long)
 }

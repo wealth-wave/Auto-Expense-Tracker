@@ -1,14 +1,13 @@
-package app.expense.domain
+package app.expense.domain.suggestion
 
-import app.expense.api.SuggestionsReadAPI
-import app.expense.domain.suggestion.Suggestion
+import app.expense.api.SuggestionsAPI
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SuggestionFetchService(private val suggestionsReadAPI: SuggestionsReadAPI) {
+class SuggestionFetchService(private val suggestionsAPI: SuggestionsAPI) {
 
-    fun getSuggestions(upTo: Long): Flow<List<Suggestion>> {
-        return suggestionsReadAPI.getSuggestions(upTo).map { suggestions ->
+    fun getSuggestions(from: Long?, upTo: Long): Flow<List<Suggestion>> {
+        return suggestionsAPI.getSuggestions(from, upTo).map { suggestions ->
             suggestions.map { suggestionDTO ->
                 Suggestion(
                     id = suggestionDTO.id,
@@ -20,5 +19,9 @@ class SuggestionFetchService(private val suggestionsReadAPI: SuggestionsReadAPI)
                 )
             }
         }
+    }
+
+    suspend fun deleteSuggestion(id: Long) {
+        suggestionsAPI.deleteSuggestion(id)
     }
 }

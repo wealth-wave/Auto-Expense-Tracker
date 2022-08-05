@@ -1,5 +1,7 @@
 package app.expense.domain.suggestion
 
+import android.Manifest
+import androidx.annotation.RequiresPermission
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.domain.suggestion.detector.SuggestionDetector
@@ -12,6 +14,8 @@ class SuggestionSyncService(
     private val suggestionDetector: SuggestionDetector
 ) {
 
+
+    @RequiresPermission(Manifest.permission.READ_SMS)
     suspend fun sync() {
         val startTime = System.currentTimeMillis()
         val lastSyncedTime =

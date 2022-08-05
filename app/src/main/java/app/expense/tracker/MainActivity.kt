@@ -12,7 +12,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import app.expense.tracker.services.SMSSyncWorker
 import app.expense.tracker.ui.theme.AutoExpenseTrackerTheme
-import app.expense.tracker.ui.views.ExpenseView
+import app.expense.tracker.ui.views.dashboard.DashboardScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    ExpenseView(navController)
+                    DashboardScreen(navController)
                 }
             }
         }

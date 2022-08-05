@@ -2,9 +2,10 @@ package app.expense.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import app.expense.api.ExpenseAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
-import app.expense.api.SuggestionsReadAPI
+import app.expense.api.SuggestionsAPI
 import app.expense.db.DaoProvider
 import app.expense.db.ExpenseDAO
 import app.expense.db.SuggestionDAO
@@ -54,7 +55,13 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideSuggestionsReadApi(suggestionDao: SuggestionDAO): SuggestionsReadAPI {
-        return SuggestionsReadAPI(suggestionDao)
+    fun provideSuggestionsApi(suggestionDao: SuggestionDAO): SuggestionsAPI {
+        return SuggestionsAPI(suggestionDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideExpenseApi(expenseDAO: ExpenseDAO): ExpenseAPI {
+        return ExpenseAPI(expenseDAO)
     }
 }

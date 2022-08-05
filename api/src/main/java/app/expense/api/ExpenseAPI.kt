@@ -10,7 +10,8 @@ class ExpenseAPI(private val expenseDao: ExpenseDAO) {
         expenseDao.insert(expenseDTO)
     }
 
-    fun getExpenses(from: Long, upTo: Long): Flow<List<ExpenseDTO>> {
-        return expenseDao.fetchExpenses(from, upTo)
+    fun getExpenses(from: Long?, upTo: Long): Flow<List<ExpenseDTO>> {
+        return if (from != null) expenseDao.fetchExpenses(from = from, upTo = upTo)
+        else expenseDao.fetchExpenses(upTo = upTo)
     }
 }
