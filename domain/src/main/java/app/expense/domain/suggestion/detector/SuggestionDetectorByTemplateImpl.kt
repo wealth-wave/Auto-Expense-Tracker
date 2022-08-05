@@ -29,7 +29,7 @@ class SuggestionDetectorByTemplateImpl(
 
         return Suggestion(
             amount = getAmount(placeHolderMap[matchingSmsTemplate.amountKey]) ?: return null,
-            toName = placeHolderMap[matchingSmsTemplate.toNameKey] ?: return null,
+            paidTo = placeHolderMap[matchingSmsTemplate.toNameKey] ?: return null,
             time = smsMessage.time,
             referenceMessage = smsMessage.body,
             referenceMessageSender = smsMessage.address

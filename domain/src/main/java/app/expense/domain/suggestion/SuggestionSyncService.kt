@@ -32,7 +32,7 @@ class SuggestionSyncService(
         suggestionSyncAPI.storeSuggestions(suggestions.map { suggestion ->
             SuggestionDTO(
                 amount = suggestion.amount,
-                toName = suggestion.toName,
+                paidTo = suggestion.paidTo,
                 time = suggestion.time,
                 referenceMessage = suggestion.referenceMessage,
                 referenceMessageSender = suggestion.referenceMessageSender

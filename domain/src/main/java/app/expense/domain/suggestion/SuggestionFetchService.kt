@@ -12,7 +12,7 @@ class SuggestionFetchService(private val suggestionsAPI: SuggestionsAPI) {
                 Suggestion(
                     id = suggestionDTO.id,
                     amount = suggestionDTO.amount,
-                    toName = suggestionDTO.toName,
+                    paidTo = suggestionDTO.paidTo,
                     time = suggestionDTO.time,
                     referenceMessage = suggestionDTO.referenceMessage,
                     referenceMessageSender = suggestionDTO.referenceMessageSender

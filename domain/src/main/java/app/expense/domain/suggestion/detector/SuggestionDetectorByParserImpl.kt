@@ -21,7 +21,7 @@ class SuggestionDetectorByParserImpl(private val suggestionParserHelper: Suggest
         if (spent != null) {
             return Suggestion(
                 amount = spent,
-                toName = paidToName,
+                paidTo = paidToName,
                 time = smsMessage.time,
                 referenceMessage = smsMessage.body,
                 referenceMessageSender = smsMessage.address

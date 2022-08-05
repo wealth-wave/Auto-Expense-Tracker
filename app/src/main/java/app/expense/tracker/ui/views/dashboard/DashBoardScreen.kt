@@ -238,7 +238,7 @@ private fun SuggestionItemView(suggestion: Suggestion) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(text = suggestion.toName ?: "Unknown", style = MaterialTheme.typography.bodyMedium)
+        Text(text = suggestion.paidTo ?: "Unknown", style = MaterialTheme.typography.bodyMedium)
         Text(text = "₹ %.2f".format(suggestion.amount), style = MaterialTheme.typography.bodyLarge)
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = { /*TODO*/ }) {

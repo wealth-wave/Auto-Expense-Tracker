@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 class SuggestionDTO(
     @PrimaryKey val id: Long? = null,
     @ColumnInfo(name = "amount") val amount: Double,
-    @ColumnInfo(name = "to_name") val toName: String?,
+    @ColumnInfo(name = "paid_to") val paidTo: String?,
     @ColumnInfo(name = "time") val time: Long,
     @ColumnInfo(name = "reference_message") val referenceMessage: String,
     @ColumnInfo(name = "reference_message_sender") val referenceMessageSender: String
