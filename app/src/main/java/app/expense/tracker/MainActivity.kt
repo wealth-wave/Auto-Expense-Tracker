@@ -41,6 +41,17 @@ class MainActivity : ComponentActivity() {
                         composable("dashBoard") { DashboardScreen(navController) }
                         composable("addExpense") { AddExpenseScreen(navController) }
                         composable(
+                            "editExpense/{expenseId}",
+                            arguments = listOf(navArgument("expenseId") {
+                                type = NavType.LongType
+                            })
+                        ) { navBackStackEntry ->
+                            AddExpenseScreen(
+                                navController,
+                                expenseId = navBackStackEntry.arguments?.getLong("expenseId")
+                            )
+                        }
+                        composable(
                             "suggestExpense/{suggestionId}",
                             arguments = listOf(navArgument("suggestionId") {
                                 type = NavType.LongType

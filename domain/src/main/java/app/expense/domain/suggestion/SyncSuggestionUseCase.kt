@@ -8,7 +8,7 @@ import app.expense.domain.suggestion.detector.SuggestionDetector
 import app.expense.model.SuggestionDTO
 import java.util.concurrent.TimeUnit
 
-class SuggestionSyncService(
+class SyncSuggestionUseCase(
     private val suggestionSyncAPI: SuggestionSyncAPI,
     private val smsReadAPI: SMSReadAPI,
     private val suggestionDetector: SuggestionDetector

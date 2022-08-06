@@ -26,15 +26,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import app.expense.presentation.viewModels.ExpenseViewModel
+import app.expense.presentation.viewModels.AddExpenseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseScreen(
     navController: NavController,
     suggestionId: Long? = null,
-    expenseViewModel: ExpenseViewModel = hiltViewModel()
+    expenseId: Long? = null,
+    addExpenseViewModel: AddExpenseViewModel = hiltViewModel()
 ) {
+
+    //TODO call expense Viewmodel to fetch data
+
     val amount = rememberSaveable() { mutableStateOf("") }
     val paidTo = rememberSaveable() { mutableStateOf("") }
     val category = rememberSaveable() { mutableStateOf("") }

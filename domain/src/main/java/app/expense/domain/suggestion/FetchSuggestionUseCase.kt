@@ -4,7 +4,7 @@ import app.expense.api.SuggestionsAPI
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SuggestionFetchService(private val suggestionsAPI: SuggestionsAPI) {
+class FetchSuggestionUseCase(private val suggestionsAPI: SuggestionsAPI) {
 
     fun getSuggestions(from: Long?, upTo: Long): Flow<List<Suggestion>> {
         return suggestionsAPI.getSuggestions(from, upTo).map { suggestions ->

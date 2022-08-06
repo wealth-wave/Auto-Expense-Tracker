@@ -7,7 +7,7 @@ import androidx.core.app.ActivityCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import app.expense.domain.suggestion.SuggestionSyncService
+import app.expense.domain.suggestion.SyncSuggestionUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
@@ -16,13 +16,13 @@ import dagger.assisted.AssistedInject
 class SMSSyncWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val suggestionSyncService: SuggestionSyncService
+    private val syncSuggestionUseCase: SyncSuggestionUseCase
 ) : CoroutineWorker(appContext, workerParameters) {
 
     override suspend fun doWork(): Result {
         if (ActivityCompat.checkSelfPermission(appContext, Manifest.permission.READ_SMS)
             == PackageManager.PERMISSION_GRANTED) {
-            suggestionSyncService.sync()
+            syncSuggestionUseCase.sync()
         }
         return Result.success()
     }

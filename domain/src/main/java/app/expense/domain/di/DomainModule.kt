@@ -4,11 +4,12 @@ import app.expense.api.ExpenseAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
-import app.expense.domain.expense.ExpenseService
+import app.expense.domain.expense.AddExpenseUseCase
+import app.expense.domain.expense.FetchExpenseUseCase
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
-import app.expense.domain.suggestion.SuggestionFetchService
-import app.expense.domain.suggestion.SuggestionSyncService
+import app.expense.domain.suggestion.FetchSuggestionUseCase
+import app.expense.domain.suggestion.SyncSuggestionUseCase
 import app.expense.domain.suggestion.detector.SuggestionDetector
 import app.expense.domain.suggestion.detector.SuggestionDetectorByParserImpl
 import app.expense.domain.suggestion.detector.SuggestionParserHelper
@@ -46,17 +47,22 @@ class DomainModule {
         suggestionSyncAPI: SuggestionSyncAPI,
         smsReadAPI: SMSReadAPI,
         suggestionDetector: SuggestionDetector
-    ): SuggestionSyncService {
-        return SuggestionSyncService(suggestionSyncAPI, smsReadAPI, suggestionDetector)
+    ): SyncSuggestionUseCase {
+        return SyncSuggestionUseCase(suggestionSyncAPI, smsReadAPI, suggestionDetector)
     }
 
     @Provides
-    fun suggestionFetchService(suggestionsAPI: SuggestionsAPI): SuggestionFetchService {
-        return SuggestionFetchService(suggestionsAPI)
+    fun suggestionFetchUseCase(suggestionsAPI: SuggestionsAPI): FetchSuggestionUseCase {
+        return FetchSuggestionUseCase(suggestionsAPI)
     }
 
     @Provides
-    fun expenseService(expenseAPI: ExpenseAPI): ExpenseService {
-        return ExpenseService(expenseAPI)
+    fun fetchExpenseUseCase(expenseAPI: ExpenseAPI): FetchExpenseUseCase {
+        return FetchExpenseUseCase(expenseAPI)
+    }
+
+    @Provides
+    fun addExpenseUseCase(expenseAPI: ExpenseAPI): AddExpenseUseCase {
+        return AddExpenseUseCase(expenseAPI)
     }
 }

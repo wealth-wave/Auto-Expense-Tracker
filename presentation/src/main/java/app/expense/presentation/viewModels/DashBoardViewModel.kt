@@ -2,9 +2,9 @@ package app.expense.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
 import app.expense.domain.expense.Expense
-import app.expense.domain.expense.ExpenseService
+import app.expense.domain.expense.FetchExpenseUseCase
 import app.expense.domain.suggestion.Suggestion
-import app.expense.domain.suggestion.SuggestionFetchService
+import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.presentation.viewStates.DateRange
 import app.expense.presentation.viewStates.DashBoardViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashBoardViewModel @Inject constructor(
-    private val suggestionFetchService: SuggestionFetchService,
-    private val expenseService: ExpenseService
+    private val suggestionFetchUseCase: FetchSuggestionUseCase,
+    private val fetchExpenseUseCase: FetchExpenseUseCase
 ) : ViewModel() {
 
     fun getDashBoardViewState(dateRange: DateRange): Flow<DashBoardViewState> {
@@ -33,13 +33,13 @@ class DashBoardViewModel @Inject constructor(
     }
 
     private fun getSuggestions(dateRange: DateRange): Flow<List<Suggestion>> {
-        return suggestionFetchService.getSuggestions(
+        return suggestionFetchUseCase.getSuggestions(
             dateRange.getFrom(),
             dateRange.getTo()
         )
     }
 
     private fun getExpenses(dateRange: DateRange): Flow<List<Expense>> {
-        return expenseService.getExpenses(dateRange.getFrom(), dateRange.getTo())
+        return fetchExpenseUseCase.getExpenses(dateRange.getFrom(), dateRange.getTo())
     }
 }
