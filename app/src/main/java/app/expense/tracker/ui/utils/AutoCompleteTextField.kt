@@ -16,9 +16,10 @@ import androidx.compose.ui.text.input.KeyboardType
 
 @ExperimentalMaterial3Api
 @Composable
-fun CategorySelectorView(
-    category: String,
-    categories: List<String>,
+fun AutoCompleteTextField(
+    label: String,
+    value: String,
+    suggestions: List<String>,
     onCategoryEntered: (String) -> Unit,
     onCategorySelect: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -30,8 +31,8 @@ fun CategorySelectorView(
         modifier = modifier
     ) {
         TextField(
-            label = { Text(text = "Category") },
-            value = category,
+            label = { Text(text = label) },
+            value = value,
             onValueChange = { value ->
                 expanded = true
                 onCategoryEntered(value)
@@ -47,13 +48,13 @@ fun CategorySelectorView(
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            categories.forEach { selectionOption ->
+            suggestions.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(selectionOption) },
                     onClick = {
                         expanded = false
                         onCategorySelect(selectionOption)
-                    }
+                    },
                 )
             }
         }

@@ -1,6 +1,6 @@
 package app.expense.tracker.ui.views.expense
 
-import CategorySelectorView
+import AutoCompleteTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,9 +69,9 @@ fun AddExpenseScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            if (isFormValid.value) {
+                    IconButton(
+                        onClick = {
+                            coroutineScope.launch {
                                 viewModel.addExpense(
                                     amount = amount.value,
                                     paidTo = paidTo.value,
@@ -80,8 +80,9 @@ fun AddExpenseScreen(
                                 )
                                 navController.popBackStack()
                             }
-                        }
-                    }) {
+                        },
+                        enabled = isFormValid.value
+                    ) {
                         Icon(imageVector = Icons.Filled.Check, contentDescription = "Add Expense")
                     }
                 }
@@ -110,25 +111,26 @@ fun AddExpenseScreen(
                 )
             )
 
-            TextField(
-                label = { Text(text = "Paid To") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+            AutoCompleteTextField(
+                label = "Paid To",
                 value = paidTo.value,
-                onValueChange = { value ->
+                suggestions = emptyList(),
+                onCategoryEntered = { value ->
+                    paidTo.value = value
+                    //TODO perform API Call
+                },
+                onCategorySelect = { value ->
                     paidTo.value = value
                 },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             )
 
-            CategorySelectorView(
-                category = category.value,
-                categories = emptyList(),
+            AutoCompleteTextField(
+                label = "Category",
+                value = category.value,
+                suggestions = emptyList(),
                 onCategoryEntered = { value ->
                     category.value = value
                     //TODO perform API Call
