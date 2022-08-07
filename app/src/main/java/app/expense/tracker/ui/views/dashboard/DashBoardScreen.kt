@@ -19,7 +19,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
@@ -140,6 +140,7 @@ private fun ScreenViewContent(
 
         if (dashBoardViewState.value.suggestions.isNotEmpty()) {
             SuggestionsView(
+                navController = navController,
                 suggestionMap = dashBoardViewState.value.suggestions,
                 modifier = Modifier
                     .padding(all = 16.dp)
@@ -170,7 +171,11 @@ private fun SpentView(totalExpenses: Double, modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SuggestionsView(suggestionMap: Map<ExpenseDate, List<Suggestion>>, modifier: Modifier) {
+private fun SuggestionsView(
+    navController: NavController,
+    suggestionMap: Map<ExpenseDate, List<Suggestion>>,
+    modifier: Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -181,11 +186,13 @@ private fun SuggestionsView(suggestionMap: Map<ExpenseDate, List<Suggestion>>, m
                 val date = suggestionMap.keys.toList()[pos]
                 val suggestions = suggestionMap[date]
 
-                Card() {
+                Card(
+                    modifier = Modifier.padding(top = 4.dp)
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(text = date.getFormattedString())
                         suggestions?.forEach {
-                            SuggestionItemView(suggestion = it)
+                            SuggestionItemView(navController = navController, suggestion = it)
                         }
                     }
                 }
@@ -214,7 +221,9 @@ private fun ExpensesView(
                     val date = expenseMap.keys.toList()[pos]
                     val expenses = expenseMap[date]
 
-                    Card() {
+                    Card(
+                        modifier = Modifier.padding(top = 4.dp)
+                    ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(text = date.getFormattedString())
                             expenses?.forEach {
@@ -241,23 +250,48 @@ private fun ExpensesView(
 }
 
 @Composable
-private fun SuggestionItemView(suggestion: Suggestion) {
+private fun SuggestionItemView(navController: NavController, suggestion: Suggestion) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 16.dp),
+            .padding(all = 16.dp)
+            .clickable(onClick = {
+                navController.navigate("suggestExpense/${suggestion.id ?: 0}")
+            }),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(text = suggestion.paidTo ?: "Unknown", style = MaterialTheme.typography.bodyMedium)
-        Text(text = "₹ %.2f".format(suggestion.amount), style = MaterialTheme.typography.bodyLarge)
+        Box(
+            modifier = Modifier
+                .background(
+                    color = ColorGenerator.MATERIAL.getColor(
+                        suggestion.paidTo ?: "U"
+                    ),
+                    shape = RoundedCornerShape(100)
+                )
+                .padding(8.dp)
+        ) {
+            Text(
+                text = (suggestion.paidTo?.firstOrNull()?.titlecase() ?: "O"),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(start = 16.dp))
+        Column {
+            Text(
+                text = UCharacter.toTitleCase(
+                    Locale.getDefault(),
+                    suggestion.paidTo ?: "Unknown",
+                    null,
+                    0
+                ), style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Suggestion")
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Filled.Delete, contentDescription = "Add Suggestion")
-        }
+        Text(text = "₹ %.2f".format(suggestion.amount), style = MaterialTheme.typography.bodyLarge)
+        Icon(imageVector = Icons.Filled.Check, contentDescription = "Check")
     }
 }
 
