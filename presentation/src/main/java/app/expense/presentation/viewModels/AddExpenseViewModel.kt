@@ -31,7 +31,7 @@ class AddExpenseViewModel @Inject constructor(
                 _addExpenseViewStateFlow.value = AddExpenseViewState(
                     amount = expense.amount.toString(),
                     paidTo = expense.paidTo ?: "",
-                    category = expense.category,
+                    categories = expense.categories.toMutableList(),
                     time = expense.time
                 )
             }
@@ -53,7 +53,7 @@ class AddExpenseViewModel @Inject constructor(
         suggestionId: Long?,
         amount: String,
         paidTo: String?,
-        category: String?,
+        categories: List<String>,
         time: Long
     ) {
         addExpenseUseCase.addExpense(
@@ -61,7 +61,7 @@ class AddExpenseViewModel @Inject constructor(
                 id = expenseId,
                 amount = amount.toDouble(),
                 paidTo = paidTo,
-                category = category ?: "OTHER",
+                categories = categories,
                 time = time
             ),
             fromSuggestionId = suggestionId

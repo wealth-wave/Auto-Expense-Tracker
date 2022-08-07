@@ -46,8 +46,8 @@ fun AddExpenseScreen(
         rememberSaveable(addExpenseViewState.value.amount) { mutableStateOf(addExpenseViewState.value.amount) }
     val paidTo =
         rememberSaveable(addExpenseViewState.value.paidTo) { mutableStateOf(addExpenseViewState.value.paidTo) }
-    val category =
-        rememberSaveable(addExpenseViewState.value.category) { mutableStateOf(addExpenseViewState.value.category) }
+    val categories =
+        rememberSaveable(addExpenseViewState.value.categories) { mutableStateOf(addExpenseViewState.value.categories) }
     val time =
         rememberSaveable(addExpenseViewState.value.time) { mutableStateOf(addExpenseViewState.value.time) }
     val isFormValid = derivedStateOf {
@@ -76,7 +76,7 @@ fun AddExpenseScreen(
                                     suggestionId = suggestionId,
                                     amount = amount.value,
                                     paidTo = paidTo.value,
-                                    category = category.value,
+                                    categories = categories.value,
                                     time = time.value
                                 )
                                 navController.popBackStack()
@@ -114,7 +114,7 @@ fun AddExpenseScreen(
 
             PaidToView(paidTo = paidTo)
 
-            CategoryView(category = category)
+            CategoryView(categories = categories)
 
             DateTimePickerView(
                 timeInMillis = time.value,

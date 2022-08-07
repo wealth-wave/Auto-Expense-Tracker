@@ -18,7 +18,9 @@ class CategoriesViewModel @Inject constructor(
 
     suspend fun getCategories(name: String) {
         fetchCategoriesUseCase.fetchCategories(name).collect { categories ->
-            _categoriesState.value = categories
+            _categoriesState.value = categories.toMutableList().apply {
+                add(name)
+            }
         }
     }
 }

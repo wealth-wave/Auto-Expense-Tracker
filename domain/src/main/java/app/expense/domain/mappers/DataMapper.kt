@@ -20,7 +20,7 @@ class DataMapper {
         id = expense.id,
         amount = expense.amount,
         paidTo = expense.paidTo,
-        category = expense.category,
+        categories = expense.categories,
         time = expense.time
     )
 }

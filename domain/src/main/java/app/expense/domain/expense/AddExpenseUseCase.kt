@@ -17,8 +17,10 @@ class AddExpenseUseCase(
 
     suspend fun addExpense(expense: Expense, fromSuggestionId: Long? = null) {
 
-        if (expense.category.isNotBlank()) {
-            categoryAPI.storeCategory(CategoryDTO(name = expense.category))
+        if (expense.categories.isNotEmpty()) {
+            categoryAPI.storeCategories(expense.categories.map { category ->
+                CategoryDTO(name = category)
+            })
         }
         if (expense.paidTo.isNullOrBlank().not()) {
             paidToAPI.storePaidTo(PaidToDTO(name = expense.paidTo ?: ""))
@@ -30,7 +32,7 @@ class AddExpenseUseCase(
         expenseAPI.storeExpense(
             ExpenseDTO(
                 amount = expense.amount,
-                category = expense.category,
+                categories = expense.categories,
                 paidTo = expense.paidTo,
                 time = expense.time
             )

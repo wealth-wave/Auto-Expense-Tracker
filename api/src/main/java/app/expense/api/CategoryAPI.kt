@@ -5,8 +5,8 @@ import app.expense.model.CategoryDTO
 
 class CategoryAPI(private val categoryDAO: CategoryDAO) {
 
-    suspend fun storeCategory(categoryDTO: CategoryDTO) {
-        categoryDAO.insert(categoryDTO)
+    suspend fun storeCategories(categories: List<CategoryDTO>) {
+        categoryDAO.insertAll(categories)
     }
 
     fun getCategories(name: String) =
