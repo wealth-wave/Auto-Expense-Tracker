@@ -17,7 +17,11 @@ import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import app.expense.presentation.viewModels.AddExpenseViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,15 +39,25 @@ fun AddExpenseScreen(
     navController: NavController,
     suggestionId: Long? = null,
     expenseId: Long? = null,
-    addExpenseViewModel: AddExpenseViewModel = hiltViewModel()
+    viewModel: AddExpenseViewModel = hiltViewModel()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val addExpenseViewState = viewModel.addExpenseViewState.collectAsState()
+    val amount = rememberSaveable() { mutableStateOf(addExpenseViewState.value.amount) }
+    val paidTo = rememberSaveable() { mutableStateOf(addExpenseViewState.value.paidTo) }
+    val category = rememberSaveable() { mutableStateOf(addExpenseViewState.value.category) }
+    val time = rememberSaveable() { mutableStateOf(addExpenseViewState.value.time) }
+    val isFormValid = derivedStateOf {
+        amount.value.toDoubleOrNull() != null
+    }
 
-    //TODO call expense Viewmodel to fetch data
-
-    val amount = rememberSaveable() { mutableStateOf("") }
-    val paidTo = rememberSaveable() { mutableStateOf("") }
-    val category = rememberSaveable() { mutableStateOf("") }
-    val time = rememberSaveable() { mutableStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(key1 = "${expenseId ?: ""} ${suggestionId ?: ""}") {
+        viewModel.getAddExpenseViewState(expenseId, suggestionId)
+        amount.value = addExpenseViewState.value.amount
+        paidTo.value = addExpenseViewState.value.paidTo
+        category.value = addExpenseViewState.value.category
+        time.value = addExpenseViewState.value.time
+    }
 
     Scaffold(
         topBar = {
@@ -55,7 +70,17 @@ fun AddExpenseScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        //Call ViewModel
+                        coroutineScope.launch {
+                            if (isFormValid.value) {
+                                viewModel.addExpense(
+                                    amount = amount.value,
+                                    paidTo = paidTo.value,
+                                    category = category.value,
+                                    time = time.value
+                                )
+                                navController.popBackStack()
+                            }
+                        }
                     }) {
                         Icon(imageVector = Icons.Filled.Check, contentDescription = "Add Expense")
                     }
@@ -77,6 +102,7 @@ fun AddExpenseScreen(
                 onValueChange = { value ->
                     amount.value = value
                 },
+                isError = amount.value.toDoubleOrNull() == null,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Decimal,

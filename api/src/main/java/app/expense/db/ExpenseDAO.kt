@@ -17,4 +17,7 @@ interface ExpenseDAO {
 
     @Query("SELECT * FROM `expense` WHERE time > :upTo")
     fun fetchExpenses(upTo: Long): Flow<List<ExpenseDTO>>
+
+    @Query("SELECT * FROM `expense` WHERE id = :id")
+    fun fetchExpense(id: Long): Flow<ExpenseDTO>
 }

@@ -6,6 +6,7 @@ import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
 import app.expense.domain.expense.AddExpenseUseCase
 import app.expense.domain.expense.FetchExpenseUseCase
+import app.expense.domain.mappers.DataMapper
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
 import app.expense.domain.suggestion.FetchSuggestionUseCase
@@ -38,6 +39,11 @@ class DomainModule {
     }
 
     @Provides
+    fun provideDataMapper(): DataMapper {
+        return DataMapper()
+    }
+
+    @Provides
     fun provideSuggestionDetector(suggestionParserHelper: SuggestionParserHelper): SuggestionDetector {
         return SuggestionDetectorByParserImpl(suggestionParserHelper)
     }
@@ -52,13 +58,16 @@ class DomainModule {
     }
 
     @Provides
-    fun suggestionFetchUseCase(suggestionsAPI: SuggestionsAPI): FetchSuggestionUseCase {
-        return FetchSuggestionUseCase(suggestionsAPI)
+    fun fetchSuggestionUseCase(
+        suggestionsAPI: SuggestionsAPI,
+        dataMapper: DataMapper
+    ): FetchSuggestionUseCase {
+        return FetchSuggestionUseCase(suggestionsAPI, dataMapper)
     }
 
     @Provides
-    fun fetchExpenseUseCase(expenseAPI: ExpenseAPI): FetchExpenseUseCase {
-        return FetchExpenseUseCase(expenseAPI)
+    fun fetchExpenseUseCase(expenseAPI: ExpenseAPI, dataMapper: DataMapper): FetchExpenseUseCase {
+        return FetchExpenseUseCase(expenseAPI, dataMapper)
     }
 
     @Provides

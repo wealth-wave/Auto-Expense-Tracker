@@ -18,6 +18,9 @@ interface SuggestionDAO {
     @Query("SELECT * FROM `suggestion` WHERE time > :upTo")
     fun fetchSuggestions(upTo: Long): Flow<List<SuggestionDTO>>
 
+    @Query("SELECT * FROM `suggestion` WHERE id = :id")
+    fun fetchSuggestion(id: Long): Flow<SuggestionDTO>
+
     @Query("DELETE FROM `suggestion` WHERE id = :id")
     suspend fun deleteSuggestionById(id: Long)
 }

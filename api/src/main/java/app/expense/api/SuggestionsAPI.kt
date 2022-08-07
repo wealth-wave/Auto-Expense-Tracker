@@ -13,6 +13,10 @@ class SuggestionsAPI(
         else suggestionDAO.fetchSuggestions(upTo)
     }
 
+    fun getSuggestion(id: Long): Flow<SuggestionDTO> {
+        return suggestionDAO.fetchSuggestion(id)
+    }
+
     suspend fun deleteSuggestion(id: Long) {
         suggestionDAO.deleteSuggestionById(id)
     }

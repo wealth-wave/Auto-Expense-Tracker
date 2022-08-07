@@ -14,4 +14,8 @@ class ExpenseAPI(private val expenseDao: ExpenseDAO) {
         return if (from != null) expenseDao.fetchExpenses(from = from, upTo = upTo)
         else expenseDao.fetchExpenses(upTo = upTo)
     }
+
+    fun getExpense(id: Long): Flow<ExpenseDTO> {
+        return expenseDao.fetchExpense(id)
+    }
 }

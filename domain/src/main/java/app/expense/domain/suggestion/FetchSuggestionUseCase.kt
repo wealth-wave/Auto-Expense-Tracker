@@ -1,27 +1,26 @@
 package app.expense.domain.suggestion
 
 import app.expense.api.SuggestionsAPI
+import app.expense.domain.mappers.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class FetchSuggestionUseCase(private val suggestionsAPI: SuggestionsAPI) {
+class FetchSuggestionUseCase(
+    private val suggestionsAPI: SuggestionsAPI,
+    private val dataMapper: DataMapper
+) {
 
     fun getSuggestions(from: Long?, upTo: Long): Flow<List<Suggestion>> {
         return suggestionsAPI.getSuggestions(from, upTo).map { suggestions ->
             suggestions.map { suggestionDTO ->
-                Suggestion(
-                    id = suggestionDTO.id,
-                    amount = suggestionDTO.amount,
-                    paidTo = suggestionDTO.paidTo,
-                    time = suggestionDTO.time,
-                    referenceMessage = suggestionDTO.referenceMessage,
-                    referenceMessageSender = suggestionDTO.referenceMessageSender
-                )
+                dataMapper.mapToSuggestion(suggestionDTO)
             }
         }
     }
 
-    suspend fun deleteSuggestion(id: Long) {
-        suggestionsAPI.deleteSuggestion(id)
+    fun getSuggestion(id: Long): Flow<Suggestion> {
+        return suggestionsAPI.getSuggestion(id).map { suggestionDto->
+            dataMapper.mapToSuggestion(suggestionDto)
+        }
     }
 }
