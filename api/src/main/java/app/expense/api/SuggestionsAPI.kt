@@ -13,7 +13,7 @@ class SuggestionsAPI(
         else suggestionDAO.fetchSuggestions(upTo)
     }
 
-    fun getSuggestion(id: Long): Flow<SuggestionDTO> {
+    fun getSuggestion(id: Long): Flow<SuggestionDTO?> {
         return suggestionDAO.fetchSuggestion(id)
     }
 

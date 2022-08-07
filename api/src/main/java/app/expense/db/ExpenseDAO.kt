@@ -25,7 +25,7 @@ interface ExpenseDAO {
     fun fetchExpenses(upTo: Long): Flow<List<ExpenseDTO>>
 
     @Query("SELECT * FROM `expense` WHERE id = :id")
-    fun fetchExpense(id: Long): Flow<ExpenseDTO>
+    fun fetchExpense(id: Long): Flow<ExpenseDTO?>
 
     @Transaction
     suspend fun insertOrUpdate(expenseDTO: ExpenseDTO): Long {
@@ -37,4 +37,7 @@ interface ExpenseDAO {
             id
         }
     }
+
+    @Query("DELETE FROM `expense` WHERE id = :id")
+    suspend fun delete(id: Long)
 }

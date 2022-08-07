@@ -55,11 +55,21 @@ fun CategoryView(
                 .padding(16.dp)
         )
         if (categories.value.isNotEmpty()) {
-            LazyRow() {
+            LazyRow(modifier = Modifier.padding(16.dp)) {
                 items(categories.value) { item ->
-                    InputChip(selected = true, label = { Text(text = item) }, onClick = {
-                        categories.value = categories.value.toMutableList().apply { remove(item) }
-                    }, trailingIcon = { Icon(imageVector = Icons.Filled.Delete, contentDescription = "Remove category") })
+                    InputChip(
+                        selected = true,
+                        label = { Text(text = item) },
+                        onClick = {
+                            categories.value =
+                                categories.value.toMutableList().apply { remove(item) }
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Remove category"
+                            )
+                        })
                 }
             }
         }

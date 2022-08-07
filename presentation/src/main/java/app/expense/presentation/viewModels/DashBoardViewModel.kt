@@ -7,6 +7,7 @@ import app.expense.domain.suggestion.Suggestion
 import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.presentation.viewStates.DateRange
 import app.expense.presentation.viewStates.DashBoardViewState
+import app.expense.presentation.viewStates.ExpenseDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -26,8 +27,8 @@ class DashBoardViewModel @Inject constructor(
 
             DashBoardViewState(
                 totalExpense = expenses.sumOf { it.amount },
-                expenses = expenses,
-                suggestions = suggestions
+                expenses = expenses.groupBy { ExpenseDate(it.time) },
+                suggestions = suggestions.groupBy { ExpenseDate(it.time) }
             )
         }
     }

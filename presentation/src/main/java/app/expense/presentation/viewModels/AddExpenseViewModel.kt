@@ -2,6 +2,8 @@ package app.expense.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
 import app.expense.domain.expense.AddExpenseUseCase
+import app.expense.domain.expense.DeleteExpenseUseCase
+import app.expense.domain.expense.DeleteSuggestionUseCase
 import app.expense.domain.expense.Expense
 import app.expense.domain.expense.FetchExpenseUseCase
 import app.expense.domain.suggestion.FetchSuggestionUseCase
@@ -15,7 +17,9 @@ import javax.inject.Inject
 class AddExpenseViewModel @Inject constructor(
     private val fetchExpenseUseCase: FetchExpenseUseCase,
     private val fetchSuggestionUseCase: FetchSuggestionUseCase,
-    private val addExpenseUseCase: AddExpenseUseCase
+    private val addExpenseUseCase: AddExpenseUseCase,
+    private val deleteExpenseUseCase: DeleteExpenseUseCase,
+    private val deleteSuggestionUseCase: DeleteSuggestionUseCase
 ) : ViewModel() {
 
     private val _addExpenseViewStateFlow = MutableStateFlow(AddExpenseViewState())
@@ -28,21 +32,27 @@ class AddExpenseViewModel @Inject constructor(
     ) {
         if (expenseId != null) {
             fetchExpenseUseCase.getExpense(expenseId).collect { expense ->
-                _addExpenseViewStateFlow.value = AddExpenseViewState(
-                    amount = expense.amount.toString(),
-                    paidTo = expense.paidTo ?: "",
-                    categories = expense.categories.toMutableList(),
-                    time = expense.time
-                )
+
+                if (expense != null) {
+                    _addExpenseViewStateFlow.value = AddExpenseViewState(
+                        amount = expense.amount.toString(),
+                        paidTo = expense.paidTo ?: "",
+                        categories = expense.categories.toMutableList(),
+                        time = expense.time
+                    )
+                }
+
             }
         } else if (suggestionId != null) {
             fetchSuggestionUseCase.getSuggestion(suggestionId).collect { suggestion ->
                 //TODO Get category based on paidTo by ML or other intelligent way
-                _addExpenseViewStateFlow.value = AddExpenseViewState(
-                    amount = suggestion.amount.toString(),
-                    paidTo = suggestion.paidTo ?: "",
-                    time = suggestion.time
-                )
+                if (suggestion != null) {
+                    _addExpenseViewStateFlow.value = AddExpenseViewState(
+                        amount = suggestion.amount.toString(),
+                        paidTo = suggestion.paidTo ?: "",
+                        time = suggestion.time
+                    )
+                }
             }
 
         }
@@ -66,5 +76,13 @@ class AddExpenseViewModel @Inject constructor(
             ),
             fromSuggestionId = suggestionId
         )
+    }
+
+    suspend fun deleteSuggestion(id: Long) {
+        deleteSuggestionUseCase.deleteSuggestion(id)
+    }
+
+    suspend fun deleteExpense(id: Long) {
+        deleteExpenseUseCase.deleteExpense(id)
     }
 }

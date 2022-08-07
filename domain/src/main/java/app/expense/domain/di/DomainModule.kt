@@ -7,6 +7,8 @@ import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
 import app.expense.domain.expense.AddExpenseUseCase
+import app.expense.domain.expense.DeleteExpenseUseCase
+import app.expense.domain.expense.DeleteSuggestionUseCase
 import app.expense.domain.expense.FetchCategoriesUseCase
 import app.expense.domain.expense.FetchExpenseUseCase
 import app.expense.domain.expense.FetchPaidToUseCase
@@ -89,4 +91,11 @@ class DomainModule {
 
     @Provides
     fun getPaidToUseCase(paidToAPI: PaidToAPI) = FetchPaidToUseCase(paidToAPI)
+
+    @Provides
+    fun getDeleteExpenseUseCase(expenseAPI: ExpenseAPI) = DeleteExpenseUseCase(expenseAPI)
+
+    @Provides
+    fun getDeleteSuggestionUseCase(suggestionsAPI: SuggestionsAPI) =
+        DeleteSuggestionUseCase(suggestionsAPI)
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -68,6 +69,26 @@ fun AddExpenseScreen(
                     }
                 },
                 actions = {
+                    if (suggestionId != null || expenseId != null) {
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    if (suggestionId != null) {
+                                        viewModel.deleteSuggestion(suggestionId)
+                                    } else if (expenseId != null) {
+                                        viewModel.deleteExpense(expenseId)
+                                    }
+                                    navController.popBackStack()
+                                }
+                            },
+                            enabled = isFormValid.value
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Delete Expense"
+                            )
+                        }
+                    }
                     IconButton(
                         onClick = {
                             coroutineScope.launch {

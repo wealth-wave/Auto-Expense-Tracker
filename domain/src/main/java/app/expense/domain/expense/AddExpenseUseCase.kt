@@ -31,6 +31,7 @@ class AddExpenseUseCase(
 
         expenseAPI.storeExpense(
             ExpenseDTO(
+                id = expense.id,
                 amount = expense.amount,
                 categories = expense.categories,
                 paidTo = expense.paidTo,

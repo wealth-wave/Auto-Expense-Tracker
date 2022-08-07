@@ -1,37 +1,37 @@
 package app.expense.tracker.ui.views.dashboard
 
 import DateRangeSelectorView
+import android.icu.lang.UCharacter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
@@ -52,6 +52,9 @@ import app.expense.domain.suggestion.Suggestion
 import app.expense.presentation.viewModels.DashBoardViewModel
 import app.expense.presentation.viewStates.DashBoardViewState
 import app.expense.presentation.viewStates.DateRange
+import app.expense.presentation.viewStates.ExpenseDate
+import app.expense.tracker.ui.utils.ColorGenerator
+import java.util.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,22 +62,11 @@ import app.expense.presentation.viewStates.DateRange
 fun DashboardScreen(
     navController: NavController
 ) {
-    val dateRangeState =
-        remember { mutableStateOf<DateRange>(DateRange.ThisMonth) }
+
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarScrollState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            SmallTopAppBar(
-                title = {
-                    DateRangeSelectorView(onRangeSelect = { expenseDateRange ->
-                        dateRangeState.value = expenseDateRange
-                    })
-                },
-                scrollBehavior = scrollBehavior
-            )
-        },
         bottomBar = {
             BottomAppBar(
                 icons = {
@@ -94,7 +86,7 @@ fun DashboardScreen(
             )
         },
     ) { paddingValues ->
-        ScreenViewContent(navController, dateRangeState.value, paddingValues)
+        ScreenViewContent(navController, paddingValues)
     }
 }
 
@@ -102,52 +94,65 @@ fun DashboardScreen(
 @Composable
 private fun ScreenViewContent(
     navController: NavController,
-    expenseDateRange: DateRange,
     paddingValues: PaddingValues,
     viewModel: DashBoardViewModel = hiltViewModel()
 ) {
-    val dashBoardViewState = viewModel.getDashBoardViewState(expenseDateRange)
+
+    val dateRangeState =
+        remember { mutableStateOf<DateRange>(DateRange.ThisMonth) }
+    val dashBoardViewState = viewModel.getDashBoardViewState(dateRangeState.value)
         .collectAsState(initial = DashBoardViewState())
 
-    ConstraintLayout(modifier = Modifier.padding(paddingValues)) {
-        val (spent, suggestions, expenses) = createRefs()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+    ) {
 
-        SpentView(
-            totalExpenses = dashBoardViewState.value.totalExpense,
+        ConstraintLayout(
             modifier = Modifier
-                .padding(all = 16.dp)
-                .constrainAs(spent) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+
+        ) {
+            val (dateSelector, spent) = createRefs()
+
+            DateRangeSelectorView(
+                modifier = Modifier
+                    .constrainAs(dateSelector) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                    }
+                    .padding(16.dp),
+                onRangeSelect = { expenseDateRange ->
+                    dateRangeState.value = expenseDateRange
                 })
 
-        if (dashBoardViewState.value.suggestions.isNotEmpty()) {
-            SuggestionsView(
-                suggestions = dashBoardViewState.value.suggestions,
+            SpentView(
+                totalExpenses = dashBoardViewState.value.totalExpense,
                 modifier = Modifier
                     .padding(all = 16.dp)
-                    .constrainAs(suggestions) {
-                        top.linkTo(spent.bottom)
+                    .constrainAs(spent) {
+                        top.linkTo(dateSelector.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     })
         }
-        val ref = if (dashBoardViewState.value.suggestions.isNotEmpty()) {
-            suggestions
-        } else {
-            spent
+
+        if (dashBoardViewState.value.suggestions.isNotEmpty()) {
+            SuggestionsView(
+                suggestionMap = dashBoardViewState.value.suggestions,
+                modifier = Modifier
+                    .padding(all = 16.dp)
+                    .background(color = MaterialTheme.colorScheme.background)
+            )
         }
-        ExpensesView(navController = navController,
-            expenses = dashBoardViewState.value.expenses,
+        ExpensesView(
+            navController = navController,
+            expenseMap = dashBoardViewState.value.expenses,
             modifier = Modifier
                 .padding(all = 16.dp)
-                .constrainAs(expenses) {
-                    top.linkTo(ref.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                })
-
+                .background(color = MaterialTheme.colorScheme.background)
+        )
     }
 }
 
@@ -163,31 +168,26 @@ private fun SpentView(totalExpenses: Double, modifier: Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SuggestionsView(suggestions: List<Suggestion>, modifier: Modifier) {
+private fun SuggestionsView(suggestionMap: Map<ExpenseDate, List<Suggestion>>, modifier: Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding()
     ) {
+        LazyColumn() {
+            items(suggestionMap.keys.size) { pos ->
+                val date = suggestionMap.keys.toList()[pos]
+                val suggestions = suggestionMap[date]
 
-        val expandedState = remember { mutableStateOf(false) }
-
-        TextButton(
-            onClick = {
-                expandedState.value = !expandedState.value
-            },
-        ) {
-            Icon(imageVector = Icons.Filled.Check, contentDescription = "Expense suggestions")
-            Text(text = "Detected Expenses", style = MaterialTheme.typography.labelLarge)
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "Suggestion Header")
-        }
-        Divider(modifier = Modifier.background(color = MaterialTheme.colorScheme.background))
-        if (expandedState.value) {
-            LazyColumn() {
-                items(suggestions.size) { pos ->
-                    SuggestionItemView(suggestion = suggestions[pos])
+                Card() {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(text = date.getFormattedString())
+                        suggestions?.forEach {
+                            SuggestionItemView(suggestion = it)
+                        }
+                    }
                 }
             }
         }
@@ -195,10 +195,11 @@ private fun SuggestionsView(suggestions: List<Suggestion>, modifier: Modifier) {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpensesView(
     navController: NavController,
-    expenses: List<Expense>,
+    expenseMap: Map<ExpenseDate, List<Expense>>,
     modifier: Modifier
 ) {
     Column(
@@ -206,17 +207,22 @@ private fun ExpensesView(
             .fillMaxWidth()
             .padding()
     ) {
+        if (expenseMap.isNotEmpty()) {
 
-        Row() {
-            Icon(imageVector = Icons.Filled.ShoppingCart, contentDescription = "Expenses")
-            Text(text = "Expenses", style = MaterialTheme.typography.labelLarge)
-            Spacer(modifier = Modifier.weight(1f))
-        }
-        Divider(modifier = Modifier.background(color = MaterialTheme.colorScheme.background))
-        if (expenses.isNotEmpty()) {
             LazyColumn() {
-                items(expenses.size) { pos ->
-                    ExpenseItemView(navController = navController, expense = expenses[pos])
+                items(expenseMap.keys.size) { pos ->
+                    val date = expenseMap.keys.toList()[pos]
+                    val expenses = expenseMap[date]
+
+                    Card() {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = date.getFormattedString())
+                            expenses?.forEach {
+                                ExpenseItemView(navController = navController, expense = it)
+                            }
+                        }
+                    }
+
                 }
             }
         } else {
@@ -267,9 +273,49 @@ private fun ExpenseItemView(
                 navController.navigate("editExpense/${expense.id ?: 0}")
             }),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
     ) {
-        Text(text = expense.paidTo ?: "Unknown", style = MaterialTheme.typography.bodyMedium)
+
+        Box(
+            modifier = Modifier
+                .background(
+                    color = ColorGenerator.MATERIAL.getColor(
+                        expense.paidTo ?: "U"
+                    ),
+                    shape = RoundedCornerShape(100)
+                )
+                .padding(8.dp)
+        ) {
+            Text(
+                text = (expense.paidTo?.firstOrNull()?.titlecase() ?: "O"),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(start = 16.dp))
+        Column {
+            Text(
+                text = UCharacter.toTitleCase(
+                    Locale.getDefault(),
+                    expense.paidTo ?: "Unknown",
+                    null,
+                    0
+                ), style = MaterialTheme.typography.bodyMedium
+            )
+            if (expense.categories.isNotEmpty()) {
+                LazyRow() {
+                    items(expense.categories.size) { pos ->
+                        Text(
+                            text = expense.categories[pos], modifier = Modifier.background(
+                                color = ColorGenerator.MATERIAL.getColor(expense.categories[pos]),
+                                shape = RoundedCornerShape(100)
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
         Text(text = "₹ %.2f".format(expense.amount), style = MaterialTheme.typography.bodyLarge)
     }
 }

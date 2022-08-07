@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CategoryDAO {
 
-    @Insert(onConflict = SQLiteDatabase.CONFLICT_IGNORE)
+    @Insert(onConflict = SQLiteDatabase.CONFLICT_REPLACE)
     suspend fun insertAll(categories: List<CategoryDTO>)
 
     @Query("SELECT * FROM `category` WHERE name LIKE '%'|| :name || '%' LIMIT 3")

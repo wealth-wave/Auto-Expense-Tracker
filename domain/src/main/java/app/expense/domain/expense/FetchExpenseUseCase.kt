@@ -18,9 +18,11 @@ class FetchExpenseUseCase(
         }
     }
 
-    fun getExpense(id: Long): Flow<Expense> {
+    fun getExpense(id: Long): Flow<Expense?> {
         return expenseAPI.getExpense(id).map { expenseDTO ->
-            dataMapper.mapToExpense(expenseDTO)
+            expenseDTO?.let {
+                dataMapper.mapToExpense(it)
+            }
         }
     }
 }

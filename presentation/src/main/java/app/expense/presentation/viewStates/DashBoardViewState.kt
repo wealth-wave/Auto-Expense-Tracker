@@ -5,6 +5,6 @@ import app.expense.domain.suggestion.Suggestion
 
 data class DashBoardViewState(
     val totalExpense: Double = 0.0,
-    val expenses: List<Expense> = emptyList(),
-    val suggestions: List<Suggestion> = emptyList()
+    val expenses: Map<ExpenseDate, List<Expense>> = emptyMap(),
+    val suggestions: Map<ExpenseDate, List<Suggestion>> = emptyMap()
 )

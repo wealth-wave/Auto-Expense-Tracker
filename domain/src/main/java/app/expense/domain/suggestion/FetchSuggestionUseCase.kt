@@ -18,9 +18,11 @@ class FetchSuggestionUseCase(
         }
     }
 
-    fun getSuggestion(id: Long): Flow<Suggestion> {
-        return suggestionsAPI.getSuggestion(id).map { suggestionDto->
-            dataMapper.mapToSuggestion(suggestionDto)
+    fun getSuggestion(id: Long): Flow<Suggestion?> {
+        return suggestionsAPI.getSuggestion(id).map { suggestionDto ->
+            suggestionDto?.let {
+                dataMapper.mapToSuggestion(it)
+            }
         }
     }
 }
