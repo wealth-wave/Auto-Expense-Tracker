@@ -1,11 +1,15 @@
 package app.expense.domain.di
 
+import app.expense.api.CategoryAPI
 import app.expense.api.ExpenseAPI
+import app.expense.api.PaidToAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
 import app.expense.domain.expense.AddExpenseUseCase
+import app.expense.domain.expense.FetchCategoriesUseCase
 import app.expense.domain.expense.FetchExpenseUseCase
+import app.expense.domain.expense.FetchPaidToUseCase
 import app.expense.domain.mappers.DataMapper
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
 import app.expense.domain.smsTemplate.SMSTemplateProvider
@@ -71,7 +75,18 @@ class DomainModule {
     }
 
     @Provides
-    fun addExpenseUseCase(expenseAPI: ExpenseAPI): AddExpenseUseCase {
-        return AddExpenseUseCase(expenseAPI)
+    fun addExpenseUseCase(
+        expenseAPI: ExpenseAPI,
+        suggestionsAPI: SuggestionsAPI,
+        categoryAPI: CategoryAPI,
+        paidToAPI: PaidToAPI
+    ): AddExpenseUseCase {
+        return AddExpenseUseCase(expenseAPI, suggestionsAPI, categoryAPI, paidToAPI)
     }
+
+    @Provides
+    fun getCategoriesUseCase(categoryAPI: CategoryAPI) = FetchCategoriesUseCase(categoryAPI)
+
+    @Provides
+    fun getPaidToUseCase(paidToAPI: PaidToAPI) = FetchPaidToUseCase(paidToAPI)
 }

@@ -45,7 +45,7 @@ fun AutoCompleteTextField(
             modifier = Modifier.fillMaxWidth()
         )
         ExposedDropdownMenu(
-            expanded = expanded,
+            expanded = expanded && suggestions.isNotEmpty(),
             onDismissRequest = { expanded = false },
         ) {
             suggestions.forEach { selectionOption ->

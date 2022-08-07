@@ -1,6 +1,5 @@
 package app.expense.tracker.ui.views.expense
 
-import AutoCompleteTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,20 +42,20 @@ fun AddExpenseScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val addExpenseViewState = viewModel.addExpenseViewState.collectAsState()
-    val amount = rememberSaveable() { mutableStateOf(addExpenseViewState.value.amount) }
-    val paidTo = rememberSaveable() { mutableStateOf(addExpenseViewState.value.paidTo) }
-    val category = rememberSaveable() { mutableStateOf(addExpenseViewState.value.category) }
-    val time = rememberSaveable() { mutableStateOf(addExpenseViewState.value.time) }
+    val amount =
+        rememberSaveable(addExpenseViewState.value.amount) { mutableStateOf(addExpenseViewState.value.amount) }
+    val paidTo =
+        rememberSaveable(addExpenseViewState.value.paidTo) { mutableStateOf(addExpenseViewState.value.paidTo) }
+    val category =
+        rememberSaveable(addExpenseViewState.value.category) { mutableStateOf(addExpenseViewState.value.category) }
+    val time =
+        rememberSaveable(addExpenseViewState.value.time) { mutableStateOf(addExpenseViewState.value.time) }
     val isFormValid = derivedStateOf {
         amount.value.toDoubleOrNull() != null
     }
 
     LaunchedEffect(key1 = "${expenseId ?: ""} ${suggestionId ?: ""}") {
         viewModel.getAddExpenseViewState(expenseId, suggestionId)
-        amount.value = addExpenseViewState.value.amount
-        paidTo.value = addExpenseViewState.value.paidTo
-        category.value = addExpenseViewState.value.category
-        time.value = addExpenseViewState.value.time
     }
 
     Scaffold(
@@ -73,6 +72,8 @@ fun AddExpenseScreen(
                         onClick = {
                             coroutineScope.launch {
                                 viewModel.addExpense(
+                                    expenseId = expenseId,
+                                    suggestionId = suggestionId,
                                     amount = amount.value,
                                     paidTo = paidTo.value,
                                     category = category.value,
@@ -111,37 +112,9 @@ fun AddExpenseScreen(
                 )
             )
 
-            AutoCompleteTextField(
-                label = "Paid To",
-                value = paidTo.value,
-                suggestions = emptyList(),
-                onCategoryEntered = { value ->
-                    paidTo.value = value
-                    //TODO perform API Call
-                },
-                onCategorySelect = { value ->
-                    paidTo.value = value
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
+            PaidToView(paidTo = paidTo)
 
-            AutoCompleteTextField(
-                label = "Category",
-                value = category.value,
-                suggestions = emptyList(),
-                onCategoryEntered = { value ->
-                    category.value = value
-                    //TODO perform API Call
-                },
-                onCategorySelect = { value ->
-                    category.value = value
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
+            CategoryView(category = category)
 
             DateTimePickerView(
                 timeInMillis = time.value,

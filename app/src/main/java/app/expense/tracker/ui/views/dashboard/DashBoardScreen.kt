@@ -3,6 +3,7 @@ package app.expense.tracker.ui.views.dashboard
 import DateRangeSelectorView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -93,13 +94,14 @@ fun DashboardScreen(
             )
         },
     ) { paddingValues ->
-        ScreenViewContent(dateRangeState.value, paddingValues)
+        ScreenViewContent(navController, dateRangeState.value, paddingValues)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScreenViewContent(
+    navController: NavController,
     expenseDateRange: DateRange,
     paddingValues: PaddingValues,
     viewModel: DashBoardViewModel = hiltViewModel()
@@ -136,13 +138,15 @@ private fun ScreenViewContent(
         } else {
             spent
         }
-        ExpensesView(expenses = dashBoardViewState.value.expenses, modifier = Modifier
-            .padding(all = 16.dp)
-            .constrainAs(expenses) {
-                top.linkTo(ref.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            })
+        ExpensesView(navController = navController,
+            expenses = dashBoardViewState.value.expenses,
+            modifier = Modifier
+                .padding(all = 16.dp)
+                .constrainAs(expenses) {
+                    top.linkTo(ref.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                })
 
     }
 }
@@ -192,13 +196,16 @@ private fun SuggestionsView(suggestions: List<Suggestion>, modifier: Modifier) {
 
 
 @Composable
-private fun ExpensesView(expenses: List<Expense>, modifier: Modifier) {
+private fun ExpensesView(
+    navController: NavController,
+    expenses: List<Expense>,
+    modifier: Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding()
     ) {
-
 
         Row() {
             Icon(imageVector = Icons.Filled.ShoppingCart, contentDescription = "Expenses")
@@ -209,7 +216,7 @@ private fun ExpensesView(expenses: List<Expense>, modifier: Modifier) {
         if (expenses.isNotEmpty()) {
             LazyColumn() {
                 items(expenses.size) { pos ->
-                    ExpenseItemView(expense = expenses[pos])
+                    ExpenseItemView(navController = navController, expense = expenses[pos])
                 }
             }
         } else {
@@ -249,11 +256,16 @@ private fun SuggestionItemView(suggestion: Suggestion) {
 }
 
 @Composable
-private fun ExpenseItemView(expense: Expense) {
+private fun ExpenseItemView(
+    navController: NavController, expense: Expense
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = 16.dp),
+            .padding(all = 16.dp)
+            .clickable(onClick = {
+                navController.navigate("editExpense/${expense.id ?: 0}")
+            }),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

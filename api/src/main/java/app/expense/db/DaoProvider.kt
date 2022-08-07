@@ -11,4 +11,8 @@ class DaoProvider(context: Context) {
     fun suggestionDAO() = db.suggestionDAO()
 
     fun expenseDAO() = db.expenseDAO()
+
+    fun categoryDAO() = db.categoryDAO()
+
+    fun paidToDAO() = db.paidToDAO()
 }

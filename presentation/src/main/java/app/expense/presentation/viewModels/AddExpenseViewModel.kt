@@ -9,8 +9,6 @@ import app.expense.presentation.viewStates.AddExpenseViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.last
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,39 +27,44 @@ class AddExpenseViewModel @Inject constructor(
         suggestionId: Long? = null
     ) {
         if (expenseId != null) {
-            val expense = fetchExpenseUseCase.getExpense(expenseId).run {
-                collect()
-                last()
+            fetchExpenseUseCase.getExpense(expenseId).collect { expense ->
+                _addExpenseViewStateFlow.value = AddExpenseViewState(
+                    amount = expense.amount.toString(),
+                    paidTo = expense.paidTo ?: "",
+                    category = expense.category,
+                    time = expense.time
+                )
             }
-            _addExpenseViewStateFlow.value = AddExpenseViewState(
-                amount = expense.amount.toString(),
-                paidTo = expense.paidTo?:"",
-                category = expense.category,
-                time = expense.time
-            )
-
         } else if (suggestionId != null) {
-            val suggestion = fetchSuggestionUseCase.getSuggestion(suggestionId).run {
-                collect()
-                last()
+            fetchSuggestionUseCase.getSuggestion(suggestionId).collect { suggestion ->
+                //TODO Get category based on paidTo by ML or other intelligent way
+                _addExpenseViewStateFlow.value = AddExpenseViewState(
+                    amount = suggestion.amount.toString(),
+                    paidTo = suggestion.paidTo ?: "",
+                    time = suggestion.time
+                )
             }
-            //TODO Get category based on paidTo by ML or other intelligent way
-            _addExpenseViewStateFlow.value = AddExpenseViewState(
-                amount = suggestion.amount.toString(),
-                paidTo = suggestion.paidTo?:"",
-                time = suggestion.time
-            )
+
         }
     }
 
-    suspend fun addExpense(amount: String, paidTo: String?, category: String?, time: Long) {
+    suspend fun addExpense(
+        expenseId: Long?,
+        suggestionId: Long?,
+        amount: String,
+        paidTo: String?,
+        category: String?,
+        time: Long
+    ) {
         addExpenseUseCase.addExpense(
-            Expense(
+            expense = Expense(
+                id = expenseId,
                 amount = amount.toDouble(),
                 paidTo = paidTo,
                 category = category ?: "OTHER",
                 time = time
-            )
+            ),
+            fromSuggestionId = suggestionId
         )
     }
 }
