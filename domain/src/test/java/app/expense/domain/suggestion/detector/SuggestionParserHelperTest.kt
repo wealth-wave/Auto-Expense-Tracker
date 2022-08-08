@@ -1,10 +1,8 @@
 package app.expense.domain.suggestion.detector
 
-
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
-
 
 class SuggestionParserHelperTest {
 

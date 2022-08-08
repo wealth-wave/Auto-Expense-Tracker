@@ -12,7 +12,7 @@ class SuggestionDetectorByParserImplTest {
 
     @Before
     fun setUp() {
-        //Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
+        // Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
         suggestionDetectorByParserImpl = SuggestionDetectorByParserImpl(SuggestionParserHelper())
     }
 
@@ -59,5 +59,4 @@ class SuggestionDetectorByParserImplTest {
             assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isNotNull()
         }
     }
-
 }

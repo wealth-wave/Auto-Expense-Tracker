@@ -8,7 +8,6 @@ import org.junit.Test
 
 class SMSTemplateMatcherTest {
 
-
     private val smsTemplateMatcher = SMSTemplateMatcher()
     private val smsTemplate = mockk<SMSTemplate>()
     private val smsMessage = mockk<SMSMessage>()

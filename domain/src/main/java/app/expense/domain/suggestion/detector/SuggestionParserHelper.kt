@@ -14,9 +14,11 @@ class SuggestionParserHelper {
      * @param processedMessage Make sure it is in lowercase
      */
     fun isExpense(processedMessage: String): Boolean {
-        return (DEBIT_PATTERN.toRegex()
-            .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
-            .containsMatchIn(processedMessage))
+        return (
+            DEBIT_PATTERN.toRegex()
+                .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
+                .containsMatchIn(processedMessage)
+            )
     }
 
     fun processMessage(msg: String): String {
@@ -57,9 +59,9 @@ class SuggestionParserHelper {
 
         message = message.replace(" rs.", " rs. ")
         // replace all 'rs. ' with 'rs.'
-        //message = message.replace("/rs./g", "rs")
+        // message = message.replace("/rs./g", "rs")
         // replace all 'rs.' with 'rs. '
-        //message = message.replace("/rs.(?=w)/g", "rs.")
+        // message = message.replace("/rs.(?=w)/g", "rs.")
 
         return message
     }

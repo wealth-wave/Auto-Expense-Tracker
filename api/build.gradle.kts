@@ -36,20 +36,20 @@ android {
 }
 
 dependencies {
-    //Room
+    // Room
     implementation(Deps.Room.RUNTIME)
     implementation(Deps.Room.KTX)
     kapt(Deps.Room.KAPT_COMPILER)
 
-    //Hilt
+    // Hilt
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
 
-    //Junit
+    // Junit
     testImplementation(Deps.JUnit.TEST)
     androidTestImplementation(Deps.JUnit.ANDROID_TEST)
 
-    //Modules
+    // Modules
     implementation(project(Deps.Modules.CONTRACT))
 }
 

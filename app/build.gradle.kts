@@ -52,10 +52,10 @@ android {
 
 dependencies {
 
-    //Core
+    // Core
     implementation(Deps.Core.DEPENDENCY)
 
-    //Compose
+    // Compose
     implementation(Deps.Compose.UI)
     implementation(Deps.Compose.MATERIAL3)
     implementation(Deps.Compose.PREVIEW)
@@ -69,39 +69,39 @@ dependencies {
     debugImplementation(Deps.Compose.DEBUG_MANIFEST)
     androidTestImplementation(Deps.Compose.ANDROID_UI_TEST)
 
-    //Permission
+    // Permission
     implementation(Deps.Accompanies.DEPS)
 
-    //Navigation
+    // Navigation
     implementation(Deps.Navigation.NAV_COMPOSE)
 
-    //WorkManager
+    // WorkManager
     implementation(Deps.WorkManager.RUNTIME)
 
-    //Coroutines
+    // Coroutines
     implementation(Deps.Coroutines.DEP)
 
-    //Hilt
+    // Hilt
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
     implementation(Deps.Hilt.WORKER)
     kapt(Deps.Hilt.KAPT_WORKER)
     implementation(Deps.Hilt.NAVIGATION_COMPOSE)
 
-    //Junit
+    // Junit
     testImplementation(Deps.JUnit.TEST)
     androidTestImplementation(Deps.JUnit.ANDROID_TEST)
 
-    //Espresso
+    // Espresso
     androidTestImplementation(Deps.Espresso.ANDROID_TEST)
 
-    //Mock
+    // Mock
     testImplementation(Deps.Mockk.TEST)
 
-    //Truth
+    // Truth
     testImplementation(Deps.Truth.TEST)
 
-    //Modules
+    // Modules
     implementation(project(Deps.Modules.PRESENTATION))
     implementation(project(Deps.Modules.DOMAIN))
     implementation(project(Deps.Modules.CONTRACT))

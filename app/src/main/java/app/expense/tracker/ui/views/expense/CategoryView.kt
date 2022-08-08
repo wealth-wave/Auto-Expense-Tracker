@@ -75,10 +75,10 @@ fun CategoryView(
                                 imageVector = Icons.Filled.Delete,
                                 contentDescription = "Remove category"
                             )
-                        })
+                        }
+                    )
                 }
             }
         }
     }
-
 }

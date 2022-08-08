@@ -11,7 +11,6 @@ import app.expense.domain.suggestion.SyncSuggestionUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
-
 @HiltWorker
 class SMSSyncWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
@@ -21,7 +20,8 @@ class SMSSyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         if (ActivityCompat.checkSelfPermission(appContext, Manifest.permission.READ_SMS)
-            == PackageManager.PERMISSION_GRANTED) {
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             syncSuggestionUseCase.sync()
         }
         return Result.success()

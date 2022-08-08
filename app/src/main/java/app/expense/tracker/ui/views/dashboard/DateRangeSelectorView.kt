@@ -25,8 +25,8 @@ fun DateRangeSelectorView(
 
     val options = listOf(
         Pair("This Month", DateRange.ThisMonth),
-        Pair("Last 30 Days", DateRange.ThisMonth),
-        Pair("Previous Month", DateRange.ThisMonth)
+        Pair("Last 30 Days", DateRange.Last30Days),
+        Pair("Previous Month", DateRange.LastMonth)
     )
 
     var expanded by remember { mutableStateOf(false) }

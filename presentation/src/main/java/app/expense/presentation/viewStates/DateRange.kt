@@ -1,6 +1,6 @@
 package app.expense.presentation.viewStates
 
-import java.util.*
+import android.icu.util.Calendar
 
 sealed class DateRange {
     object ThisMonth : DateRange() {
@@ -17,7 +17,6 @@ sealed class DateRange {
 
             return calendar.timeInMillis
         }
-
     }
 
     object Last30Days : DateRange() {
@@ -33,7 +32,6 @@ sealed class DateRange {
             calendar.set(Calendar.SECOND, 0)
             return calendar.timeInMillis
         }
-
     }
 
     object LastMonth : DateRange() {
@@ -56,34 +54,6 @@ sealed class DateRange {
             calendar.set(Calendar.SECOND, 59)
             return calendar.timeInMillis
         }
-
-    }
-
-    object ThisYear : DateRange() {
-        override fun getFrom(): Long? {
-            return null
-        }
-
-        override fun getTo(): Long {
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.DAY_OF_YEAR, 1)
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            return calendar.timeInMillis
-        }
-
-    }
-
-    data class Custom(private val from: Long?, private val to: Long) : DateRange() {
-        override fun getFrom(): Long? {
-            return from
-        }
-
-        override fun getTo(): Long {
-            return to
-        }
-
     }
 
     abstract fun getFrom(): Long?

@@ -62,8 +62,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.launch
-import java.util.*
-
+import java.util.Locale.getDefault
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -108,7 +107,7 @@ fun DashboardScreen(
                         "The SMS permission is important for this app. Please grant the permission."
                     } else {
                         "SMS permission required for this feature to be available. " +
-                                "Please grant the permission"
+                            "Please grant the permission"
                     }
                     Text(textToShow)
                     Button(onClick = { smsPermissionState.launchPermissionRequest() }) {
@@ -156,7 +155,8 @@ private fun ScreenViewContent(
                     .padding(start = 16.dp, top = 16.dp),
                 onRangeSelect = { expenseDateRange ->
                     dateRangeState.value = expenseDateRange
-                })
+                }
+            )
 
             SpentView(
                 totalExpenses = dashBoardViewState.value.totalExpense,
@@ -166,7 +166,8 @@ private fun ScreenViewContent(
                         top.linkTo(dateSelector.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    })
+                    }
+            )
         }
 
         if (dashBoardViewState.value.suggestions.isEmpty() && dashBoardViewState.value.expenses.isEmpty()) {
@@ -200,7 +201,7 @@ private fun ScreenViewContent(
                             pos = expensePos,
                             expenseMap = dashBoardViewState.value.expenses,
                             onClick = { expenseId ->
-                                navController.navigate("editExpense/${expenseId}")
+                                navController.navigate("editExpense/$expenseId")
                             }
                         )
                     }
@@ -268,7 +269,6 @@ private fun SpentView(totalExpenses: Double, modifier: Modifier) {
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpenseView(
@@ -307,7 +307,6 @@ private fun ExpenseItemView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-
         Text(
             modifier = Modifier
                 .padding(4.dp)
@@ -321,16 +320,16 @@ private fun ExpenseItemView(
             style = MaterialTheme.typography.bodyLarge
         )
 
-
         Spacer(modifier = Modifier.padding(start = 20.dp))
         Column {
             Text(
                 text = UCharacter.toTitleCase(
-                    Locale.getDefault(),
+                    getDefault(),
                     expense.paidTo ?: "Unknown",
                     null,
                     0
-                ), style = MaterialTheme.typography.titleMedium
+                ),
+                style = MaterialTheme.typography.titleMedium
             )
             if (expense.categories.isNotEmpty()) {
                 Row(
@@ -348,8 +347,6 @@ private fun ExpenseItemView(
                             }
                         )
                     }
-
-
                 }
             }
         }
