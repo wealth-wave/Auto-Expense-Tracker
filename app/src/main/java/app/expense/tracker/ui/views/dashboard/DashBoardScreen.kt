@@ -5,8 +5,8 @@ import android.icu.lang.UCharacter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,13 +15,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Card
@@ -32,14 +31,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,6 +56,7 @@ import app.expense.presentation.viewStates.DashBoardViewState
 import app.expense.presentation.viewStates.DateRange
 import app.expense.presentation.viewStates.ExpenseDate
 import app.expense.tracker.ui.utils.ColorGenerator
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -98,6 +101,7 @@ private fun ScreenViewContent(
     viewModel: DashBoardViewModel = hiltViewModel()
 ) {
 
+    val coroutineScope = rememberCoroutineScope()
     val dateRangeState =
         remember { mutableStateOf<DateRange>(DateRange.ThisMonth) }
     val dashBoardViewState = viewModel.getDashBoardViewState(dateRangeState.value)
@@ -122,7 +126,7 @@ private fun ScreenViewContent(
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
                     }
-                    .padding(16.dp),
+                    .padding(start = 16.dp, top = 16.dp),
                 onRangeSelect = { expenseDateRange ->
                     dateRangeState.value = expenseDateRange
                 })
@@ -138,22 +142,77 @@ private fun ScreenViewContent(
                     })
         }
 
-        if (dashBoardViewState.value.suggestions.isNotEmpty()) {
-            SuggestionsView(
-                navController = navController,
-                suggestionMap = dashBoardViewState.value.suggestions,
-                modifier = Modifier
-                    .padding(all = 16.dp)
-                    .background(color = MaterialTheme.colorScheme.background)
-            )
+        LazyColumn() {
+            items(dashBoardViewState.value.suggestions.keys.size + dashBoardViewState.value.expenses.keys.size) { pos ->
+                val expensePos = pos - dashBoardViewState.value.suggestions.keys.size
+                if (pos < dashBoardViewState.value.suggestions.keys.size) {
+                    SuggestionView(
+                        pos = pos,
+                        suggestionMap = dashBoardViewState.value.suggestions,
+                        navController = navController,
+                        onDeleteSuggestion = { id ->
+                            coroutineScope.launch {
+                                viewModel.deleteSuggestion(id)
+                            }
+                        }
+                    )
+                } else if (expensePos < dashBoardViewState.value.expenses.keys.size) {
+                    ExpenseView(
+                        pos = expensePos,
+                        expenseMap = dashBoardViewState.value.expenses,
+                        onClick = { expenseId ->
+                            navController.navigate("editExpense/${expenseId}")
+                        }
+                    )
+                }
+            }
         }
-        ExpensesView(
-            navController = navController,
-            expenseMap = dashBoardViewState.value.expenses,
-            modifier = Modifier
-                .padding(all = 16.dp)
-                .background(color = MaterialTheme.colorScheme.background)
-        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SuggestionView(
+    pos: Int,
+    suggestionMap: Map<ExpenseDate, List<Suggestion>>,
+    navController: NavController,
+    onDeleteSuggestion: (suggestionId: Long) -> Unit
+) {
+    val date = suggestionMap.keys.toList()[pos]
+    val suggestions = suggestionMap[date]
+    Text(
+        text = date.getFormattedString(),
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+    )
+
+    suggestions?.forEach { suggestion ->
+        Card(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(
+                    start = 12.dp,
+                    end = 12.dp,
+                    top = 12.dp
+                )
+            ) {
+                Text(
+                    text = suggestion.referenceMessage,
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Row {
+                    Spacer(modifier = Modifier.weight(1f))
+                    TextButton(onClick = { navController.navigate("suggestExpense/${suggestion.id ?: 0}") }) {
+                        Text(text = "Add To Expense")
+                    }
+                    TextButton(onClick = {
+                        onDeleteSuggestion(suggestion.id ?: 0)
+                    }) {
+                        Text(text = "Ignore")
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -169,38 +228,28 @@ private fun SpentView(totalExpenses: Double, modifier: Modifier) {
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SuggestionsView(
-    navController: NavController,
-    suggestionMap: Map<ExpenseDate, List<Suggestion>>,
-    modifier: Modifier
+private fun ExpenseView(
+    pos: Int,
+    expenseMap: Map<ExpenseDate, List<Expense>>,
+    onClick: (expenseId: Long) -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding()
-    ) {
-        LazyColumn() {
-            items(suggestionMap.keys.size) { pos ->
-                val date = suggestionMap.keys.toList()[pos]
-                val suggestions = suggestionMap[date]
+    val date = expenseMap.keys.toList()[pos]
+    val expenses = expenseMap[date]
 
-                Card(
-                    modifier = Modifier.padding(top = 4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = date.getFormattedString())
-                        suggestions?.forEach {
-                            SuggestionItemView(navController = navController, suggestion = it)
-                        }
-                    }
-                }
+    Card(
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text(text = date.getFormattedString())
+            expenses?.forEach {
+                ExpenseItemView(expense = it, onClick = onClick)
             }
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -218,19 +267,7 @@ private fun ExpensesView(
 
             LazyColumn() {
                 items(expenseMap.keys.size) { pos ->
-                    val date = expenseMap.keys.toList()[pos]
-                    val expenses = expenseMap[date]
 
-                    Card(
-                        modifier = Modifier.padding(top = 4.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(text = date.getFormattedString())
-                            expenses?.forEach {
-                                ExpenseItemView(navController = navController, expense = it)
-                            }
-                        }
-                    }
 
                 }
             }
@@ -249,83 +286,40 @@ private fun ExpensesView(
     }
 }
 
-@Composable
-private fun SuggestionItemView(navController: NavController, suggestion: Suggestion) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = 16.dp)
-            .clickable(onClick = {
-                navController.navigate("suggestExpense/${suggestion.id ?: 0}")
-            }),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    color = ColorGenerator.MATERIAL.getColor(
-                        suggestion.paidTo ?: "U"
-                    ),
-                    shape = RoundedCornerShape(100)
-                )
-                .padding(8.dp)
-        ) {
-            Text(
-                text = (suggestion.paidTo?.firstOrNull()?.titlecase() ?: "O"),
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-
-        Spacer(modifier = Modifier.padding(start = 16.dp))
-        Column {
-            Text(
-                text = UCharacter.toTitleCase(
-                    Locale.getDefault(),
-                    suggestion.paidTo ?: "Unknown",
-                    null,
-                    0
-                ), style = MaterialTheme.typography.bodyMedium
-            )
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = "₹ %.2f".format(suggestion.amount), style = MaterialTheme.typography.bodyLarge)
-        Icon(imageVector = Icons.Filled.Check, contentDescription = "Check")
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpenseItemView(
-    navController: NavController, expense: Expense
+    expense: Expense,
+    onClick: (expenseId: Long) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = 16.dp)
             .clickable(onClick = {
-                navController.navigate("editExpense/${expense.id ?: 0}")
+                onClick(expense.id ?: 0)
             }),
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-        Box(
-            modifier = Modifier
-                .background(
-                    color = ColorGenerator.MATERIAL.getColor(
-                        expense.paidTo ?: "U"
-                    ),
-                    shape = RoundedCornerShape(100)
-                )
-                .padding(8.dp)
-        ) {
-            Text(
-                text = (expense.paidTo?.firstOrNull()?.titlecase() ?: "O"),
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
 
-        Spacer(modifier = Modifier.padding(start = 16.dp))
+        Text(
+            modifier = Modifier
+                .padding(4.dp)
+                .drawBehind {
+                    drawCircle(
+                        color = ColorGenerator.MATERIAL.getColor(
+                            expense.paidTo ?: "U"
+                        ),
+                        radius = this.size.maxDimension
+                    )
+                },
+            text = (expense.paidTo?.firstOrNull()?.titlecase() ?: "O"),
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+
+        Spacer(modifier = Modifier.padding(start = 20.dp))
         Column {
             Text(
                 text = UCharacter.toTitleCase(
@@ -333,24 +327,32 @@ private fun ExpenseItemView(
                     expense.paidTo ?: "Unknown",
                     null,
                     0
-                ), style = MaterialTheme.typography.bodyMedium
+                ), style = MaterialTheme.typography.titleMedium
             )
             if (expense.categories.isNotEmpty()) {
-                LazyRow() {
-                    items(expense.categories.size) { pos ->
-                        Text(
-                            text = expense.categories[pos], modifier = Modifier.background(
-                                color = ColorGenerator.MATERIAL.getColor(expense.categories[pos]),
-                                shape = RoundedCornerShape(100)
-                            )
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState())
+                ) {
+                    expense.categories.forEach { category ->
+                        AssistChip(
+                            modifier = Modifier.padding(end = 8.dp),
+                            onClick = { /*TODO*/ },
+                            label = {
+                                Text(
+                                    text = category,
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
                         )
                     }
+
+
                 }
             }
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = "₹ %.2f".format(expense.amount), style = MaterialTheme.typography.bodyLarge)
+        Text(text = "₹ %.2f".format(expense.amount), style = MaterialTheme.typography.bodyMedium)
     }
 }
 

@@ -50,7 +50,8 @@ class AddExpenseViewModel @Inject constructor(
                     _addExpenseViewStateFlow.value = AddExpenseViewState(
                         amount = suggestion.amount.toString(),
                         paidTo = suggestion.paidTo ?: "",
-                        time = suggestion.time
+                        time = suggestion.time,
+                        suggestionMessage = suggestion.referenceMessage
                     )
                 }
             }

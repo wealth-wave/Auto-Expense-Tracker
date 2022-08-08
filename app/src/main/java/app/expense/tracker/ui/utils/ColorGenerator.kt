@@ -11,7 +11,6 @@ class ColorGenerator private constructor(private val mColors: List<Color>) {
                 Color.Blue,
                 Color.Cyan,
                 Color.Green,
-                Color.Red,
                 Color.Magenta,
                 Color.Yellow,
                 Color.LightGray

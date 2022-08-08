@@ -1,12 +1,13 @@
 package app.expense.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
+import app.expense.domain.expense.DeleteSuggestionUseCase
 import app.expense.domain.expense.Expense
 import app.expense.domain.expense.FetchExpenseUseCase
-import app.expense.domain.suggestion.Suggestion
 import app.expense.domain.suggestion.FetchSuggestionUseCase
-import app.expense.presentation.viewStates.DateRange
+import app.expense.domain.suggestion.Suggestion
 import app.expense.presentation.viewStates.DashBoardViewState
+import app.expense.presentation.viewStates.DateRange
 import app.expense.presentation.viewStates.ExpenseDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashBoardViewModel @Inject constructor(
     private val suggestionFetchUseCase: FetchSuggestionUseCase,
+    private val deleteSuggestionUseCase: DeleteSuggestionUseCase,
     private val fetchExpenseUseCase: FetchExpenseUseCase
 ) : ViewModel() {
 
@@ -31,6 +33,10 @@ class DashBoardViewModel @Inject constructor(
                 suggestions = suggestions.groupBy { ExpenseDate(it.time) }
             )
         }
+    }
+
+    suspend fun deleteSuggestion(id: Long) {
+        deleteSuggestionUseCase.deleteSuggestion(id)
     }
 
     private fun getSuggestions(dateRange: DateRange): Flow<List<Suggestion>> {

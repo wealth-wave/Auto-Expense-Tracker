@@ -1,11 +1,12 @@
 package app.expense.tracker.ui.views.expense
 
 import AutoCompleteTextField
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,7 +48,7 @@ fun CategoryView(
                 }
             },
             onCategorySelect = { value ->
-                categories.value = categories.value.toMutableList().apply { add(value) }
+                categories.value = categories.value.toMutableList().apply { add(value.trim()) }
                 category.value = ""
             },
             modifier = Modifier
@@ -55,9 +56,14 @@ fun CategoryView(
                 .padding(16.dp)
         )
         if (categories.value.isNotEmpty()) {
-            LazyRow(modifier = Modifier.padding(16.dp)) {
-                items(categories.value) { item ->
+            Row(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 4.dp)
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                categories.value.forEach { item ->
                     InputChip(
+                        modifier = Modifier.padding(end = 4.dp),
                         selected = true,
                         label = { Text(text = item) },
                         onClick = {

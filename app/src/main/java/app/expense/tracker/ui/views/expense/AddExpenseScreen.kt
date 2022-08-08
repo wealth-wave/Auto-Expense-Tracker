@@ -1,5 +1,6 @@
 package app.expense.tracker.ui.views.expense
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
@@ -62,7 +64,7 @@ fun AddExpenseScreen(
     Scaffold(
         topBar = {
             SmallTopAppBar(
-                title = { Text(text = "Add Expense") },
+                title = { Text(text = if (expenseId == null) "Add Expense" else "Edit Expense") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Go Back")
@@ -116,6 +118,17 @@ fun AddExpenseScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+
+            if (addExpenseViewState.value.suggestionMessage != null) {
+                Text(
+                    text = addExpenseViewState.value.suggestionMessage ?: "",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .background(color = MaterialTheme.colorScheme.background)
+                )
+            }
+
             TextField(
                 label = { Text(text = "Amount") },
                 modifier = Modifier
@@ -129,8 +142,8 @@ fun AddExpenseScreen(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Next
-                )
+                    imeAction = ImeAction.Next,
+                ),
             )
 
             PaidToView(paidTo = paidTo)
