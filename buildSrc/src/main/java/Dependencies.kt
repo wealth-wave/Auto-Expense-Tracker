@@ -47,7 +47,7 @@ object Deps {
     }
 
     object Room {
-        private const val ROOM_VERSION = "2.4.2"
+        private const val ROOM_VERSION = "2.4.3"
 
         const val RUNTIME = "androidx.room:room-runtime:$ROOM_VERSION"
         const val KTX = "androidx.room:room-ktx:$ROOM_VERSION"
@@ -76,7 +76,7 @@ object Deps {
     }
 
     object Hilt {
-        private const val HILT_VERSION = "2.38.1"
+        private const val HILT_VERSION = "2.42"
         private const val HILT_OTHER_JETPACK_VERSION = "1.0.0"
 
         const val HILT = "com.google.dagger:hilt-android:$HILT_VERSION"

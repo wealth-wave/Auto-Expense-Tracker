@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,7 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarScrollState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -69,7 +68,7 @@ fun DashboardScreen(
     navController: NavController
 ) {
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarScrollState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         bottomBar = {
@@ -82,8 +81,6 @@ fun DashboardScreen(
                 floatingActionButton = {
                     FloatingActionButton(
                         onClick = { navController.navigate("addExpense") },
-                        containerColor = BottomAppBarDefaults.FloatingActionButtonContainerColor,
-                        elevation = BottomAppBarDefaults.FloatingActionButtonElevation
                     ) {
                         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Expense")
                     }
@@ -106,7 +103,7 @@ fun DashboardScreen(
                         "The SMS permission is important for this app. Please grant the permission."
                     } else {
                         "SMS permission required for this feature to be available. " +
-                            "Please grant the permission"
+                                "Please grant the permission"
                     }
                     Text(textToShow)
                     Button(onClick = { smsPermissionState.launchPermissionRequest() }) {
@@ -210,7 +207,6 @@ private fun ScreenViewContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SuggestionView(
     pos: Int,
@@ -268,7 +264,6 @@ private fun SpentView(totalExpenses: Double, modifier: Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpenseView(
     pos: Int,

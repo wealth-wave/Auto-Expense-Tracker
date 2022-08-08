@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
+    id(BuildPlugins.HILT)
     kotlin("android")
     kotlin("kapt")
-    id(BuildPlugins.HILT)
 }
 
 android {
