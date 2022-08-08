@@ -108,7 +108,11 @@ class SuggestionParserHelper {
 
     fun getAmountSpent(processedMessage: String): Double? {
         val messageArray = processedMessage.split(" ").filter { s -> s != "" }
-        val index = messageArray.indexOf("rs.")
+        val index = when {
+            messageArray.contains("rs.") -> messageArray.indexOf("rs.")
+            messageArray.contains("inr") -> messageArray.indexOf("inr")
+            else -> -1
+        }
 
         if (index != -1) {
             var money = messageArray[index + 1]

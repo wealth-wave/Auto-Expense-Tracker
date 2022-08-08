@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -42,6 +43,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,17 +57,19 @@ import app.expense.presentation.viewModels.DashBoardViewModel
 import app.expense.presentation.viewStates.DashBoardViewState
 import app.expense.presentation.viewStates.DateRange
 import app.expense.presentation.viewStates.ExpenseDate
-import app.expense.tracker.ui.utils.ColorGenerator
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.launch
 import java.util.*
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun DashboardScreen(
     navController: NavController
 ) {
-
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarScrollState())
     Scaffold(
@@ -89,7 +93,30 @@ fun DashboardScreen(
             )
         },
     ) { paddingValues ->
-        ScreenViewContent(navController, paddingValues)
+
+        val smsPermissionState = rememberPermissionState(
+            android.Manifest.permission.READ_SMS
+        )
+
+        when (smsPermissionState.status) {
+            PermissionStatus.Granted -> {
+                ScreenViewContent(navController, paddingValues)
+            }
+            else -> {
+                Column {
+                    val textToShow = if (smsPermissionState.status.shouldShowRationale) {
+                        "The SMS permission is important for this app. Please grant the permission."
+                    } else {
+                        "SMS permission required for this feature to be available. " +
+                                "Please grant the permission"
+                    }
+                    Text(textToShow)
+                    Button(onClick = { smsPermissionState.launchPermissionRequest() }) {
+                        Text("Request permission")
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -142,28 +169,41 @@ private fun ScreenViewContent(
                     })
         }
 
-        LazyColumn() {
-            items(dashBoardViewState.value.suggestions.keys.size + dashBoardViewState.value.expenses.keys.size) { pos ->
-                val expensePos = pos - dashBoardViewState.value.suggestions.keys.size
-                if (pos < dashBoardViewState.value.suggestions.keys.size) {
-                    SuggestionView(
-                        pos = pos,
-                        suggestionMap = dashBoardViewState.value.suggestions,
-                        navController = navController,
-                        onDeleteSuggestion = { id ->
-                            coroutineScope.launch {
-                                viewModel.deleteSuggestion(id)
+        if (dashBoardViewState.value.suggestions.isEmpty() && dashBoardViewState.value.expenses.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(imageVector = Icons.Filled.Face, contentDescription = "Empty expenses")
+                Text(text = "Hooray, No Expenses", style = MaterialTheme.typography.bodyLarge)
+            }
+        } else {
+            LazyColumn {
+                items(dashBoardViewState.value.suggestions.keys.size + dashBoardViewState.value.expenses.keys.size) { pos ->
+                    val expensePos = pos - dashBoardViewState.value.suggestions.keys.size
+                    if (pos < dashBoardViewState.value.suggestions.keys.size) {
+                        SuggestionView(
+                            pos = pos,
+                            suggestionMap = dashBoardViewState.value.suggestions,
+                            navController = navController,
+                            onDeleteSuggestion = { id ->
+                                coroutineScope.launch {
+                                    viewModel.deleteSuggestion(id)
+                                }
                             }
-                        }
-                    )
-                } else if (expensePos < dashBoardViewState.value.expenses.keys.size) {
-                    ExpenseView(
-                        pos = expensePos,
-                        expenseMap = dashBoardViewState.value.expenses,
-                        onClick = { expenseId ->
-                            navController.navigate("editExpense/${expenseId}")
-                        }
-                    )
+                        )
+                    } else if (expensePos < dashBoardViewState.value.expenses.keys.size) {
+                        ExpenseView(
+                            pos = expensePos,
+                            expenseMap = dashBoardViewState.value.expenses,
+                            onClick = { expenseId ->
+                                navController.navigate("editExpense/${expenseId}")
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -253,41 +293,6 @@ private fun ExpenseView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ExpensesView(
-    navController: NavController,
-    expenseMap: Map<ExpenseDate, List<Expense>>,
-    modifier: Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding()
-    ) {
-        if (expenseMap.isNotEmpty()) {
-
-            LazyColumn() {
-                items(expenseMap.keys.size) { pos ->
-
-
-                }
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Image(imageVector = Icons.Filled.Face, contentDescription = "Empty expenses")
-                Text(text = "Hooray, No Expenses", style = MaterialTheme.typography.bodyLarge)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 private fun ExpenseItemView(
     expense: Expense,
     onClick: (expenseId: Long) -> Unit
@@ -308,9 +313,7 @@ private fun ExpenseItemView(
                 .padding(4.dp)
                 .drawBehind {
                     drawCircle(
-                        color = ColorGenerator.MATERIAL.getColor(
-                            expense.paidTo ?: "U"
-                        ),
+                        color = Color.LightGray,
                         radius = this.size.maxDimension
                     )
                 },

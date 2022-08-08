@@ -69,6 +69,9 @@ dependencies {
     debugImplementation(Deps.Compose.DEBUG_MANIFEST)
     androidTestImplementation(Deps.Compose.ANDROID_UI_TEST)
 
+    //Permission
+    implementation(Deps.Accompanies.DEPS)
+
     //Navigation
     implementation(Deps.Navigation.NAV_COMPOSE)
 

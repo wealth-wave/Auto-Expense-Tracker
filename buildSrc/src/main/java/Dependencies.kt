@@ -91,6 +91,10 @@ object Deps {
         const val RUNTIME = "androidx.work:work-runtime-ktx:2.7.1"
     }
 
+    object Accompanies {
+        const val DEPS = "com.google.accompanist:accompanist-permissions:0.26.0-alpha"
+    }
+
     object Modules {
         const val PRESENTATION = ":presentation"
         const val DOMAIN = ":domain"

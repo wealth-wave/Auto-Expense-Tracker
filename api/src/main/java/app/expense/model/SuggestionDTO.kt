@@ -12,5 +12,4 @@ class SuggestionDTO(
     @ColumnInfo(name = "time") val time: Long,
     @ColumnInfo(name = "reference_message") val referenceMessage: String,
     @ColumnInfo(name = "reference_message_sender") val referenceMessageSender: String
-) {
-}
+)

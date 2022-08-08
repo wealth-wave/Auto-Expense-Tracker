@@ -34,7 +34,7 @@ fun CategoryView(
 
     val coroutineScope = rememberCoroutineScope()
     val suggestions = viewModel.categoriesState.collectAsState()
-    val category = rememberSaveable() { mutableStateOf("") }
+    val category = rememberSaveable { mutableStateOf("") }
 
     Column {
         AutoCompleteTextField(
