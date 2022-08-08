@@ -7,13 +7,13 @@ component Presentation
 note right of Presentation: Presentation Module holding\nViewModel and Presentation logics
 
 component Domain
-note right of Domain: Domain logic module\nholds pure domain related logics
+note right of Domain: Domain logic module\n holds pure domain related logics
 
 component Api
-note right of Api: API Module\nholds logic of Android DB and Network call related stuff
+note right of Api: API Module\n holds logic of Android DB and Network call related stuff
 
 component Contract
-note right of Contract: Modile for\nholding contract related data class
+note right of Contract: Module for\n holding contract related data class
 
 
 App --> Presentation

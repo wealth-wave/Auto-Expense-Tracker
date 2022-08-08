@@ -1,3 +1,5 @@
+package app.expense.tracker.ui.views.dashboard
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.AssistChip

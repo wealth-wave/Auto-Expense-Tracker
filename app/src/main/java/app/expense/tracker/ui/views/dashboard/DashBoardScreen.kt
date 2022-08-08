@@ -1,6 +1,5 @@
 package app.expense.tracker.ui.views.dashboard
 
-import DateRangeSelectorView
 import android.icu.lang.UCharacter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -357,7 +356,7 @@ private fun ExpenseItemView(
 }
 
 /**
- * Currently preview does not support viewmodel provided by hilt as it expects AndroidEntryPoint
+ * Currently preview does not support view model provided by hilt as it expects AndroidEntryPoint
  */
 @Preview
 @Composable

@@ -1,4 +1,4 @@
-package app.expense.tracker.ui.views.expense
+package app.expense.tracker.ui.utils
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
