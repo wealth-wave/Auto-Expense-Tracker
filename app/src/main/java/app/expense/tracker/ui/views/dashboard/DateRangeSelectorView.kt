@@ -1,3 +1,5 @@
+package app.expense.tracker.ui.views.dashboard
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.AssistChip
@@ -25,8 +27,8 @@ fun DateRangeSelectorView(
 
     val options = listOf(
         Pair("This Month", DateRange.ThisMonth),
-        Pair("Last 30 Days", DateRange.ThisMonth),
-        Pair("Previous Month", DateRange.ThisMonth)
+        Pair("Last 30 Days", DateRange.Last30Days),
+        Pair("Previous Month", DateRange.LastMonth)
     )
 
     var expanded by remember { mutableStateOf(false) }

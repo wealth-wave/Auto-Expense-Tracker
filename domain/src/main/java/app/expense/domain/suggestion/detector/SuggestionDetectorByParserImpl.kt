@@ -30,6 +30,4 @@ class SuggestionDetectorByParserImpl(private val suggestionParserHelper: Suggest
 
         return null
     }
-
-
 }

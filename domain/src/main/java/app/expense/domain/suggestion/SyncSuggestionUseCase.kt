@@ -14,7 +14,6 @@ class SyncSuggestionUseCase(
     private val suggestionDetector: SuggestionDetector
 ) {
 
-
     @RequiresPermission(Manifest.permission.READ_SMS)
     suspend fun sync() {
         val startTime = System.currentTimeMillis()
@@ -26,18 +25,19 @@ class SyncSuggestionUseCase(
         val suggestions: List<Suggestion> =
             smsReadAPI.getAllSms(lastSyncedTime).mapNotNull { smsMessage ->
                 suggestionDetector.detectSuggestions(smsMessage)
-
             }
 
-        suggestionSyncAPI.storeSuggestions(suggestions.map { suggestion ->
-            SuggestionDTO(
-                amount = suggestion.amount,
-                paidTo = suggestion.paidTo,
-                time = suggestion.time,
-                referenceMessage = suggestion.referenceMessage,
-                referenceMessageSender = suggestion.referenceMessageSender
-            )
-        })
+        suggestionSyncAPI.storeSuggestions(
+            suggestions.map { suggestion ->
+                SuggestionDTO(
+                    amount = suggestion.amount,
+                    paidTo = suggestion.paidTo,
+                    time = suggestion.time,
+                    referenceMessage = suggestion.referenceMessage,
+                    referenceMessageSender = suggestion.referenceMessageSender
+                )
+            }
+        )
 
         suggestionSyncAPI.setLastSyncedTime(startTime)
     }

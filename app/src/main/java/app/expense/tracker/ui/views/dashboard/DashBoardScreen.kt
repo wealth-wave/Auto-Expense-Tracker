@@ -1,6 +1,5 @@
 package app.expense.tracker.ui.views.dashboard
 
-import DateRangeSelectorView
 import android.icu.lang.UCharacter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,7 +21,6 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,7 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarScrollState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -62,8 +60,7 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.launch
-import java.util.*
-
+import java.util.Locale.getDefault
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -71,7 +68,7 @@ fun DashboardScreen(
     navController: NavController
 ) {
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarScrollState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         bottomBar = {
@@ -84,8 +81,6 @@ fun DashboardScreen(
                 floatingActionButton = {
                     FloatingActionButton(
                         onClick = { navController.navigate("addExpense") },
-                        containerColor = BottomAppBarDefaults.FloatingActionButtonContainerColor,
-                        elevation = BottomAppBarDefaults.FloatingActionButtonElevation
                     ) {
                         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Expense")
                     }
@@ -108,7 +103,7 @@ fun DashboardScreen(
                         "The SMS permission is important for this app. Please grant the permission."
                     } else {
                         "SMS permission required for this feature to be available. " +
-                                "Please grant the permission"
+                            "Please grant the permission"
                     }
                     Text(textToShow)
                     Button(onClick = { smsPermissionState.launchPermissionRequest() }) {
@@ -156,7 +151,8 @@ private fun ScreenViewContent(
                     .padding(start = 16.dp, top = 16.dp),
                 onRangeSelect = { expenseDateRange ->
                     dateRangeState.value = expenseDateRange
-                })
+                }
+            )
 
             SpentView(
                 totalExpenses = dashBoardViewState.value.totalExpense,
@@ -166,7 +162,8 @@ private fun ScreenViewContent(
                         top.linkTo(dateSelector.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    })
+                    }
+            )
         }
 
         if (dashBoardViewState.value.suggestions.isEmpty() && dashBoardViewState.value.expenses.isEmpty()) {
@@ -200,7 +197,7 @@ private fun ScreenViewContent(
                             pos = expensePos,
                             expenseMap = dashBoardViewState.value.expenses,
                             onClick = { expenseId ->
-                                navController.navigate("editExpense/${expenseId}")
+                                navController.navigate("editExpense/$expenseId")
                             }
                         )
                     }
@@ -210,7 +207,6 @@ private fun ScreenViewContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SuggestionView(
     pos: Int,
@@ -268,8 +264,6 @@ private fun SpentView(totalExpenses: Double, modifier: Modifier) {
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpenseView(
     pos: Int,
@@ -307,7 +301,6 @@ private fun ExpenseItemView(
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-
         Text(
             modifier = Modifier
                 .padding(4.dp)
@@ -321,16 +314,16 @@ private fun ExpenseItemView(
             style = MaterialTheme.typography.bodyLarge
         )
 
-
         Spacer(modifier = Modifier.padding(start = 20.dp))
         Column {
             Text(
                 text = UCharacter.toTitleCase(
-                    Locale.getDefault(),
+                    getDefault(),
                     expense.paidTo ?: "Unknown",
                     null,
                     0
-                ), style = MaterialTheme.typography.titleMedium
+                ),
+                style = MaterialTheme.typography.titleMedium
             )
             if (expense.categories.isNotEmpty()) {
                 Row(
@@ -348,8 +341,6 @@ private fun ExpenseItemView(
                             }
                         )
                     }
-
-
                 }
             }
         }
@@ -360,7 +351,7 @@ private fun ExpenseItemView(
 }
 
 /**
- * Currently preview does not support viewmodel provided by hilt as it expects AndroidEntryPoint
+ * Currently preview does not support view model provided by hilt as it expects AndroidEntryPoint
  */
 @Preview
 @Composable

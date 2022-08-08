@@ -35,23 +35,26 @@ android {
 }
 
 dependencies {
-    //Core
+    // Core
     implementation(Deps.Core.DEPENDENCY)
 
-    //Compose
+    // Compose
     implementation(Deps.Compose.RUNTIME)
 
-    //Coroutines
+    // Coroutines
     implementation(Deps.Coroutines.DEP)
 
-    //Test
+    // Test
     testImplementation(Deps.JUnit.TEST)
 
-    //Hilt
+    // Hilt
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
 
-    //Modules
+    // Truth
+    testImplementation(Deps.Truth.TEST)
+
+    // Modules
     implementation(project(Deps.Modules.DOMAIN))
     implementation(project(Deps.Modules.CONTRACT))
 }

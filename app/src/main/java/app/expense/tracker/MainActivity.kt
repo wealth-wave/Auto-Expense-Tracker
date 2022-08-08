@@ -42,9 +42,11 @@ class MainActivity : ComponentActivity() {
                         composable("addExpense") { AddExpenseScreen(navController) }
                         composable(
                             "editExpense/{expenseId}",
-                            arguments = listOf(navArgument("expenseId") {
-                                type = NavType.LongType
-                            })
+                            arguments = listOf(
+                                navArgument("expenseId") {
+                                    type = NavType.LongType
+                                }
+                            )
                         ) { navBackStackEntry ->
                             AddExpenseScreen(
                                 navController,
@@ -53,9 +55,11 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(
                             "suggestExpense/{suggestionId}",
-                            arguments = listOf(navArgument("suggestionId") {
-                                type = NavType.LongType
-                            })
+                            arguments = listOf(
+                                navArgument("suggestionId") {
+                                    type = NavType.LongType
+                                }
+                            )
                         ) { backStackEntry ->
                             AddExpenseScreen(
                                 navController = navController,

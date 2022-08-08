@@ -1,6 +1,5 @@
 package app.expense.tracker.ui.views.expense
 
-import AutoCompleteTextField
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.expense.presentation.viewModels.PaidToViewModel
+import app.expense.tracker.ui.utils.AutoCompleteTextField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

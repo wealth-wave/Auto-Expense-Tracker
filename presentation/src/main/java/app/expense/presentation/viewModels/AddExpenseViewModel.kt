@@ -41,11 +41,10 @@ class AddExpenseViewModel @Inject constructor(
                         time = expense.time
                     )
                 }
-
             }
         } else if (suggestionId != null) {
             fetchSuggestionUseCase.getSuggestion(suggestionId).collect { suggestion ->
-                //TODO Get category based on paidTo by ML or other intelligent way
+                // TODO Get category based on paidTo by ML or other intelligent way
                 if (suggestion != null) {
                     _addExpenseViewStateFlow.value = AddExpenseViewState(
                         amount = suggestion.amount.toString(),
@@ -55,7 +54,6 @@ class AddExpenseViewModel @Inject constructor(
                     )
                 }
             }
-
         }
     }
 

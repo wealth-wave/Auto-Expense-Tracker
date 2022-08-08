@@ -12,7 +12,7 @@ class SuggestionDetectorByParserImplTest {
 
     @Before
     fun setUp() {
-        //Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
+        // Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
         suggestionDetectorByParserImpl = SuggestionDetectorByParserImpl(SuggestionParserHelper())
     }
 
@@ -27,7 +27,7 @@ class SuggestionDetectorByParserImplTest {
         assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isEqualTo(
             Suggestion(
                 amount = 21660.00,
-                paidTo = "1111",
+                paidTo = null,
                 time = 1L,
                 referenceMessage = "Thanks for paying Rs.21,660.00 from A/c XXXX1111 to CBDTTAX via HDFC Bank NetBanking. Call 18002586161 if txn not done by you.",
                 referenceMessageSender = "HDFC"
@@ -59,5 +59,4 @@ class SuggestionDetectorByParserImplTest {
             assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isNotNull()
         }
     }
-
 }

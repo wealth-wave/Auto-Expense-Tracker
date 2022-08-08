@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import app.expense.presentation.viewModels.AddExpenseViewModel
+import app.expense.tracker.ui.utils.DateTimePickerView
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,8 +55,10 @@ fun AddExpenseScreen(
         rememberSaveable(addExpenseViewState.value.categories) { mutableStateOf(addExpenseViewState.value.categories) }
     val time =
         rememberSaveable(addExpenseViewState.value.time) { mutableStateOf(addExpenseViewState.value.time) }
-    val isFormValid = derivedStateOf {
-        amount.value.toDoubleOrNull() != null
+    val isFormValid = remember(amount.value) {
+        derivedStateOf {
+            amount.value.toDoubleOrNull() != null
+        }
     }
 
     LaunchedEffect(key1 = "${expenseId ?: ""} ${suggestionId ?: ""}") {

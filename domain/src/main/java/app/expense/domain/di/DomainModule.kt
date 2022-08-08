@@ -14,7 +14,6 @@ import app.expense.domain.expense.FetchExpenseUseCase
 import app.expense.domain.expense.FetchPaidToUseCase
 import app.expense.domain.mappers.DataMapper
 import app.expense.domain.smsTemplate.SMSTemplateMatcher
-import app.expense.domain.smsTemplate.SMSTemplateProvider
 import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.domain.suggestion.SyncSuggestionUseCase
 import app.expense.domain.suggestion.detector.SuggestionDetector
@@ -28,11 +27,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 class DomainModule {
-
-    @Provides
-    fun provideSMSTemplateProvider(): SMSTemplateProvider {
-        return SMSTemplateProvider()
-    }
 
     @Provides
     fun provideSMSTemplateMatcher(): SMSTemplateMatcher {

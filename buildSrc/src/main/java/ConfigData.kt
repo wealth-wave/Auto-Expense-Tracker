@@ -5,6 +5,6 @@ object ConfigData {
     const val targetSdkVersion = 32
     const val versionCode = 1
     const val versionName = "dev"
-    const val kotlinCompilerVersion = "1.1.1"
+    const val kotlinCompilerVersion = "1.2.0"
     const val jvmVersion = "1.8"
 }

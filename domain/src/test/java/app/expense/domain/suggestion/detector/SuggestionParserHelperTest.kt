@@ -1,10 +1,8 @@
 package app.expense.domain.suggestion.detector
 
-
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
-
 
 class SuggestionParserHelperTest {
 
@@ -27,7 +25,7 @@ class SuggestionParserHelperTest {
         val smsMessage =
             "UPDATE: Your A/c XX1234 credited with INR 15,160.00 on 12-34-1234 by A/c linked to mobile no XX12XX(IMPS Ref No. XX123XXXXX123) Available bal: INR 2,088,505.04"
         val expectedMessage =
-            "update your ac 1234 credited with rs. 15,160.00 on 12341234 by ac linked to mobile no 12(imps ref  123123) available bal rs. 2,088,505.04"
+            "update  your a c 1234 credited rs.  15,160.00 on 12 34 1234 by a c linked to mobile no 12(imps ref  123123) available bal  rs.  2,088,505.04"
 
         assertThat(suggestionParserHelper.processMessage(smsMessage)).isEqualTo(expectedMessage)
     }
@@ -37,7 +35,7 @@ class SuggestionParserHelperTest {
         val smsMessage =
             "thank you for using your kotak debit card 1234 for rs. 56.00 at xyz on 12345.avl bal rs. 7,281.19.you?visit kotak.comfraud"
         val expectedMessage =
-            "thank you for using your kotak debit card 1234 for rs. 56.00 at yz on 12345.avl bal rs. 7,281.19.you?visit kotak.comfraud"
+            "thank you for using your kotak debit card 1234 for rs.  56.00 at yz on 12345.avl bal rs.  7,281.19.you?visit kotak.comfraud"
         assertThat(suggestionParserHelper.processMessage(smsMessage)).isEqualTo(expectedMessage)
     }
 

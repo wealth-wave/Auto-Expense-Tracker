@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
+    id(BuildPlugins.HILT)
     kotlin("android")
     kotlin("kapt")
-    id(BuildPlugins.HILT)
 }
 
 android {
@@ -30,26 +30,26 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        val options = this as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+        val options = this
         options.jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    //Room
+    // Room
     implementation(Deps.Room.RUNTIME)
     implementation(Deps.Room.KTX)
     kapt(Deps.Room.KAPT_COMPILER)
 
-    //Hilt
+    // Hilt
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
 
-    //Junit
+    // Junit
     testImplementation(Deps.JUnit.TEST)
     androidTestImplementation(Deps.JUnit.ANDROID_TEST)
 
-    //Modules
+    // Modules
     implementation(project(Deps.Modules.CONTRACT))
 }
 

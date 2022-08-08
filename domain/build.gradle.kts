@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
+    id(BuildPlugins.HILT)
     kotlin("android")
     kotlin("kapt")
-    id(BuildPlugins.HILT)
 }
 
 android {
@@ -35,23 +35,23 @@ android {
 }
 
 dependencies {
-    //Hilt
+    // Hilt
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
 
-    //Coroutines
+    // Coroutines
     implementation(Deps.Coroutines.DEP)
 
-    //Junit
+    // Junit
     testImplementation(Deps.JUnit.TEST)
 
-    //Mockk
+    // Mockk
     testImplementation(Deps.Mockk.TEST)
 
-    //Truth
+    // Truth
     testImplementation(Deps.Truth.TEST)
 
-    //Modules
+    // Modules
     implementation(project(Deps.Modules.API))
     implementation(project(Deps.Modules.CONTRACT))
 }
