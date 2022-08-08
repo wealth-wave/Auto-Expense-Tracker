@@ -31,10 +31,10 @@ object Deps {
     }
 
     object Compose {
-        private const val COMPOSE_VERSION = "1.3.0-alpha01"
+        private const val COMPOSE_VERSION = "1.2.0"
 
         const val UI = "androidx.compose.ui:ui:$COMPOSE_VERSION"
-        const val MATERIAL3 = "androidx.compose.material3:material3:1.0.0-alpha14"
+        const val MATERIAL3 = "androidx.compose.material3:material3:1.0.0-alpha15"
         const val PREVIEW = "androidx.compose.ui:ui-tooling-preview:1.1.1"
         const val CONSTRAINT = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
         const val ACTIVITY = "androidx.activity:activity-compose:1.5.0"
