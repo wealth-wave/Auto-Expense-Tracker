@@ -103,7 +103,7 @@ fun DashboardScreen(
                         "The SMS permission is important for this app. Please grant the permission."
                     } else {
                         "SMS permission required for this feature to be available. " +
-                                "Please grant the permission"
+                            "Please grant the permission"
                     }
                     Text(textToShow)
                     Button(onClick = { smsPermissionState.launchPermissionRequest() }) {
