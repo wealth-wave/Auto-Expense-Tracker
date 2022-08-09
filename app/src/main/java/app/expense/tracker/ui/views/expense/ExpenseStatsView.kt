@@ -21,18 +21,17 @@ import java.text.NumberFormat
 
 @Composable
 fun ExpenseStatsView(
-    modifier: Modifier = Modifier,
     viewModel: ExpenseStatsViewModel = hiltViewModel()
 ) {
 
     val expenseStats =
         viewModel.getExpenseStats().collectAsState(initial = ExpenseStats()).value
     Card(
-        modifier = modifier
-            .padding(dimensionResource(id = R.dimen.default_padding))
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.default_padding))
             .fillMaxWidth()
     ) {
-        Box(modifier = modifier.padding(dimensionResource(R.dimen.default_padding))) {
+        Box(modifier = Modifier.padding(dimensionResource(R.dimen.default_padding))) {
             if (expenseStats.monthlySpent.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_expenses),

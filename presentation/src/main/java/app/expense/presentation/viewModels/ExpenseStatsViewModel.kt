@@ -39,6 +39,6 @@ class ExpenseStatsViewModel @Inject constructor(
             .mapValues { mapEntry ->
                 mapEntry.value.sumOf { expense -> expense.amount }
             }.mapKeys { mapEntry ->
-                Month.of(mapEntry.key).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+                Month.of(mapEntry.key + 1).getDisplayName(TextStyle.SHORT, Locale.getDefault())
             }
 }
