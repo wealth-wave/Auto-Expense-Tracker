@@ -1,4 +1,4 @@
-package app.expense.tracker.ui.views.dashboard
+package app.expense.tracker.ui.views.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
