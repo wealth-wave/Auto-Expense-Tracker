@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ExpenseScreen() {
+fun ExpenseScreen(onEditExpense: (expenseId: Long) -> Unit) {
     Column {
         ExpenseStatsView()
-        ExpenseListView()
+        ExpenseListView(onEditExpense = onEditExpense)
     }
 
 }

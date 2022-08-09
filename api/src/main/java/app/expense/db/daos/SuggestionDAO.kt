@@ -12,11 +12,11 @@ interface SuggestionDAO {
     @Insert
     suspend fun insertAll(suggestions: List<SuggestionDTO>)
 
-    @Query("SELECT * FROM `suggestion` WHERE time < :from AND time > :upTo ORDER BY time DESC")
-    fun fetchSuggestions(from: Long, upTo: Long): Flow<List<SuggestionDTO>>
+    @Query("SELECT * FROM `suggestion` WHERE time > :from AND time < :to ORDER BY time DESC")
+    fun fetchSuggestions(from: Long, to: Long): Flow<List<SuggestionDTO>>
 
-    @Query("SELECT * FROM `suggestion` WHERE time > :upTo ORDER BY time DESC")
-    fun fetchSuggestions(upTo: Long): Flow<List<SuggestionDTO>>
+    @Query("SELECT * FROM `suggestion` WHERE time > :from ORDER BY time DESC")
+    fun fetchSuggestions(from: Long): Flow<List<SuggestionDTO>>
 
     @Query("SELECT * FROM `suggestion` WHERE id = :id")
     fun fetchSuggestion(id: Long): Flow<SuggestionDTO>

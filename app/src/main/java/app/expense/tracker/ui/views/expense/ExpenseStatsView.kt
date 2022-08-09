@@ -17,7 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import app.expense.presentation.viewModels.ExpenseStatsViewModel
 import app.expense.presentation.viewStates.ExpenseStats
 import app.expense.tracker.R
-import java.text.NumberFormat
 
 @Composable
 fun ExpenseStatsView(
@@ -48,7 +47,7 @@ fun ExpenseStatsView(
                     )
                     Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.small_gap)))
                     Text(
-                        text = NumberFormat.getCurrencyInstance().format(lastMonthExpense),
+                        text = lastMonthExpense,
                         style = MaterialTheme.typography.displayMedium
                     )
                 }

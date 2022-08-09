@@ -8,6 +8,7 @@ import app.expense.presentation.viewStates.ExpenseStats
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.text.NumberFormat
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.*
@@ -29,7 +30,7 @@ class ExpenseStatsViewModel @Inject constructor(
         }
     }
 
-    private fun getMonthlySpent(expenses: List<Expense>): Map<String, Double> =
+    private fun getMonthlySpent(expenses: List<Expense>): Map<String, String> =
         expenses
             .groupBy { expense ->
                 val calendar = Calendar.getInstance()
@@ -37,7 +38,8 @@ class ExpenseStatsViewModel @Inject constructor(
                 calendar.get(Calendar.MONTH)
             }.toSortedMap()
             .mapValues { mapEntry ->
-                mapEntry.value.sumOf { expense -> expense.amount }
+                val totalAmount = mapEntry.value.sumOf { expense -> expense.amount }
+                NumberFormat.getCurrencyInstance().format(totalAmount)
             }.mapKeys { mapEntry ->
                 Month.of(mapEntry.key + 1).getDisplayName(TextStyle.SHORT, Locale.getDefault())
             }

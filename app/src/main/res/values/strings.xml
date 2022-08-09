@@ -5,4 +5,8 @@
     <string name="net_spend">Net %s Spend</string>
     <string name="no_expenses">No Expenses so far</string>
     <string name="unknown_paid_to">Others</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="transactions">Transactions</string>
+    <string name="add_to_expense">Add To Expense</string>
+    <string name="ignore">Ignore</string>
 </resources>

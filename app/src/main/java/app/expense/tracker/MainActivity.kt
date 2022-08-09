@@ -39,16 +39,30 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = ScreenRoute.Home.ROUTE,
+                        startDestination = ScreenRoute.Home.TEMPLATE,
                     ) {
-                        composable(ScreenRoute.Home.ROUTE) {
-                            HomeScreen(onAddExpenseClicked = {
-                                navController.navigate(ScreenRoute.AddExpense.ROUTE)
-                            })
+                        composable(ScreenRoute.Home.TEMPLATE) {
+                            HomeScreen(
+                                onAddExpense = { navController.navigate(ScreenRoute.AddExpense.TEMPLATE) },
+                                onEditExpense = { expenseId ->
+                                    navController.navigate(
+                                        ScreenRoute.EditExpense.getEditExpenseRoute(
+                                            expenseId
+                                        )
+                                    )
+                                },
+                                onAddSuggestion = { suggestionId ->
+                                    navController.navigate(
+                                        ScreenRoute.SuggestExpense.getSuggestExpenseRoute(
+                                            suggestionId
+                                        )
+                                    )
+                                }
+                            )
                         }
-                        composable(ScreenRoute.AddExpense.ROUTE) { AddExpenseScreen(navController) }
+                        composable(ScreenRoute.AddExpense.TEMPLATE) { AddExpenseScreen(navController) }
                         composable(
-                            route = ScreenRoute.EditExpense.ROUTE,
+                            route = ScreenRoute.EditExpense.TEMPLATE,
                             arguments = listOf(
                                 navArgument(ScreenRoute.EditExpense.EXPENSE_ID_ARG) {
                                     type = NavType.LongType
@@ -61,7 +75,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(
-                            route = ScreenRoute.SuggestExpense.ROUTE,
+                            route = ScreenRoute.SuggestExpense.TEMPLATE,
                             arguments = listOf(
                                 navArgument(ScreenRoute.SuggestExpense.SUGGESTION_ID_ARG) {
                                     type = NavType.LongType

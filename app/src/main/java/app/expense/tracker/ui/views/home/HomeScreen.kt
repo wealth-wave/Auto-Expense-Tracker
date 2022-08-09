@@ -28,21 +28,22 @@ import app.expense.tracker.ui.utils.ScreenRoute
 import app.expense.tracker.ui.utils.replace
 import app.expense.tracker.ui.views.expense.ExpenseScreen
 import app.expense.tracker.ui.views.suggestions.SuggestionsScreen
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onAddExpenseClicked: () -> Unit
+    onAddExpense: () -> Unit,
+    onEditExpense: (expenseId: Long) -> Unit,
+    onAddSuggestion: (suggestionId: Long) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val navController = rememberNavController()
-    val currentSelectedRoute = remember { mutableStateOf(ScreenRoute.Expense.ROUTE) }
+    val currentSelectedRoute = remember { mutableStateOf(ScreenRoute.Expense.TEMPLATE) }
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onAddExpenseClicked() },
+                onClick = { onAddExpense() },
             ) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Expense")
             }
@@ -52,17 +53,17 @@ fun HomeScreen(
             NavigationBar {
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Home, contentDescription = null) },
-                    selected = currentSelectedRoute.value == ScreenRoute.Expense.ROUTE,
+                    selected = currentSelectedRoute.value == ScreenRoute.Expense.TEMPLATE,
                     onClick = {
-                        currentSelectedRoute.value = ScreenRoute.Expense.ROUTE
+                        currentSelectedRoute.value = ScreenRoute.Expense.TEMPLATE
                         navController.replace(currentSelectedRoute.value)
                     }
                 )
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Notifications, contentDescription = null) },
-                    selected = currentSelectedRoute.value == ScreenRoute.Suggestions.ROUTE,
+                    selected = currentSelectedRoute.value == ScreenRoute.Suggestions.TEMPLATE,
                     onClick = {
-                        currentSelectedRoute.value = ScreenRoute.Suggestions.ROUTE
+                        currentSelectedRoute.value = ScreenRoute.Suggestions.TEMPLATE
                         navController.replace(currentSelectedRoute.value)
                     }
                 )
@@ -74,10 +75,10 @@ fun HomeScreen(
                 .padding(paddingValues)
                 .fillMaxSize(),
             navController = navController,
-            startDestination = ScreenRoute.Expense.ROUTE,
+            startDestination = ScreenRoute.Expense.TEMPLATE,
         ) {
-            composable(ScreenRoute.Expense.ROUTE) { ExpenseScreen() }
-            composable(ScreenRoute.Suggestions.ROUTE) { SuggestionsScreen() }
+            composable(ScreenRoute.Expense.TEMPLATE) { ExpenseScreen(onEditExpense = onEditExpense) }
+            composable(ScreenRoute.Suggestions.TEMPLATE) { SuggestionsScreen(onAddSuggestion = onAddSuggestion) }
         }
     }
 }
@@ -89,5 +90,5 @@ fun HomeScreen(
 @Preview
 @Composable
 fun PreviewDashBoardView() {
-    HomeScreen {}
+    HomeScreen({}, {}, {})
 }

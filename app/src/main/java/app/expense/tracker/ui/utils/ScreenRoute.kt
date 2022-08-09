@@ -3,32 +3,32 @@ package app.expense.tracker.ui.utils
 object ScreenRoute {
 
     object Home {
-        const val ROUTE = "home"
+        const val TEMPLATE = "home"
     }
 
     object Expense {
-        const val ROUTE = "expense"
+        const val TEMPLATE = "expense"
     }
 
     object Suggestions {
-        const val ROUTE = "home/suggestions"
+        const val TEMPLATE = "suggestions"
     }
 
     object AddExpense {
-        const val ROUTE = "add_expense"
+        const val TEMPLATE = "expense/new"
     }
 
     object SuggestExpense {
-        const val ROUTE = "suggest_expense/{suggestion_id}"
+        const val TEMPLATE = "suggest_expense/{suggestion_id}"
         const val SUGGESTION_ID_ARG = "suggestion_id"
 
-        fun getSuggestExpense(suggestionId: Long) = "suggest_expense/$suggestionId"
+        fun getSuggestExpenseRoute(suggestionId: Long) = "suggest_expense/$suggestionId"
     }
 
     object EditExpense {
-        const val ROUTE = "edit_expense/{expense_id}"
+        const val TEMPLATE = "edit_expense/{expense_id}"
         const val EXPENSE_ID_ARG = "expense_id"
 
-        fun getEditExpense(expenseId: Long) = "edit_expense/$expenseId"
+        fun getEditExpenseRoute(expenseId: Long) = "edit_expense/$expenseId"
     }
 }

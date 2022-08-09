@@ -4,9 +4,10 @@ import android.icu.text.NumberFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
-import app.expense.domain.expense.Expense
-import app.expense.domain.expense.FetchExpenseUseCase
-import app.expense.presentation.viewStates.ExpenseListState
+import app.expense.domain.expense.DeleteSuggestionUseCase
+import app.expense.domain.suggestion.FetchSuggestionUseCase
+import app.expense.domain.suggestion.Suggestion
+import app.expense.presentation.viewStates.SuggestionListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -14,19 +15,25 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class ExpenseListViewModel @Inject constructor(
-    private val fetchExpenseUseCase: FetchExpenseUseCase
+class SuggestionListViewModel @Inject constructor(
+    private val fetchSuggestionUseCase: FetchSuggestionUseCase,
+    private val deleteSuggestionUseCase: DeleteSuggestionUseCase
 ) : ViewModel() {
 
-    fun getExpenseListState(): Flow<ExpenseListState> {
+    fun getSuggestionListState(): Flow<SuggestionListState> {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_YEAR, 1)
-        return fetchExpenseUseCase.getExpenses(from = calendar.timeInMillis).map { expenses ->
-            ExpenseListState(dateExpenseMap = getExpensesByDate(expenses))
-        }
+        return fetchSuggestionUseCase.getSuggestions(from = calendar.timeInMillis)
+            .map { suggestions ->
+                SuggestionListState(dateSuggestionsMap = getSuggestionsByDate(suggestions))
+            }
     }
 
-    private fun getExpensesByDate(expenses: List<Expense>): Map<String, List<ExpenseListState.Item>> =
+    suspend fun deleteSuggestion(suggestionId: Long) {
+        deleteSuggestionUseCase.deleteSuggestion(suggestionId)
+    }
+
+    private fun getSuggestionsByDate(expenses: List<Suggestion>): Map<String, List<SuggestionListState.Item>> =
         expenses
             .groupBy { expense ->
                 val calendar = Calendar.getInstance()
@@ -36,11 +43,11 @@ class ExpenseListViewModel @Inject constructor(
                 performDescendingCompare(day1, day2)
             }
             .mapValues { mapEntry ->
-                mapEntry.value.map { expense ->
-                    ExpenseListState.Item(
-                        id = expense.id ?: 0,
-                        amount = NumberFormat.getCurrencyInstance().format(expense.amount),
-                        paidTo = expense.paidTo
+                mapEntry.value.map { suggestion ->
+                    SuggestionListState.Item(
+                        id = suggestion.id ?: 0,
+                        amount = NumberFormat.getCurrencyInstance().format(suggestion.amount),
+                        message = suggestion.referenceMessage
                     )
                 }
             }.mapKeys { mapEntry ->
@@ -54,5 +61,4 @@ class ExpenseListViewModel @Inject constructor(
         day2 < day1 -> -1
         else -> 0
     }
-
 }

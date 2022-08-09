@@ -8,9 +8,9 @@ class SuggestionsAPI(
     private val suggestionDAO: SuggestionDAO
 ) {
 
-    fun getSuggestions(from: Long?, upTo: Long): Flow<List<SuggestionDTO>> {
-        return if (from != null) suggestionDAO.fetchSuggestions(from = from, upTo = upTo)
-        else suggestionDAO.fetchSuggestions(upTo)
+    fun getSuggestions(from: Long, to: Long? = null): Flow<List<SuggestionDTO>> {
+        return if (to != null) suggestionDAO.fetchSuggestions(from = from, to = to)
+        else suggestionDAO.fetchSuggestions(from)
     }
 
     fun getSuggestion(id: Long): Flow<SuggestionDTO?> {
