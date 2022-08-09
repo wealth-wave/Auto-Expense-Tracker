@@ -17,7 +17,7 @@ import androidx.work.WorkManager
 import app.expense.tracker.services.SMSSyncWorker
 import app.expense.tracker.ui.theme.AutoExpenseTrackerTheme
 import app.expense.tracker.ui.utils.ScreenRoute
-import app.expense.tracker.ui.views.expense.AddExpenseScreen
+import app.expense.tracker.ui.views.addExpense.AddExpenseScreen
 import app.expense.tracker.ui.views.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -83,7 +83,6 @@ fun HomeScreen(
     }
 }
 
-
 /**
  * Currently preview does not support view model provided by hilt as it expects AndroidEntryPoint
  */

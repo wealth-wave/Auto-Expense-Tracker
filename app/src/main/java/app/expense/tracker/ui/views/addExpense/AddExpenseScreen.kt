@@ -1,4 +1,4 @@
-package app.expense.tracker.ui.views.expense
+package app.expense.tracker.ui.views.addExpense
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

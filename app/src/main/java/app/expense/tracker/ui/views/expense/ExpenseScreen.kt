@@ -9,5 +9,4 @@ fun ExpenseScreen(onEditExpense: (expenseId: Long) -> Unit) {
         ExpenseStatsView()
         ExpenseListView(onEditExpense = onEditExpense)
     }
-
 }

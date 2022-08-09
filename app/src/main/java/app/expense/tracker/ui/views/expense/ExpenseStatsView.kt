@@ -51,9 +51,7 @@ fun ExpenseStatsView(
                         style = MaterialTheme.typography.displayMedium
                     )
                 }
-
             }
         }
-
     }
 }

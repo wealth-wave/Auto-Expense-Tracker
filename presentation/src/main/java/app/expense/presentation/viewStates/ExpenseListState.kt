@@ -9,4 +9,3 @@ data class ExpenseListState(
         val paidTo: String?,
     )
 }
-

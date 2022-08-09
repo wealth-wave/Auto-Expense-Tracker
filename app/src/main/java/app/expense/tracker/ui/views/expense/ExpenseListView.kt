@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import app.expense.presentation.viewModels.ExpenseListViewModel
 import app.expense.presentation.viewStates.ExpenseListState
 import app.expense.tracker.R
-import java.util.*
+import java.util.Locale.getDefault
 
 @Composable
 fun ExpenseListView(
@@ -80,7 +80,7 @@ fun ExpenseListView(
 @Composable
 private fun getFormattedPaidTo(expenseItem: ExpenseListState.Item) =
     UCharacter.toTitleCase(
-        Locale.getDefault(),
+        getDefault(),
         expenseItem.paidTo ?: stringResource(R.string.unknown_paid_to),
         null,
         0

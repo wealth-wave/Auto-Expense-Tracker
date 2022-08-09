@@ -10,7 +10,7 @@ import app.expense.presentation.viewStates.ExpenseListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.*
+import java.util.Locale.getDefault
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,7 +46,7 @@ class ExpenseListViewModel @Inject constructor(
             }.mapKeys { mapEntry ->
                 val calendar = Calendar.getInstance()
                 calendar.set(Calendar.DAY_OF_YEAR, mapEntry.key)
-                SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(calendar.timeInMillis)
+                SimpleDateFormat("dd MMMM yyyy", getDefault()).format(calendar.timeInMillis)
             }
 
     private fun performDescendingCompare(day1: Int, day2: Int) = when {
@@ -54,5 +54,4 @@ class ExpenseListViewModel @Inject constructor(
         day2 < day1 -> -1
         else -> 0
     }
-
 }

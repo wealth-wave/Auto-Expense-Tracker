@@ -1,6 +1,5 @@
 package app.expense.tracker.ui.views.suggestions
 
-import android.icu.lang.UCharacter
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,16 +14,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.expense.presentation.viewModels.SuggestionListViewModel
-import app.expense.presentation.viewStates.ExpenseListState
 import app.expense.presentation.viewStates.SuggestionListState
 import app.expense.tracker.R
 import kotlinx.coroutines.launch
-import java.util.*
 
 @Composable
 fun SuggestionsScreen(
@@ -92,31 +88,4 @@ fun SuggestionsScreen(
             }
         }
     }
-}
-
-@Composable
-private fun getFormattedPaidTo(expenseItem: ExpenseListState.Item) =
-    UCharacter.toTitleCase(
-        Locale.getDefault(),
-        expenseItem.paidTo ?: stringResource(R.string.unknown_paid_to),
-        null,
-        0
-    )
-
-@Composable
-private fun CircleTextLogo(
-    expenseItem: ExpenseListState.Item
-) {
-    val color = MaterialTheme.colorScheme.inversePrimary
-    Text(
-        modifier = Modifier
-            .drawBehind {
-                drawCircle(
-                    color = color,
-                    radius = this.size.minDimension.times(1.2f)
-                )
-            },
-        text = (expenseItem.paidTo?.firstOrNull()?.titlecase() ?: "O"),
-        style = MaterialTheme.typography.bodyLarge
-    )
 }
