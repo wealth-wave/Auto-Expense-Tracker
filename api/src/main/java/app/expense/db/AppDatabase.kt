@@ -3,6 +3,10 @@ package app.expense.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import app.expense.db.daos.CategoryDAO
+import app.expense.db.daos.ExpenseDAO
+import app.expense.db.daos.PaidToDAO
+import app.expense.db.daos.SuggestionDAO
 import app.expense.model.CategoryDTO
 import app.expense.model.ExpenseDTO
 import app.expense.model.PaidToDTO

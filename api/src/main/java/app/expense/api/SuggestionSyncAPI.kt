@@ -1,7 +1,7 @@
 package app.expense.api
 
 import android.content.SharedPreferences
-import app.expense.db.SuggestionDAO
+import app.expense.db.daos.SuggestionDAO
 import app.expense.model.SuggestionDTO
 
 class SuggestionSyncAPI(

@@ -69,15 +69,14 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
+        val modifier = Modifier.padding(paddingValues)
 
         NavHost(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             navController = navController,
             startDestination = ScreenRoute.Expense.ROUTE,
         ) {
-            composable(ScreenRoute.Expense.ROUTE) { ExpenseScreen() }
+            composable(ScreenRoute.Expense.ROUTE) { ExpenseScreen(modifier = modifier) }
             composable(ScreenRoute.Suggestions.ROUTE) { SuggestionsScreen() }
         }
     }

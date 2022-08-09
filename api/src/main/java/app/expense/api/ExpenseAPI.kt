@@ -1,6 +1,6 @@
 package app.expense.api
 
-import app.expense.db.ExpenseDAO
+import app.expense.db.daos.ExpenseDAO
 import app.expense.model.ExpenseDTO
 import kotlinx.coroutines.flow.Flow
 
@@ -10,9 +10,9 @@ class ExpenseAPI(private val expenseDao: ExpenseDAO) {
         expenseDao.insertOrUpdate(expenseDTO)
     }
 
-    fun getExpenses(from: Long?, upTo: Long): Flow<List<ExpenseDTO>> {
-        return if (from != null) expenseDao.fetchExpenses(from = from, upTo = upTo)
-        else expenseDao.fetchExpenses(upTo = upTo)
+    fun getExpenses(from: Long, to: Long? = null): Flow<List<ExpenseDTO>> {
+        return if (to != null) expenseDao.fetchExpenses(from = from, to = to)
+        else expenseDao.fetchExpenses(from = from)
     }
 
     fun getExpense(id: Long): Flow<ExpenseDTO?> {

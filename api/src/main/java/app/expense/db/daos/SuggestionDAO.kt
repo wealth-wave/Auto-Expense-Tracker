@@ -1,4 +1,4 @@
-package app.expense.db
+package app.expense.db.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -12,10 +12,10 @@ interface SuggestionDAO {
     @Insert
     suspend fun insertAll(suggestions: List<SuggestionDTO>)
 
-    @Query("SELECT * FROM `suggestion` WHERE time < :from AND time > :upTo")
+    @Query("SELECT * FROM `suggestion` WHERE time < :from AND time > :upTo ORDER BY time DESC")
     fun fetchSuggestions(from: Long, upTo: Long): Flow<List<SuggestionDTO>>
 
-    @Query("SELECT * FROM `suggestion` WHERE time > :upTo")
+    @Query("SELECT * FROM `suggestion` WHERE time > :upTo ORDER BY time DESC")
     fun fetchSuggestions(upTo: Long): Flow<List<SuggestionDTO>>
 
     @Query("SELECT * FROM `suggestion` WHERE id = :id")

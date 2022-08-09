@@ -1,6 +1,6 @@
 package app.expense.api
 
-import app.expense.db.SuggestionDAO
+import app.expense.db.daos.SuggestionDAO
 import app.expense.model.SuggestionDTO
 import kotlinx.coroutines.flow.Flow
 

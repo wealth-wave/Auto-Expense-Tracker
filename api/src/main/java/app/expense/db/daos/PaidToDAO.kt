@@ -1,4 +1,4 @@
-package app.expense.db
+package app.expense.db.daos
 
 import androidx.room.Dao
 import androidx.room.Insert

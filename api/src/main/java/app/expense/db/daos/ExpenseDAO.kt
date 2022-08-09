@@ -1,4 +1,4 @@
-package app.expense.db
+package app.expense.db.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -18,11 +18,11 @@ interface ExpenseDAO {
     @Update
     suspend fun update(expense: ExpenseDTO): Int
 
-    @Query("SELECT * FROM `expense` WHERE time < :from AND time > :upTo")
-    fun fetchExpenses(from: Long, upTo: Long): Flow<List<ExpenseDTO>>
+    @Query("SELECT * FROM `expense` WHERE time > :from AND time < :to ORDER BY time DESC")
+    fun fetchExpenses(from: Long, to: Long): Flow<List<ExpenseDTO>>
 
-    @Query("SELECT * FROM `expense` WHERE time > :upTo")
-    fun fetchExpenses(upTo: Long): Flow<List<ExpenseDTO>>
+    @Query("SELECT * FROM `expense` WHERE time > :from  ORDER BY time DESC")
+    fun fetchExpenses(from: Long): Flow<List<ExpenseDTO>>
 
     @Query("SELECT * FROM `expense` WHERE id = :id")
     fun fetchExpense(id: Long): Flow<ExpenseDTO?>
