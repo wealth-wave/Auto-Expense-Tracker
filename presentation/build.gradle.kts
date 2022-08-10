@@ -5,6 +5,10 @@ plugins {
     kotlin("kapt")
 }
 
+apply {
+    from("$rootDir/jacoco.gradle")
+}
+
 android {
     compileSdk = ConfigData.compileSdkVersion
 

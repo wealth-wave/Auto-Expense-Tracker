@@ -15,7 +15,12 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.2.2")
         classpath(kotlin("gradle-plugin", version = "1.3.70"))
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.43.1")
+        classpath("org.jacoco:org.jacoco.core:0.8.7")
     }
+}
+
+allprojects {
+    apply(plugin = "jacoco")
 }
 
 subprojects {
