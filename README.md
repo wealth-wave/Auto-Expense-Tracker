@@ -1,12 +1,16 @@
+
 # SMSBasedAutoExpenseTracker
-Android app that automatically detects expenses based on Bank SMS
+An OpenSource Android Project to manage expense by getting auto suggestion by reading transactional SMS
 
-Still Cooking.... Please Wait
+![Screenshot 2022-08-10 at 9 35 10 PM](https://user-images.githubusercontent.com/8796235/183958958-09251ee3-8fed-4b8c-bea3-b32a05484d5e.png)
+![Screenshot 2022-08-10 at 9 36 15 PM](https://user-images.githubusercontent.com/8796235/183959090-ca6b8cc2-95d4-404a-8005-cb52e3065605.png)
+![Screenshot 2022-08-10 at 9 36 27 PM](https://user-images.githubusercontent.com/8796235/183959109-682f6731-3835-41c2-8c0c-a1f0eefce075.png)
 
-To Format Lint:  ./gradlew --continue ktlintFormat
+## Getting Started
+### To Run the Application
+    ./gradlew assembleDebug
 
-To Check Lint issues: ./gradlew --continue ktlintCheck
+### Lint Format
+    ./gradlew --continue ktlintFormat
+    ./gradlew --continue ktlintCheck
 
-App Design
-
-![Screenshot 2022-08-09 at 11 07 04 PM](https://user-images.githubusercontent.com/8796235/183722095-84dc71f3-7893-4f7e-b547-a353b98a0b33.png)
