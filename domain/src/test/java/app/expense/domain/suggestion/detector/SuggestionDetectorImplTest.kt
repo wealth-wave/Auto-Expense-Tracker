@@ -6,14 +6,14 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
-class SuggestionDetectorByParserImplTest {
+class SuggestionDetectorImplTest {
 
-    private lateinit var suggestionDetectorByParserImpl: SuggestionDetectorByParserImpl
+    private lateinit var suggestionDetectorImpl: SuggestionDetectorImpl
 
     @Before
     fun setUp() {
         // Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
-        suggestionDetectorByParserImpl = SuggestionDetectorByParserImpl(SuggestionParserHelper())
+        suggestionDetectorImpl = SuggestionDetectorImpl(SuggestionParserHelper())
     }
 
     @Test
@@ -24,7 +24,7 @@ class SuggestionDetectorByParserImplTest {
             time = 1L
         )
 
-        assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isEqualTo(
+        assertThat(suggestionDetectorImpl.detectSuggestions(smsMessage)).isEqualTo(
             Suggestion(
                 amount = 21660.00,
                 paidTo = null,
@@ -56,7 +56,7 @@ class SuggestionDetectorByParserImplTest {
 
         messages.forEach {
             val smsMessage = SMSMessage(address = "HDFC", body = it, time = 1L)
-            assertThat(suggestionDetectorByParserImpl.detectSuggestions(smsMessage)).isNotNull()
+            assertThat(suggestionDetectorImpl.detectSuggestions(smsMessage)).isNotNull()
         }
     }
 }

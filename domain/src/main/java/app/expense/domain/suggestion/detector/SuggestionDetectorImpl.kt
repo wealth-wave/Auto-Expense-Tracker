@@ -3,20 +3,18 @@ package app.expense.domain.suggestion.detector
 import app.expense.contract.SMSMessage
 import app.expense.domain.suggestion.Suggestion
 
-class SuggestionDetectorByParserImpl(private val suggestionParserHelper: SuggestionParserHelper) :
+class SuggestionDetectorImpl(private val suggestionParserHelper: SuggestionParserHelper) :
     SuggestionDetector() {
 
     override fun detectSuggestions(smsMessage: SMSMessage): Suggestion? {
-        val processedMessage = suggestionParserHelper.processMessage(smsMessage.body)
-
-        val isExpense = suggestionParserHelper.isExpense(processedMessage)
+        val isExpense = suggestionParserHelper.isExpense(smsMessage.body)
 
         if (isExpense.not()) {
             return null
         }
 
-        val spent = suggestionParserHelper.getAmountSpent(processedMessage)
-        val paidToName = suggestionParserHelper.getPaidName(processedMessage)
+        val spent = suggestionParserHelper.getAmountSpent(smsMessage.body)
+        val paidToName = suggestionParserHelper.getPaidName(smsMessage.body)
 
         if (spent != null) {
             return Suggestion(

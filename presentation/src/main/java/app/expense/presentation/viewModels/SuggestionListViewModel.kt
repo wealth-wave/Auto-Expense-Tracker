@@ -1,12 +1,15 @@
 package app.expense.presentation.viewModels
 
+import android.Manifest
 import android.icu.text.NumberFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
-import app.expense.domain.expense.DeleteSuggestionUseCase
+import app.expense.domain.suggestion.DeleteSuggestionUseCase
 import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.domain.suggestion.Suggestion
+import app.expense.domain.suggestion.SyncSuggestionUseCase
 import app.expense.presentation.viewStates.SuggestionListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -17,8 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SuggestionListViewModel @Inject constructor(
     private val fetchSuggestionUseCase: FetchSuggestionUseCase,
-    private val deleteSuggestionUseCase: DeleteSuggestionUseCase
+    private val deleteSuggestionUseCase: DeleteSuggestionUseCase,
+    private val syncSuggestionUseCase: SyncSuggestionUseCase,
 ) : ViewModel() {
+
+    @RequiresPermission(Manifest.permission.READ_SMS)
+    suspend fun syncSuggestions() {
+        syncSuggestionUseCase.sync()
+    }
 
     fun getSuggestionListState(): Flow<SuggestionListState> {
         val calendar = Calendar.getInstance()

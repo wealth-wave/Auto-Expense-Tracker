@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AutoExpenseTracker</string>
+    <string name="app_name">Expense</string>
     <string name="home">Home</string>
     <string name="notifications">Notifications</string>
     <string name="net_spend">Net %s Spend</string>
@@ -9,4 +9,13 @@
     <string name="transactions">Transactions</string>
     <string name="add_to_expense">Add To Expense</string>
     <string name="ignore">Ignore</string>
+    <string name="delete_expense">Delete Expense</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="edit_expense">Edit Expense</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="remove_category">Remove category</string>
+    <string name="amount">Amount</string>
+    <string name="sms_permission_needed">Read SMS Permission is needed to get suggestion from Transaction Messages</string>
+    <string name="request_permission">Request permission</string>
 </resources>

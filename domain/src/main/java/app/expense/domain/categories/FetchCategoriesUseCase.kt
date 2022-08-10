@@ -1,4 +1,4 @@
-package app.expense.domain.expense
+package app.expense.domain.categories
 
 import app.expense.api.CategoryAPI
 import kotlinx.coroutines.flow.Flow

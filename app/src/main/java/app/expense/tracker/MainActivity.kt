@@ -60,7 +60,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable(ScreenRoute.AddExpense.TEMPLATE) { AddExpenseScreen(navController) }
+                        composable(ScreenRoute.AddExpense.TEMPLATE) {
+                            AddExpenseScreen(onGoBack = {
+                                navController.popBackStack()
+                            })
+                        }
                         composable(
                             route = ScreenRoute.EditExpense.TEMPLATE,
                             arguments = listOf(
@@ -70,7 +74,9 @@ class MainActivity : ComponentActivity() {
                             )
                         ) { navBackStackEntry ->
                             AddExpenseScreen(
-                                navController,
+                                onGoBack = {
+                                    navController.popBackStack()
+                                },
                                 expenseId = navBackStackEntry.arguments?.getLong(ScreenRoute.EditExpense.EXPENSE_ID_ARG)
                             )
                         }
@@ -83,7 +89,9 @@ class MainActivity : ComponentActivity() {
                             )
                         ) { backStackEntry ->
                             AddExpenseScreen(
-                                navController = navController,
+                                onGoBack = {
+                                    navController.popBackStack()
+                                },
                                 suggestionId = backStackEntry.arguments?.getLong(ScreenRoute.SuggestExpense.SUGGESTION_ID_ARG)
                             )
                         }
