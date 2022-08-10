@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AutoExpenseTracker</string>
+    <string name="app_name">Expense</string>
     <string name="home">Home</string>
     <string name="notifications">Notifications</string>
     <string name="net_spend">Net %s Spend</string>
