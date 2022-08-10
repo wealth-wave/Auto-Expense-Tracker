@@ -73,8 +73,14 @@ fun SuggestionsScreen(
                             style = MaterialTheme.typography.labelLarge
                         )
                         suggestionItems?.forEach { suggestionItem ->
-                            Card(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.small_gap))) {
-                                Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
+                            Card(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.large_gap))) {
+                                Column(
+                                    modifier = Modifier.padding(
+                                        start = dimensionResource(id = R.dimen.default_padding),
+                                        end = dimensionResource(id = R.dimen.default_padding),
+                                        top = dimensionResource(id = R.dimen.default_padding)
+                                    )
+                                ) {
                                     Text(
                                         text = suggestionItem.message,
                                         style = MaterialTheme.typography.bodySmall
@@ -103,7 +109,6 @@ fun SuggestionsScreen(
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.small_gap)))
                     }
                 }
             }
