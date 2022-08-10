@@ -16,10 +16,10 @@ class SuggestionParserHelper {
     fun isExpense(message: String): Boolean {
         val processedMessage = processMessage(message)
         return (
-                DEBIT_PATTERN.toRegex()
-                    .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
-                    .containsMatchIn(processedMessage)
-                )
+            DEBIT_PATTERN.toRegex()
+                .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
+                .containsMatchIn(processedMessage)
+            )
     }
 
     private fun processMessage(msg: String): String {

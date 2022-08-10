@@ -63,13 +63,13 @@ fun AmountInputDialog(
                                 onAmountEntered(
                                     amountState.value.toDoubleOrNull() ?: 0.0
                                 )
-                            }) {
+                            }
+                        ) {
                             Text(text = "Confirm")
                         }
                     }
                 }
             }
         }
-
     }
 }
