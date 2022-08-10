@@ -104,7 +104,6 @@ dependencies {
     // Modules
     implementation(project(Deps.Modules.PRESENTATION))
     implementation(project(Deps.Modules.DOMAIN))
-    implementation(project(Deps.Modules.CONTRACT))
 }
 
 kapt {

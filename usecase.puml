@@ -1,0 +1,13 @@
+@startuml
+
+User --> (SMS) : 1. Recieves Transactional SMS
+
+WorkManager <-- (SMS): 2. Gets Expense Suggestions
+
+WorkManager --> (DB): 3. Stores Expense Suggestions
+
+(App) <-- (DB): 4. Get Suggestions and Show it to User
+
+User --> App: 5. Access Suggestion and Review Expense
+
+@enduml
