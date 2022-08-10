@@ -9,4 +9,11 @@
     <string name="transactions">Transactions</string>
     <string name="add_to_expense">Add To Expense</string>
     <string name="ignore">Ignore</string>
+    <string name="delete_expense">Delete Expense</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="edit_expense">Edit Expense</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="remove_category">Remove category</string>
+    <string name="amount">Amount</string>
 </resources>

@@ -35,7 +35,7 @@ class AddExpenseViewModel @Inject constructor(
 
                 if (expense != null) {
                     _addExpenseViewStateFlow.value = AddExpenseViewState(
-                        amount = expense.amount.toString(),
+                        amount = expense.amount,
                         paidTo = expense.paidTo ?: "",
                         categories = expense.categories.toMutableList(),
                         time = expense.time
@@ -47,7 +47,7 @@ class AddExpenseViewModel @Inject constructor(
                 // TODO Get category based on paidTo by ML or other intelligent way
                 if (suggestion != null) {
                     _addExpenseViewStateFlow.value = AddExpenseViewState(
-                        amount = suggestion.amount.toString(),
+                        amount = suggestion.amount,
                         paidTo = suggestion.paidTo ?: "",
                         time = suggestion.time,
                         suggestionMessage = suggestion.referenceMessage
@@ -60,7 +60,7 @@ class AddExpenseViewModel @Inject constructor(
     suspend fun addExpense(
         expenseId: Long?,
         suggestionId: Long?,
-        amount: String,
+        amount: Double,
         paidTo: String?,
         categories: List<String>,
         time: Long
@@ -68,7 +68,7 @@ class AddExpenseViewModel @Inject constructor(
         addExpenseUseCase.addExpense(
             expense = Expense(
                 id = expenseId,
-                amount = amount.toDouble(),
+                amount = amount,
                 paidTo = paidTo,
                 categories = categories,
                 time = time

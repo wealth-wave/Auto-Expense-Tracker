@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -33,14 +34,14 @@ fun CategoryView(
 ) {
 
     val coroutineScope = rememberCoroutineScope()
-    val suggestions = viewModel.categoriesState.collectAsState()
+    val suggestions = viewModel.categoriesState.collectAsState().value
     val category = rememberSaveable { mutableStateOf("") }
 
     Column {
         AutoCompleteTextField(
             value = category.value,
             label = "Category",
-            suggestions = suggestions.value,
+            suggestions = suggestions,
             onCategoryEntered = { value ->
                 category.value = value
                 coroutineScope.launch {
@@ -61,18 +62,18 @@ fun CategoryView(
                     .padding(start = 16.dp, end = 16.dp, top = 4.dp)
                     .horizontalScroll(rememberScrollState())
             ) {
-                categories.value.forEach { item ->
+                categories.value.filter { it.isNotBlank() }.forEach { item ->
                     InputChip(
                         modifier = Modifier.padding(end = 4.dp),
                         selected = true,
-                        label = { Text(text = item) },
+                        label = { Text(text = item, style = MaterialTheme.typography.labelLarge) },
                         onClick = {
                             categories.value =
                                 categories.value.toMutableList().apply { remove(item) }
                         },
                         trailingIcon = {
                             Icon(
-                                imageVector = Icons.Filled.Delete,
+                                imageVector = Icons.Outlined.Clear,
                                 contentDescription = "Remove category"
                             )
                         }
