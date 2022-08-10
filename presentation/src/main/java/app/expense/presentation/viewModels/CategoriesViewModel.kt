@@ -1,7 +1,7 @@
 package app.expense.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
-import app.expense.domain.expense.FetchCategoriesUseCase
+import app.expense.domain.categories.FetchCategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

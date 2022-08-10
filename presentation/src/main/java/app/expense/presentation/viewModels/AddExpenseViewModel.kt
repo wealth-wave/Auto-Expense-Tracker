@@ -3,9 +3,9 @@ package app.expense.presentation.viewModels
 import androidx.lifecycle.ViewModel
 import app.expense.domain.expense.AddExpenseUseCase
 import app.expense.domain.expense.DeleteExpenseUseCase
-import app.expense.domain.expense.DeleteSuggestionUseCase
 import app.expense.domain.expense.Expense
 import app.expense.domain.expense.FetchExpenseUseCase
+import app.expense.domain.suggestion.DeleteSuggestionUseCase
 import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.presentation.viewStates.AddExpenseViewState
 import dagger.hilt.android.lifecycle.HiltViewModel

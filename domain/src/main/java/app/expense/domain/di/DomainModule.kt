@@ -6,18 +6,17 @@ import app.expense.api.PaidToAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
+import app.expense.domain.categories.FetchCategoriesUseCase
 import app.expense.domain.expense.AddExpenseUseCase
 import app.expense.domain.expense.DeleteExpenseUseCase
-import app.expense.domain.expense.DeleteSuggestionUseCase
-import app.expense.domain.expense.FetchCategoriesUseCase
 import app.expense.domain.expense.FetchExpenseUseCase
-import app.expense.domain.expense.FetchPaidToUseCase
 import app.expense.domain.mappers.DataMapper
-import app.expense.domain.smsTemplate.SMSTemplateMatcher
+import app.expense.domain.paidTo.FetchPaidToUseCase
+import app.expense.domain.suggestion.DeleteSuggestionUseCase
 import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.domain.suggestion.SyncSuggestionUseCase
 import app.expense.domain.suggestion.detector.SuggestionDetector
-import app.expense.domain.suggestion.detector.SuggestionDetectorByParserImpl
+import app.expense.domain.suggestion.detector.SuggestionDetectorImpl
 import app.expense.domain.suggestion.detector.SuggestionParserHelper
 import dagger.Module
 import dagger.Provides
@@ -27,11 +26,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 class DomainModule {
-
-    @Provides
-    fun provideSMSTemplateMatcher(): SMSTemplateMatcher {
-        return SMSTemplateMatcher()
-    }
 
     @Provides
     fun provideSuggestionParserHelper(): SuggestionParserHelper {
@@ -45,7 +39,7 @@ class DomainModule {
 
     @Provides
     fun provideSuggestionDetector(suggestionParserHelper: SuggestionParserHelper): SuggestionDetector {
-        return SuggestionDetectorByParserImpl(suggestionParserHelper)
+        return SuggestionDetectorImpl(suggestionParserHelper)
     }
 
     @Provides

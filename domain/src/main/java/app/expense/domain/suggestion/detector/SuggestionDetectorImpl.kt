@@ -3,7 +3,7 @@ package app.expense.domain.suggestion.detector
 import app.expense.contract.SMSMessage
 import app.expense.domain.suggestion.Suggestion
 
-class SuggestionDetectorByParserImpl(private val suggestionParserHelper: SuggestionParserHelper) :
+class SuggestionDetectorImpl(private val suggestionParserHelper: SuggestionParserHelper) :
     SuggestionDetector() {
 
     override fun detectSuggestions(smsMessage: SMSMessage): Suggestion? {

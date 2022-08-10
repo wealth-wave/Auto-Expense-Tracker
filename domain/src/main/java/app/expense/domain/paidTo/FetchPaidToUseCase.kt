@@ -1,4 +1,4 @@
-package app.expense.domain.expense
+package app.expense.domain.paidTo
 
 import app.expense.api.PaidToAPI
 import kotlinx.coroutines.flow.Flow

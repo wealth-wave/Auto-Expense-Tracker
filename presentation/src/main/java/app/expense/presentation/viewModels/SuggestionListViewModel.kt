@@ -4,7 +4,7 @@ import android.icu.text.NumberFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
-import app.expense.domain.expense.DeleteSuggestionUseCase
+import app.expense.domain.suggestion.DeleteSuggestionUseCase
 import app.expense.domain.suggestion.FetchSuggestionUseCase
 import app.expense.domain.suggestion.Suggestion
 import app.expense.presentation.viewStates.SuggestionListState

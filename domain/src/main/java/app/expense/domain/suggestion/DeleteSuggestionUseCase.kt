@@ -1,4 +1,4 @@
-package app.expense.domain.expense
+package app.expense.domain.suggestion
 
 import app.expense.api.SuggestionsAPI
 
