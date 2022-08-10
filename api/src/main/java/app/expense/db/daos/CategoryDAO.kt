@@ -1,4 +1,4 @@
-package app.expense.db
+package app.expense.db.daos
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.room.Dao

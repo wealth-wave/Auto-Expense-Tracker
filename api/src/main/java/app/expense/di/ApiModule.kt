@@ -8,11 +8,11 @@ import app.expense.api.PaidToAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
-import app.expense.db.CategoryDAO
 import app.expense.db.DaoProvider
-import app.expense.db.ExpenseDAO
-import app.expense.db.PaidToDAO
-import app.expense.db.SuggestionDAO
+import app.expense.db.daos.CategoryDAO
+import app.expense.db.daos.ExpenseDAO
+import app.expense.db.daos.PaidToDAO
+import app.expense.db.daos.SuggestionDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

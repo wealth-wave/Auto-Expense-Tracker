@@ -16,8 +16,9 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import app.expense.tracker.services.SMSSyncWorker
 import app.expense.tracker.ui.theme.AutoExpenseTrackerTheme
-import app.expense.tracker.ui.views.dashboard.DashboardScreen
-import app.expense.tracker.ui.views.expense.AddExpenseScreen
+import app.expense.tracker.ui.utils.ScreenRoute
+import app.expense.tracker.ui.views.addExpense.AddExpenseScreen
+import app.expense.tracker.ui.views.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,39 +32,59 @@ class MainActivity : ComponentActivity() {
     private fun attachUI() {
         setContent {
             AutoExpenseTrackerTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "dashBoard") {
-                        composable("dashBoard") { DashboardScreen(navController) }
-                        composable("addExpense") { AddExpenseScreen(navController) }
+                    NavHost(
+                        navController = navController,
+                        startDestination = ScreenRoute.Home.TEMPLATE,
+                    ) {
+                        composable(ScreenRoute.Home.TEMPLATE) {
+                            HomeScreen(
+                                onAddExpense = { navController.navigate(ScreenRoute.AddExpense.TEMPLATE) },
+                                onEditExpense = { expenseId ->
+                                    navController.navigate(
+                                        ScreenRoute.EditExpense.getEditExpenseRoute(
+                                            expenseId
+                                        )
+                                    )
+                                },
+                                onAddSuggestion = { suggestionId ->
+                                    navController.navigate(
+                                        ScreenRoute.SuggestExpense.getSuggestExpenseRoute(
+                                            suggestionId
+                                        )
+                                    )
+                                }
+                            )
+                        }
+                        composable(ScreenRoute.AddExpense.TEMPLATE) { AddExpenseScreen(navController) }
                         composable(
-                            "editExpense/{expenseId}",
+                            route = ScreenRoute.EditExpense.TEMPLATE,
                             arguments = listOf(
-                                navArgument("expenseId") {
+                                navArgument(ScreenRoute.EditExpense.EXPENSE_ID_ARG) {
                                     type = NavType.LongType
                                 }
                             )
                         ) { navBackStackEntry ->
                             AddExpenseScreen(
                                 navController,
-                                expenseId = navBackStackEntry.arguments?.getLong("expenseId")
+                                expenseId = navBackStackEntry.arguments?.getLong(ScreenRoute.EditExpense.EXPENSE_ID_ARG)
                             )
                         }
                         composable(
-                            "suggestExpense/{suggestionId}",
+                            route = ScreenRoute.SuggestExpense.TEMPLATE,
                             arguments = listOf(
-                                navArgument("suggestionId") {
+                                navArgument(ScreenRoute.SuggestExpense.SUGGESTION_ID_ARG) {
                                     type = NavType.LongType
                                 }
                             )
                         ) { backStackEntry ->
                             AddExpenseScreen(
                                 navController = navController,
-                                suggestionId = backStackEntry.arguments?.getLong("suggestionId")
+                                suggestionId = backStackEntry.arguments?.getLong(ScreenRoute.SuggestExpense.SUGGESTION_ID_ARG)
                             )
                         }
                     }

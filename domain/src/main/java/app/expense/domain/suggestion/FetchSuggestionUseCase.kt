@@ -10,8 +10,8 @@ class FetchSuggestionUseCase(
     private val dataMapper: DataMapper
 ) {
 
-    fun getSuggestions(from: Long?, upTo: Long): Flow<List<Suggestion>> {
-        return suggestionsAPI.getSuggestions(from, upTo).map { suggestions ->
+    fun getSuggestions(from: Long, to: Long? = null): Flow<List<Suggestion>> {
+        return suggestionsAPI.getSuggestions(from, to).map { suggestions ->
             suggestions.map { suggestionDTO ->
                 dataMapper.mapToSuggestion(suggestionDTO)
             }

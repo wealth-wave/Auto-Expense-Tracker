@@ -1,6 +1,6 @@
 package app.expense.api
 
-import app.expense.db.CategoryDAO
+import app.expense.db.daos.CategoryDAO
 import app.expense.model.CategoryDTO
 
 class CategoryAPI(private val categoryDAO: CategoryDAO) {

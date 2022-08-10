@@ -10,8 +10,8 @@ class FetchExpenseUseCase(
     private val dataMapper: DataMapper
 ) {
 
-    fun getExpenses(from: Long?, to: Long): Flow<List<Expense>> {
-        return expenseAPI.getExpenses(from = from, upTo = to).map { expenses ->
+    fun getExpenses(from: Long, to: Long? = null): Flow<List<Expense>> {
+        return expenseAPI.getExpenses(from = from, to = to).map { expenses ->
             expenses.map { expenseDTO ->
                 dataMapper.mapToExpense(expenseDTO)
             }
