@@ -7,21 +7,22 @@ package app.expense.domain.suggestion.detector
 class SuggestionParserHelper {
     companion object {
         const val DEBIT_PATTERN = "debited|debit|deducted"
-        const val MISC_PATTERN = "payment|spent|paying"
+        const val MISC_PATTERN = "payment|spent|paying|sent"
     }
 
     /**
-     * @param processedMessage Make sure it is in lowercase
+     * @param message
      */
-    fun isExpense(processedMessage: String): Boolean {
+    fun isExpense(message: String): Boolean {
+        val processedMessage = processMessage(message)
         return (
-            DEBIT_PATTERN.toRegex()
-                .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
-                .containsMatchIn(processedMessage)
-            )
+                DEBIT_PATTERN.toRegex()
+                    .containsMatchIn(processedMessage) || MISC_PATTERN.toRegex()
+                    .containsMatchIn(processedMessage)
+                )
     }
 
-    fun processMessage(msg: String): String {
+    private fun processMessage(msg: String): String {
         var message = msg
 
         // convert to lower case
@@ -66,8 +67,8 @@ class SuggestionParserHelper {
         return message
     }
 
-    fun getPaidName(processedMessage: String): String? {
-        val messageArray = processedMessage.split(" ").filter { s -> s != "" }
+    fun getPaidName(message: String): String? {
+        val messageArray = processMessage(message).split(" ").filter { s -> s != "" }
 
         var atIndex = -1
 
@@ -108,8 +109,11 @@ class SuggestionParserHelper {
         return null
     }
 
-    fun getAmountSpent(processedMessage: String): Double? {
-        val messageArray = processedMessage.split(" ").filter { s -> s != "" }
+    fun getAmountSpent(message: String): Double? {
+        val messageArray = processMessage(message)
+            .split(" ")
+            .filter { s -> s != "" && s.isNotBlank() }
+            .map { s -> s.trim() }
         val index = when {
             messageArray.contains("rs.") -> messageArray.indexOf("rs.")
             messageArray.contains("inr") -> messageArray.indexOf("inr")

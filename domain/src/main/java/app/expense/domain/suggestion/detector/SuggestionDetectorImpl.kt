@@ -7,16 +7,14 @@ class SuggestionDetectorImpl(private val suggestionParserHelper: SuggestionParse
     SuggestionDetector() {
 
     override fun detectSuggestions(smsMessage: SMSMessage): Suggestion? {
-        val processedMessage = suggestionParserHelper.processMessage(smsMessage.body)
-
-        val isExpense = suggestionParserHelper.isExpense(processedMessage)
+        val isExpense = suggestionParserHelper.isExpense(smsMessage.body)
 
         if (isExpense.not()) {
             return null
         }
 
-        val spent = suggestionParserHelper.getAmountSpent(processedMessage)
-        val paidToName = suggestionParserHelper.getPaidName(processedMessage)
+        val spent = suggestionParserHelper.getAmountSpent(smsMessage.body)
+        val paidToName = suggestionParserHelper.getPaidName(smsMessage.body)
 
         if (spent != null) {
             return Suggestion(

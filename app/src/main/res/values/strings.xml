@@ -16,4 +16,6 @@
     <string name="pick_date">Pick Date</string>
     <string name="remove_category">Remove category</string>
     <string name="amount">Amount</string>
+    <string name="sms_permission_needed">Read SMS Permission is needed to get suggestion from Transaction Messages</string>
+    <string name="request_permission">Request permission</string>
 </resources>
