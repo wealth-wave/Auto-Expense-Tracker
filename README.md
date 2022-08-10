@@ -15,4 +15,8 @@ An OpenSource Android Project to manage expense by getting auto suggestion by re
     ./gradlew --continue ktlintCheck
 
 ## Design Diagrams
+Module Dependencies
 ![Modules Dependencies](https://user-images.githubusercontent.com/8796235/183961785-2e097a86-c7d1-491b-8282-8c6cb88bd7de.png)
+
+How the App Works
+![App Works](https://user-images.githubusercontent.com/8796235/183963920-aead0fa5-7deb-4137-bb5b-88f5fb4b94b6.png)
