@@ -1,6 +1,10 @@
 
 # SMSBasedAutoExpenseTracker
-An OpenSource Android Project to manage expense by getting auto suggestion by reading transactional SMS
+An OpenSource Android Project to manage expense by getting auto suggestion by reading transactional SMS.
+
+- Built with Jetpack Compose
+- Follows Clean MVVM Architecture
+
 
 ![Expense Page](https://user-images.githubusercontent.com/8796235/183958958-09251ee3-8fed-4b8c-bea3-b32a05484d5e.png)
 ![Suggestion Page](https://user-images.githubusercontent.com/8796235/183959090-ca6b8cc2-95d4-404a-8005-cb52e3065605.png)
