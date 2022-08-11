@@ -2,8 +2,8 @@ package app.expense.presentation.viewModels
 
 import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
-import app.expense.domain.expense.Expense
-import app.expense.domain.expense.FetchExpenseUseCase
+import app.expense.domain.expense.models.Expense
+import app.expense.domain.expense.usecases.FetchExpenseUseCase
 import app.expense.presentation.viewStates.ExpenseStats
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

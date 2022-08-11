@@ -1,22 +1,23 @@
 package app.expense.domain.suggestion.detector
 
-import app.expense.contract.SMSMessage
-import app.expense.domain.suggestion.Suggestion
+import app.expense.domain.suggestion.models.SMSMessage
+import app.expense.domain.suggestion.models.Suggestion
 
-class SuggestionDetectorImpl(private val suggestionParserHelper: SuggestionParserHelper) :
+/**
+ * Suggestion Detector with the help of Regexp Parsing.
+ */
+class SuggestionDetectorImpl(private val regexHelper: RegexHelper) :
     SuggestionDetector() {
 
+    /**
+     * Check for smsMessage is of Transactional SMS and parse the Expense suggestion.
+     */
     override fun detectSuggestions(smsMessage: SMSMessage): Suggestion? {
-        val isExpense = suggestionParserHelper.isExpense(smsMessage.body)
+        val isExpense = regexHelper.isExpense(smsMessage.body)
+        val spent = regexHelper.getAmountSpent(smsMessage.body)
+        val paidToName = regexHelper.getPaidToName(smsMessage.body)
 
-        if (isExpense.not()) {
-            return null
-        }
-
-        val spent = suggestionParserHelper.getAmountSpent(smsMessage.body)
-        val paidToName = suggestionParserHelper.getPaidName(smsMessage.body)
-
-        if (spent != null) {
+        if (isExpense && spent != null) {
             return Suggestion(
                 amount = spent,
                 paidTo = paidToName,

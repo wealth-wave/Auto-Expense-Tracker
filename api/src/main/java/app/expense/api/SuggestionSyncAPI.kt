@@ -1,13 +1,11 @@
 package app.expense.api
 
 import android.content.SharedPreferences
-import app.expense.db.daos.SuggestionDAO
-import app.expense.model.SuggestionDTO
 
-class SuggestionSyncAPI(
-    private val sharedPreferences: SharedPreferences,
-    private val suggestionDAO: SuggestionDAO
-) {
+/**
+ * API Class to expose Suggestion Sync related operations.
+ */
+class SuggestionSyncAPI(private val sharedPreferences: SharedPreferences) {
 
     fun getLastSyncedTime(): Long? {
         val lastSyncTime = sharedPreferences.getLong(LAST_SYNC_TIME_KEY, -1L)
@@ -16,10 +14,6 @@ class SuggestionSyncAPI(
         }
 
         return lastSyncTime
-    }
-
-    suspend fun storeSuggestions(suggestions: List<SuggestionDTO>) {
-        suggestionDAO.insertAll(suggestions)
     }
 
     fun setLastSyncedTime(time: Long) {

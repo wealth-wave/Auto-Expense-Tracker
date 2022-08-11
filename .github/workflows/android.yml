@@ -17,10 +17,12 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
       - name: Lint
         run: ./gradlew --continue ktlintCheck
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Test
+        run: ./gradlew testDebugUnitTest
 
 
 

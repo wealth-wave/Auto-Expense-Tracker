@@ -1,7 +1,7 @@
 package app.expense.domain.suggestion.detector
 
-import app.expense.contract.SMSMessage
-import app.expense.domain.suggestion.Suggestion
+import app.expense.domain.suggestion.models.SMSMessage
+import app.expense.domain.suggestion.models.Suggestion
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -12,8 +12,8 @@ class SuggestionDetectorImplTest {
 
     @Before
     fun setUp() {
-        // Not giving mocked object of SuggestionParserHelper and instead testing the entire integration.
-        suggestionDetectorImpl = SuggestionDetectorImpl(SuggestionParserHelper())
+        // Not giving mocked object of RegexHelper and instead testing the entire integration.
+        suggestionDetectorImpl = SuggestionDetectorImpl(RegexHelper())
     }
 
     @Test

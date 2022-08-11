@@ -6,10 +6,10 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
-import app.expense.domain.suggestion.DeleteSuggestionUseCase
-import app.expense.domain.suggestion.FetchSuggestionUseCase
-import app.expense.domain.suggestion.Suggestion
-import app.expense.domain.suggestion.SyncSuggestionUseCase
+import app.expense.domain.suggestion.models.Suggestion
+import app.expense.domain.suggestion.usecases.DeleteSuggestionUseCase
+import app.expense.domain.suggestion.usecases.FetchSuggestionUseCase
+import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
 import app.expense.presentation.viewStates.SuggestionListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

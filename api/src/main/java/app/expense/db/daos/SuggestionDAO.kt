@@ -3,7 +3,7 @@ package app.expense.db.daos
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import app.expense.model.SuggestionDTO
+import app.expense.db.model.SuggestionDTO
 import kotlinx.coroutines.flow.Flow
 
 @Dao

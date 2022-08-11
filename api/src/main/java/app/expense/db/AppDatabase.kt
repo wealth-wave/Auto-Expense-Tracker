@@ -7,10 +7,10 @@ import app.expense.db.daos.CategoryDAO
 import app.expense.db.daos.ExpenseDAO
 import app.expense.db.daos.PaidToDAO
 import app.expense.db.daos.SuggestionDAO
-import app.expense.model.CategoryDTO
-import app.expense.model.ExpenseDTO
-import app.expense.model.PaidToDTO
-import app.expense.model.SuggestionDTO
+import app.expense.db.model.CategoryDTO
+import app.expense.db.model.ExpenseDTO
+import app.expense.db.model.PaidToDTO
+import app.expense.db.model.SuggestionDTO
 
 @Database(
     entities = [SuggestionDTO::class, ExpenseDTO::class, CategoryDTO::class, PaidToDTO::class],
