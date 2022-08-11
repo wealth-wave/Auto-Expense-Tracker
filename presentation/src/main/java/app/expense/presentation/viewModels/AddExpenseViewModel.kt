@@ -1,12 +1,12 @@
 package app.expense.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
-import app.expense.domain.expense.AddExpenseUseCase
-import app.expense.domain.expense.DeleteExpenseUseCase
-import app.expense.domain.expense.Expense
-import app.expense.domain.expense.FetchExpenseUseCase
-import app.expense.domain.suggestion.DeleteSuggestionUseCase
-import app.expense.domain.suggestion.FetchSuggestionUseCase
+import app.expense.domain.expense.models.Expense
+import app.expense.domain.expense.usecases.AddExpenseUseCase
+import app.expense.domain.expense.usecases.DeleteExpenseUseCase
+import app.expense.domain.expense.usecases.FetchExpenseUseCase
+import app.expense.domain.suggestion.usecases.DeleteSuggestionUseCase
+import app.expense.domain.suggestion.usecases.FetchSuggestionUseCase
 import app.expense.presentation.viewStates.AddExpenseViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

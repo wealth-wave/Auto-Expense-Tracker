@@ -48,9 +48,6 @@ dependencies {
     // Junit
     testImplementation(Deps.JUnit.TEST)
     androidTestImplementation(Deps.JUnit.ANDROID_TEST)
-
-    // Modules
-    implementation(project(Deps.Modules.CONTRACT))
 }
 
 kapt {

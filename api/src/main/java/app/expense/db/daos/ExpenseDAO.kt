@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import app.expense.model.ExpenseDTO
+import app.expense.db.model.ExpenseDTO
 import kotlinx.coroutines.flow.Flow
 
 @Dao

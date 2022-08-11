@@ -53,7 +53,6 @@ dependencies {
 
     // Modules
     implementation(project(Deps.Modules.API))
-    implementation(project(Deps.Modules.CONTRACT))
 }
 
 kapt {

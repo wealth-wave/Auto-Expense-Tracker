@@ -7,17 +7,19 @@ import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
 import app.expense.domain.categories.FetchCategoriesUseCase
-import app.expense.domain.expense.AddExpenseUseCase
-import app.expense.domain.expense.DeleteExpenseUseCase
-import app.expense.domain.expense.FetchExpenseUseCase
-import app.expense.domain.mappers.DataMapper
+import app.expense.domain.expense.mappers.ExpenseDataMapper
+import app.expense.domain.expense.usecases.AddExpenseUseCase
+import app.expense.domain.expense.usecases.DeleteExpenseUseCase
+import app.expense.domain.expense.usecases.FetchExpenseUseCase
 import app.expense.domain.paidTo.FetchPaidToUseCase
-import app.expense.domain.suggestion.DeleteSuggestionUseCase
-import app.expense.domain.suggestion.FetchSuggestionUseCase
-import app.expense.domain.suggestion.SyncSuggestionUseCase
+import app.expense.domain.suggestion.detector.RegexHelper
 import app.expense.domain.suggestion.detector.SuggestionDetector
 import app.expense.domain.suggestion.detector.SuggestionDetectorImpl
-import app.expense.domain.suggestion.detector.SuggestionParserHelper
+import app.expense.domain.suggestion.mappers.SMSMessageDataMapper
+import app.expense.domain.suggestion.mappers.SuggestionDataMapper
+import app.expense.domain.suggestion.usecases.DeleteSuggestionUseCase
+import app.expense.domain.suggestion.usecases.FetchSuggestionUseCase
+import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,39 +30,60 @@ import dagger.hilt.components.SingletonComponent
 class DomainModule {
 
     @Provides
-    fun provideSuggestionParserHelper(): SuggestionParserHelper {
-        return SuggestionParserHelper()
+    fun provideSuggestionParserHelper(): RegexHelper {
+        return RegexHelper()
     }
 
     @Provides
-    fun provideDataMapper(): DataMapper {
-        return DataMapper()
+    fun provideExpenseDataMapper(): ExpenseDataMapper {
+        return ExpenseDataMapper()
     }
 
     @Provides
-    fun provideSuggestionDetector(suggestionParserHelper: SuggestionParserHelper): SuggestionDetector {
-        return SuggestionDetectorImpl(suggestionParserHelper)
+    fun provideSuggestionDataMapper(): SuggestionDataMapper {
+        return SuggestionDataMapper()
+    }
+
+    @Provides
+    fun provideSMSDataMapper(): SMSMessageDataMapper {
+        return SMSMessageDataMapper()
+    }
+
+    @Provides
+    fun provideSuggestionDetector(regexHelper: RegexHelper): SuggestionDetector {
+        return SuggestionDetectorImpl(regexHelper)
     }
 
     @Provides
     fun suggestionSyncService(
         suggestionSyncAPI: SuggestionSyncAPI,
+        suggestionsAPI: SuggestionsAPI,
         smsReadAPI: SMSReadAPI,
-        suggestionDetector: SuggestionDetector
+        suggestionDetector: SuggestionDetector,
+        dataMapper: SMSMessageDataMapper
     ): SyncSuggestionUseCase {
-        return SyncSuggestionUseCase(suggestionSyncAPI, smsReadAPI, suggestionDetector)
+        return SyncSuggestionUseCase(
+            suggestionSyncAPI,
+            suggestionsAPI,
+            smsReadAPI,
+            suggestionDetector,
+            dataMapper
+        )
     }
 
     @Provides
     fun fetchSuggestionUseCase(
         suggestionsAPI: SuggestionsAPI,
-        dataMapper: DataMapper
+        dataMapper: SuggestionDataMapper
     ): FetchSuggestionUseCase {
         return FetchSuggestionUseCase(suggestionsAPI, dataMapper)
     }
 
     @Provides
-    fun fetchExpenseUseCase(expenseAPI: ExpenseAPI, dataMapper: DataMapper): FetchExpenseUseCase {
+    fun fetchExpenseUseCase(
+        expenseAPI: ExpenseAPI,
+        dataMapper: ExpenseDataMapper
+    ): FetchExpenseUseCase {
         return FetchExpenseUseCase(expenseAPI, dataMapper)
     }
 

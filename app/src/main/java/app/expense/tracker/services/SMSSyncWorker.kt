@@ -7,7 +7,7 @@ import androidx.core.app.ActivityCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import app.expense.domain.suggestion.SyncSuggestionUseCase
+import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 

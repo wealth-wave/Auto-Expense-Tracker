@@ -8,7 +8,8 @@ import app.expense.api.PaidToAPI
 import app.expense.api.SMSReadAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
-import app.expense.db.DaoProvider
+import app.expense.db.AppDatabase
+import app.expense.db.AppDatabaseProvider
 import app.expense.db.daos.CategoryDAO
 import app.expense.db.daos.ExpenseDAO
 import app.expense.db.daos.PaidToDAO
@@ -32,41 +33,38 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideDaoProvider(@ApplicationContext context: Context): DaoProvider {
-        return DaoProvider(context)
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return AppDatabaseProvider(context).getDatabase()
     }
 
     @Singleton
     @Provides
-    fun provideSuggestionDao(daoProvider: DaoProvider): SuggestionDAO {
-        return daoProvider.suggestionDAO()
+    fun provideSuggestionDao(appDatabase: AppDatabase): SuggestionDAO {
+        return appDatabase.suggestionDAO()
     }
 
     @Singleton
     @Provides
-    fun provideExpenseDao(daoProvider: DaoProvider): ExpenseDAO {
-        return daoProvider.expenseDAO()
+    fun provideExpenseDao(appDatabase: AppDatabase): ExpenseDAO {
+        return appDatabase.expenseDAO()
     }
 
     @Singleton
     @Provides
-    fun provideCategoryDao(daoProvider: DaoProvider): CategoryDAO {
-        return daoProvider.categoryDAO()
+    fun provideCategoryDao(appDatabase: AppDatabase): CategoryDAO {
+        return appDatabase.categoryDAO()
     }
 
     @Singleton
     @Provides
-    fun providePaidToDao(daoProvider: DaoProvider): PaidToDAO {
-        return daoProvider.paidToDAO()
+    fun providePaidToDao(appDatabase: AppDatabase): PaidToDAO {
+        return appDatabase.paidToDAO()
     }
 
     @Singleton
     @Provides
-    fun provideSuggestionSyncApi(
-        sharedPreferences: SharedPreferences,
-        suggestionDao: SuggestionDAO
-    ): SuggestionSyncAPI {
-        return SuggestionSyncAPI(sharedPreferences, suggestionDao)
+    fun provideSuggestionSyncApi(sharedPreferences: SharedPreferences): SuggestionSyncAPI {
+        return SuggestionSyncAPI(sharedPreferences)
     }
 
     @Singleton

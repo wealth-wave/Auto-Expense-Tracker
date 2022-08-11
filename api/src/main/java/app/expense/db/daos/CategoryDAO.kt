@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import app.expense.model.CategoryDTO
+import app.expense.db.model.CategoryDTO
 import kotlinx.coroutines.flow.Flow
 
 @Dao
