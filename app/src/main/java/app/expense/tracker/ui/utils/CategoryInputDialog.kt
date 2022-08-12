@@ -6,50 +6,57 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
+import app.expense.presentation.viewModels.CategorySuggestionViewModel
 import app.expense.tracker.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AmountInputDialog(
-    amount: Double,
-    onAmountEntered: (Double) -> Unit,
-    onDismiss: () -> Unit
+fun CategoryInputDialog(
+    onCategoryEntered: (String) -> Unit,
+    onDismiss: () -> Unit,
+    viewModel: CategorySuggestionViewModel = hiltViewModel()
 ) {
-    val amountState = remember { mutableStateOf(if (amount > 0) amount.toString() else "") }
+    val coroutineScope = rememberCoroutineScope()
+    val suggestions = viewModel.categoriesState.collectAsState().value
+    val category = rememberSaveable { mutableStateOf("") }
     Dialog(onDismissRequest = {
         onDismiss()
     }) {
         Card(modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
             Box(modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
                 Column {
-                    TextField(
-                        label = { Text(text = stringResource(R.string.amount)) },
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        value = amountState.value,
-                        onValueChange = { value ->
-                            amountState.value = value
+                    AutoCompleteTextField(
+                        value = category.value,
+                        label = stringResource(id = R.string.category),
+                        suggestions = suggestions,
+                        onCategoryEntered = { value ->
+                            category.value = value
+                            coroutineScope.launch {
+                                viewModel.getCategories(value)
+                            }
                         },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal,
-                            imeAction = ImeAction.Next,
-                        ),
+                        onCategorySelect = { value ->
+                            category.value = value
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
                     )
                     Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.small_gap)))
                     Row(modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
@@ -58,14 +65,12 @@ fun AmountInputDialog(
                             Text(text = stringResource(R.string.cancel))
                         }
                         TextButton(
-                            enabled = amountState.value.toDoubleOrNull() != null,
+                            enabled = category.value.isNotEmpty(),
                             onClick = {
-                                onAmountEntered(
-                                    amountState.value.toDoubleOrNull() ?: 0.0
-                                )
+                                onCategoryEntered(category.value)
                             }
                         ) {
-                            Text(text = stringResource(id = R.string.confirm))
+                            Text(text = stringResource(R.string.confirm))
                         }
                     }
                 }

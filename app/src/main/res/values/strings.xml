@@ -18,4 +18,8 @@
     <string name="amount">Amount</string>
     <string name="sms_permission_needed">Read SMS Permission is needed to get suggestion from Transaction Messages</string>
     <string name="request_permission">Request permission</string>
+    <string name="category">Category</string>
+    <string name="add_category">Add Category</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>

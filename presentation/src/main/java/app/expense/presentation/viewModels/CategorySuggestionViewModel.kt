@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesViewModel @Inject constructor(
+class CategorySuggestionViewModel @Inject constructor(
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
 ) : ViewModel() {
 
