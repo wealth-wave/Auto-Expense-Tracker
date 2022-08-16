@@ -23,7 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,7 +51,7 @@ fun HomeScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val navController = rememberNavController()
-    val currentSelectedRoute = remember { mutableStateOf(ScreenRoute.Expense.TEMPLATE) }
+    val currentSelectedRoute = rememberSaveable { mutableStateOf(ScreenRoute.Expense.TEMPLATE) }
     val smsPermissionState = rememberPermissionState(Manifest.permission.READ_SMS)
     val suggestionCount = viewModel.getSuggestionsCount().collectAsState(initial = 0).value
     val badgeCount = if (smsPermissionState.status != PermissionStatus.Granted) {
@@ -87,7 +87,11 @@ fun HomeScreen(
                 )
                 NavigationBarItem(
                     icon = {
-                        BadgedBox(badge = { Text(text = badgeCount.toString()) }) {
+                        if(badgeCount > 0) {
+                            BadgedBox(badge = { Text(text = badgeCount.toString()) }) {
+                                Icon(Icons.Filled.Notifications, contentDescription = null)
+                            }
+                        } else {
                             Icon(Icons.Filled.Notifications, contentDescription = null)
                         }
                     },
