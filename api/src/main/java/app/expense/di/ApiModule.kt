@@ -6,6 +6,7 @@ import app.expense.api.CategoryAPI
 import app.expense.api.ExpenseAPI
 import app.expense.api.PaidToAPI
 import app.expense.api.SMSReadAPI
+import app.expense.api.SuggestionDetectionAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
 import app.expense.db.AppDatabase
@@ -96,4 +97,9 @@ class ApiModule {
     fun providePaidToApi(paidToDAO: PaidToDAO): PaidToAPI {
         return PaidToAPI(paidToDAO)
     }
+
+    @Singleton
+    @Provides
+    fun provideSuggestionDetectedAPI(sharedPreferences: SharedPreferences) =
+        SuggestionDetectionAPI(sharedPreferences)
 }

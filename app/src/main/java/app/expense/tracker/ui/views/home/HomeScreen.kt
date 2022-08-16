@@ -1,6 +1,7 @@
 package app.expense.tracker.ui.views.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +40,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 
+@SuppressLint("MissingPermission")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
@@ -55,6 +58,11 @@ fun HomeScreen(
         1
     } else {
         suggestionCount
+    }
+    LaunchedEffect(key1 = smsPermissionState.status) {
+        if (smsPermissionState.status == PermissionStatus.Granted) {
+            viewModel.syncSuggestions()
+        }
     }
 
     Scaffold(
