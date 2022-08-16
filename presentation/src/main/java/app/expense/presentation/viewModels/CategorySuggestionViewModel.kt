@@ -17,9 +17,11 @@ class CategorySuggestionViewModel @Inject constructor(
         get() = _categoriesState
 
     suspend fun getCategories(name: String) {
-        fetchCategoriesUseCase.fetchCategories(name).collect { categories ->
+        fetchCategoriesUseCase.fetchCategoriesByNameLike(name).collect { categories ->
             _categoriesState.value = categories.toMutableList().apply {
-                add(name)
+                if (contains(name).not()) {
+                    add(name)
+                }
             }
         }
     }

@@ -16,8 +16,8 @@ class CategoryAPI(private val categoryDAO: CategoryDAO) {
     }
 
     /**
-     * Fetch List of Categories from DB.
+     * Fetch List of Categories from DB where it matches the name like.
      */
-    fun getCategories(name: String) =
-        categoryDAO.fetchCategories(name)
+    fun getCategoriesLike(name: String) =
+        categoryDAO.fetchCategoriesLike(name)
 }
