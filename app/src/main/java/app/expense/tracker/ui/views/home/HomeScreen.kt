@@ -1,6 +1,7 @@
 package app.expense.tracker.ui.views.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -19,9 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +40,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 
+@SuppressLint("MissingPermission")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
@@ -48,13 +51,18 @@ fun HomeScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val navController = rememberNavController()
-    val currentSelectedRoute = remember { mutableStateOf(ScreenRoute.Expense.TEMPLATE) }
+    val currentSelectedRoute = rememberSaveable { mutableStateOf(ScreenRoute.Expense.TEMPLATE) }
     val smsPermissionState = rememberPermissionState(Manifest.permission.READ_SMS)
     val suggestionCount = viewModel.getSuggestionsCount().collectAsState(initial = 0).value
     val badgeCount = if (smsPermissionState.status != PermissionStatus.Granted) {
         1
     } else {
         suggestionCount
+    }
+    LaunchedEffect(key1 = smsPermissionState.status) {
+        if (smsPermissionState.status == PermissionStatus.Granted) {
+            viewModel.syncSuggestions()
+        }
     }
 
     Scaffold(
@@ -79,7 +87,11 @@ fun HomeScreen(
                 )
                 NavigationBarItem(
                     icon = {
-                        BadgedBox(badge = { Text(text = badgeCount.toString()) }) {
+                        if (badgeCount > 0) {
+                            BadgedBox(badge = { Text(text = badgeCount.toString()) }) {
+                                Icon(Icons.Filled.Notifications, contentDescription = null)
+                            }
+                        } else {
                             Icon(Icons.Filled.Notifications, contentDescription = null)
                         }
                     },

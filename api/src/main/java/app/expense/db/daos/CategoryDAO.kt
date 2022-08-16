@@ -14,5 +14,5 @@ interface CategoryDAO {
     suspend fun insertAll(categories: List<CategoryDTO>)
 
     @Query("SELECT * FROM `category` WHERE name LIKE '%'|| :name || '%' LIMIT 3")
-    fun fetchCategories(name: String): Flow<List<CategoryDTO>>
+    fun fetchCategoriesLike(name: String): Flow<List<CategoryDTO>>
 }

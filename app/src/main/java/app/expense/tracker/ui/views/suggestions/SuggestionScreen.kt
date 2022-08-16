@@ -58,11 +58,6 @@ fun SuggestionsScreen(
                         bottom = dimensionResource(id = R.dimen.default_padding)
                     )
                 ) {
-
-                    coroutineScope.launch {
-                        viewModel.syncSuggestions()
-                    }
-
                     items(suggestionListState.dateSuggestionsMap.size) { pos ->
                         val dateString = suggestionListState.dateSuggestionsMap.keys.toList()[pos]
                         val suggestionItems = suggestionListState.dateSuggestionsMap[dateString]

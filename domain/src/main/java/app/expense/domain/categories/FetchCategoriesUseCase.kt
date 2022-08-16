@@ -8,8 +8,8 @@ class FetchCategoriesUseCase(
     private val categoryAPI: CategoryAPI
 ) {
 
-    fun fetchCategories(name: String): Flow<List<String>> {
-        return categoryAPI.getCategories(name).map { categories ->
+    fun fetchCategoriesByNameLike(name: String): Flow<List<String>> {
+        return categoryAPI.getCategoriesLike(name).map { categories ->
             categories.map { category ->
                 category.name
             }

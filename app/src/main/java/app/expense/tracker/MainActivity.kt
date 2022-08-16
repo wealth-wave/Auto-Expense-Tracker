@@ -12,14 +12,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import app.expense.tracker.services.SMSSyncWorker
+import app.expense.tracker.services.SuggestionDetectionWorker
 import app.expense.tracker.ui.theme.AutoExpenseTrackerTheme
 import app.expense.tracker.ui.utils.ScreenRoute
 import app.expense.tracker.ui.views.addExpense.AddExpenseScreen
 import app.expense.tracker.ui.views.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Duration
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -102,8 +104,22 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun syncSMS() {
-        val smsSyncRequest = OneTimeWorkRequestBuilder<SMSSyncWorker>()
-            .build()
-        WorkManager.getInstance(this).enqueue(smsSyncRequest)
+        val workManager =
+            WorkManager.getInstance(this)
+
+        workManager.enqueue(
+            PeriodicWorkRequest.Builder(
+                SMSSyncWorker::class.java,
+                Duration.ofMinutes(15),
+                Duration.ofMinutes(5)
+            ).build()
+        )
+        workManager.enqueue(
+            PeriodicWorkRequest.Builder(
+                SuggestionDetectionWorker::class.java,
+                Duration.ofMinutes(15),
+                Duration.ofMinutes(5)
+            ).build()
+        )
     }
 }
