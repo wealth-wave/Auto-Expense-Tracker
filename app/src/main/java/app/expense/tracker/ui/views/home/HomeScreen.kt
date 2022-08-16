@@ -87,7 +87,7 @@ fun HomeScreen(
                 )
                 NavigationBarItem(
                     icon = {
-                        if(badgeCount > 0) {
+                        if (badgeCount > 0) {
                             BadgedBox(badge = { Text(text = badgeCount.toString()) }) {
                                 Icon(Icons.Filled.Notifications, contentDescription = null)
                             }
