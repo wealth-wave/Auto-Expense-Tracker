@@ -4,6 +4,7 @@
     package="app.expense.tracker">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:name=".ExpenseTrackerApp"
@@ -22,7 +23,6 @@
             android:theme="@style/Theme.AutoExpenseTracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

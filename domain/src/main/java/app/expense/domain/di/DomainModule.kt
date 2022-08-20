@@ -4,7 +4,6 @@ import app.expense.api.CategoryAPI
 import app.expense.api.ExpenseAPI
 import app.expense.api.PaidToAPI
 import app.expense.api.SMSReadAPI
-import app.expense.api.SuggestionDetectionAPI
 import app.expense.api.SuggestionSyncAPI
 import app.expense.api.SuggestionsAPI
 import app.expense.domain.categories.FetchCategoriesUseCase
@@ -20,7 +19,6 @@ import app.expense.domain.suggestion.mappers.SMSMessageDataMapper
 import app.expense.domain.suggestion.mappers.SuggestionDataMapper
 import app.expense.domain.suggestion.usecases.DeleteSuggestionUseCase
 import app.expense.domain.suggestion.usecases.FetchSuggestionUseCase
-import app.expense.domain.suggestion.usecases.SuggestionsDetectedUseCase
 import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
 import dagger.Module
 import dagger.Provides
@@ -111,11 +109,4 @@ class DomainModule {
     @Provides
     fun getDeleteSuggestionUseCase(suggestionsAPI: SuggestionsAPI) =
         DeleteSuggestionUseCase(suggestionsAPI)
-
-    @Provides
-    fun suggestionDetectedUseCase(
-        suggestionDetectionAPI: SuggestionDetectionAPI,
-        suggestionsAPI: SuggestionsAPI,
-        dataMapper: SuggestionDataMapper
-    ) = SuggestionsDetectedUseCase(suggestionDetectionAPI, suggestionsAPI, dataMapper)
 }

@@ -2,6 +2,8 @@ package app.expense.tracker.di
 
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
+import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
+import app.expense.tracker.usecases.SuggestionSyncAndroidUseCase
 import app.expense.tracker.utils.NotificationUtils
 import dagger.Module
 import dagger.Provides
@@ -16,5 +18,14 @@ class AppModule {
     @Provides
     fun provideNotificationUtils(@ApplicationContext context: Context): NotificationUtils {
         return NotificationUtils(context, NotificationManagerCompat.from(context))
+    }
+
+    @Provides
+    fun suggestionSyncAndroidUseCase(
+        @ApplicationContext context: Context,
+        syncSuggestionUseCase: SyncSuggestionUseCase,
+        notificationUtils: NotificationUtils
+    ): SuggestionSyncAndroidUseCase {
+        return SuggestionSyncAndroidUseCase(context, syncSuggestionUseCase, notificationUtils)
     }
 }

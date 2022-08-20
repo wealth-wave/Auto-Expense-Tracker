@@ -27,7 +27,7 @@ class SyncSuggestionUseCase(
      * Needs SMS Permission.
      */
     @RequiresPermission(Manifest.permission.READ_SMS)
-    suspend fun sync() {
+    suspend fun sync(): List<Suggestion> {
         val startTime = System.currentTimeMillis()
         val lastSyncedTime =
             when {
@@ -56,5 +56,7 @@ class SyncSuggestionUseCase(
         )
 
         suggestionSyncAPI.setLastSyncedTime(startTime)
+
+        return suggestions
     }
 }
