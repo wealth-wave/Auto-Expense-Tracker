@@ -12,6 +12,7 @@ import app.expense.domain.suggestion.models.Suggestion
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Sync the New SMS and deducts suggestions.
@@ -35,7 +36,7 @@ class SyncSuggestionUseCase(
         suggestionSyncAPI.getLastSyncedTime().collect { lastSyncedTime ->
             val startTime = calendar.timeInMillis
             val suggestions: List<Suggestion> =
-                smsReadAPI.getAllSms(lastSyncedTime).mapNotNull { smsMessageDTO ->
+                smsReadAPI.getAllSms(lastSyncedTime?:TimeUnit.DAYS.toMillis(2)).mapNotNull { smsMessageDTO ->
                     suggestionDetector.detectSuggestions(
                         dataMapper.mapToSMSMessage(
                             smsMessageDTO
