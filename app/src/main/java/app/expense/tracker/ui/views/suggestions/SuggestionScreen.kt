@@ -52,59 +52,18 @@ fun SuggestionsScreen(
 
         when (smsPermissionState.status) {
             PermissionStatus.Granted -> {
-                LazyColumn(
-                    modifier = Modifier.padding(
-                        top = dimensionResource(id = R.dimen.default_padding),
-                        bottom = dimensionResource(id = R.dimen.default_padding)
-                    )
-                ) {
-                    items(suggestionListState.dateSuggestionsMap.size) { pos ->
-                        val dateString = suggestionListState.dateSuggestionsMap.keys.toList()[pos]
-                        val suggestionItems = suggestionListState.dateSuggestionsMap[dateString]
-
-                        Text(
-                            text = dateString,
-                            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.small_gap)),
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                        suggestionItems?.forEach { suggestionItem ->
-                            Card(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.large_gap))) {
-                                Column(
-                                    modifier = Modifier.padding(
-                                        start = dimensionResource(id = R.dimen.default_padding),
-                                        end = dimensionResource(id = R.dimen.default_padding),
-                                        top = dimensionResource(id = R.dimen.default_padding)
-                                    )
-                                ) {
-                                    Text(
-                                        text = suggestionItem.message,
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            text = suggestionItem.amount,
-                                            style = MaterialTheme.typography.labelLarge
-                                        )
-                                        Spacer(modifier = Modifier.weight(1f))
-                                        TextButton(onClick = {
-                                            onAddSuggestion(suggestionItem.id)
-                                        }) {
-                                            Text(text = stringResource(R.string.add_to_expense))
-                                        }
-                                        TextButton(onClick = {
-                                            coroutineScope.launch {
-                                                viewModel.deleteSuggestion(suggestionItem.id)
-                                            }
-                                        }) {
-                                            Text(text = stringResource(R.string.ignore))
-                                        }
-                                    }
-                                }
+                if (suggestionListState.dateSuggestionsMap.isEmpty()) {
+                    ShowEmptySuggestion()
+                } else {
+                    ShowSuggestions(
+                        suggestionListState = suggestionListState,
+                        onAddSuggestion = onAddSuggestion,
+                        onDeleteSuggestion = { suggestionId ->
+                            coroutineScope.launch {
+                                viewModel.deleteSuggestion(suggestionId)
                             }
                         }
-                    }
+                    )
                 }
             }
             else -> {
@@ -121,6 +80,74 @@ fun SuggestionsScreen(
                     Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.small_gap)))
                     Button(onClick = { smsPermissionState.launchPermissionRequest() }) {
                         Text(stringResource(R.string.request_permission))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowEmptySuggestion() {
+    Text(
+        text = stringResource(R.string.empty_suggestions_message),
+        style = MaterialTheme.typography.bodySmall
+    )
+}
+
+@Composable
+private fun ShowSuggestions(
+    suggestionListState: SuggestionListState,
+    onAddSuggestion: (suggestionId: Long) -> Unit,
+    onDeleteSuggestion: (suggestionId: Long) -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier.padding(
+            top = dimensionResource(id = R.dimen.default_padding),
+            bottom = dimensionResource(id = R.dimen.default_padding)
+        )
+    ) {
+        items(suggestionListState.dateSuggestionsMap.size) { pos ->
+            val dateString = suggestionListState.dateSuggestionsMap.keys.toList()[pos]
+            val suggestionItems = suggestionListState.dateSuggestionsMap[dateString]
+
+            Text(
+                text = dateString,
+                modifier = Modifier.padding(top = dimensionResource(id = R.dimen.small_gap)),
+                style = MaterialTheme.typography.labelLarge
+            )
+            suggestionItems?.forEach { suggestionItem ->
+                Card(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.large_gap))) {
+                    Column(
+                        modifier = Modifier.padding(
+                            start = dimensionResource(id = R.dimen.default_padding),
+                            end = dimensionResource(id = R.dimen.default_padding),
+                            top = dimensionResource(id = R.dimen.default_padding)
+                        )
+                    ) {
+                        Text(
+                            text = suggestionItem.message,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = suggestionItem.amount,
+                                style = MaterialTheme.typography.labelLarge
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            TextButton(onClick = {
+                                onAddSuggestion(suggestionItem.id)
+                            }) {
+                                Text(text = stringResource(R.string.add_to_expense))
+                            }
+                            TextButton(onClick = {
+                                onDeleteSuggestion(suggestionItem.id)
+                            }) {
+                                Text(text = stringResource(R.string.ignore))
+                            }
+                        }
                     }
                 }
             }

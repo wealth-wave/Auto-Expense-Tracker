@@ -1,7 +1,10 @@
 package app.expense.di
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStoreFile
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import app.expense.api.CategoryAPI
 import app.expense.api.ExpenseAPI
 import app.expense.api.PaidToAPI
@@ -21,14 +24,15 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+
 @InstallIn(SingletonComponent::class)
 @Module
 class ApiModule {
 
     @Singleton
     @Provides
-    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("SESSION_PREFS", Context.MODE_PRIVATE)
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create { context.dataStoreFile("pref.preferences_pb") }
     }
 
     @Singleton
@@ -63,8 +67,8 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideSuggestionSyncApi(sharedPreferences: SharedPreferences): SuggestionSyncAPI {
-        return SuggestionSyncAPI(sharedPreferences)
+    fun provideSuggestionSyncApi(dataStore: DataStore<Preferences>): SuggestionSyncAPI {
+        return SuggestionSyncAPI(dataStore)
     }
 
     @Singleton

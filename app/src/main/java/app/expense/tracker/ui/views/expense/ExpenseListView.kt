@@ -30,6 +30,22 @@ fun ExpenseListView(
     val expenseListState =
         viewModel.getExpenseListState().collectAsState(initial = ExpenseListState()).value
 
+    if (expenseListState.dateExpenseMap.isEmpty()) {
+        Text(
+            text = stringResource(R.string.empty_expense_message),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))
+        )
+    } else {
+        ShowExpenseList(expenseListState, onEditExpense)
+    }
+}
+
+@Composable
+private fun ShowExpenseList(
+    expenseListState: ExpenseListState,
+    onEditExpense: (expenseId: Long) -> Unit
+) {
     Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
         Text(
             text = stringResource(R.string.transactions),

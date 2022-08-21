@@ -8,6 +8,7 @@ import app.expense.domain.suggestion.usecases.FetchSuggestionUseCase
 import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class HomeScreenViewModel @Inject constructor(
 
     @RequiresPermission(Manifest.permission.READ_SMS)
     suspend fun syncSuggestions() {
-        syncSuggestionUseCase.sync()
+        syncSuggestionUseCase.sync().collect()
     }
 
     fun getSuggestionsCount(): Flow<Int> {

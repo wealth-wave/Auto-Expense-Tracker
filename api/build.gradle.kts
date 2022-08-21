@@ -45,6 +45,10 @@ dependencies {
     implementation(Deps.Hilt.HILT)
     kapt(Deps.Hilt.KAPT)
 
+    //DataStore
+    implementation(Deps.DataStore.CORE)
+    implementation(Deps.DataStore.PREFS)
+
     // Junit
     testImplementation(Deps.JUnit.TEST)
     androidTestImplementation(Deps.JUnit.ANDROID_TEST)

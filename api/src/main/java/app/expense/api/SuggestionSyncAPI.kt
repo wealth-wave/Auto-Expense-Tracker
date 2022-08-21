@@ -1,23 +1,27 @@
 package app.expense.api
 
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * API Class to expose Suggestion Sync related operations.
  */
-class SuggestionSyncAPI(private val sharedPreferences: SharedPreferences) {
+class SuggestionSyncAPI(private val dataStore: DataStore<Preferences>) {
 
-    fun getLastSyncedTime(): Long? {
-        val lastSyncTime = sharedPreferences.getLong(LAST_SYNC_TIME_KEY, -1L)
-        if (lastSyncTime == -1L) {
-            return null
+    fun getLastSyncedTime(): Flow<Long?> {
+        return dataStore.data.map { preferences ->
+            preferences[longPreferencesKey(LAST_SYNC_TIME_KEY)]
         }
-
-        return lastSyncTime
     }
 
-    fun setLastSyncedTime(time: Long) {
-        sharedPreferences.edit().putLong(LAST_SYNC_TIME_KEY, time).apply()
+    suspend fun setLastSyncedTime(time: Long) {
+        dataStore.edit { preference ->
+            preference[longPreferencesKey(LAST_SYNC_TIME_KEY)] = time
+        }
     }
 
     companion object {

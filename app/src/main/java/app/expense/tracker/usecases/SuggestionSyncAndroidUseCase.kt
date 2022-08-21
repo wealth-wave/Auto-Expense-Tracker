@@ -16,14 +16,14 @@ class SuggestionSyncAndroidUseCase(
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS)
             == PackageManager.PERMISSION_GRANTED
         ) {
-            val suggestions = syncSuggestionUseCase.sync()
-            suggestions.forEach { suggestion ->
-                notificationUtils.showNewSuggestionNotification(
-                    suggestionId = suggestion.id ?: 0L,
-                    amount = suggestion.amount
-                )
+            syncSuggestionUseCase.sync().collect { suggestions ->
+                suggestions.forEach { suggestion ->
+                    notificationUtils.showNewSuggestionNotification(
+                        suggestionId = suggestion.id ?: 0L,
+                        amount = suggestion.amount
+                    )
+                }
             }
         }
-
     }
 }

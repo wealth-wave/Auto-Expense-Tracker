@@ -31,16 +31,16 @@ object Deps {
     }
 
     object Compose {
-        private const val COMPOSE_VERSION = "1.2.0"
+        private const val COMPOSE_VERSION = "1.2.1"
 
         const val UI = "androidx.compose.ui:ui:$COMPOSE_VERSION"
-        const val MATERIAL3 = "androidx.compose.material3:material3:1.0.0-alpha15"
-        const val PREVIEW = "androidx.compose.ui:ui-tooling-preview:1.1.1"
+        const val MATERIAL3 = "androidx.compose.material3:material3:1.0.0-alpha16"
+        const val PREVIEW = "androidx.compose.ui:ui-tooling-preview:1.2.1"
         const val CONSTRAINT = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-        const val ACTIVITY = "androidx.activity:activity-compose:1.5.0"
+        const val ACTIVITY = "androidx.activity:activity-compose:1.5.1"
         const val RUNTIME = "androidx.compose.runtime:runtime:$COMPOSE_VERSION"
         const val FOUNDATION = "androidx.compose.foundation:foundation:$COMPOSE_VERSION"
-        const val VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0"
+        const val VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
         const val DEBUG_TOOLING = "androidx.compose.ui:ui-tooling:$COMPOSE_VERSION"
         const val DEBUG_MANIFEST = "androidx.compose.ui:ui-test-manifest:$COMPOSE_VERSION"
         const val ANDROID_UI_TEST = "androidx.compose.ui:ui-test-junit4:$COMPOSE_VERSION"
@@ -60,7 +60,7 @@ object Deps {
     }
 
     object Mockk {
-        const val TEST = "io.mockk:mockk:1.12.4"
+        const val TEST = "io.mockk:mockk:1.12.5"
     }
 
     object Truth {
@@ -76,7 +76,7 @@ object Deps {
     }
 
     object Hilt {
-        private const val HILT_VERSION = "2.42"
+        private const val HILT_VERSION = "2.43.2"
         private const val HILT_OTHER_JETPACK_VERSION = "1.0.0"
 
         const val HILT = "com.google.dagger:hilt-android:$HILT_VERSION"
@@ -89,6 +89,14 @@ object Deps {
 
     object WorkManager {
         const val RUNTIME = "androidx.work:work-runtime-ktx:2.7.1"
+    }
+
+    object DataStore {
+        private const val DATA_STORE_VERSION = "1.0.0"
+
+        const val PREFS = "androidx.datastore:datastore-preferences-core:$DATA_STORE_VERSION"
+        const val CORE = "androidx.datastore:datastore:$DATA_STORE_VERSION"
+
     }
 
     object Accompanies {

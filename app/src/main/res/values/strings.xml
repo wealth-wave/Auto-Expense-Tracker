@@ -26,4 +26,6 @@
     <string name="expense_detected_title">New Expense Detected</string>
     <string name="expense_detection_notif_channel_name">expense detection</string>
     <string name="expense_detection_notif_channel_desc">Expense Detection notifications</string>
+    <string name="empty_suggestions_message">Suggestions will appear here when system detects new transactions</string>
+    <string name="empty_expense_message">Add your expense by clicking on the + icon</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import app.expense.tracker.services.SMSSyncWorker
@@ -41,7 +42,9 @@ class MainActivity : ComponentActivity() {
         val workManager =
             WorkManager.getInstance(this)
 
-        workManager.enqueue(
+        workManager.enqueueUniquePeriodicWork(
+            "SMS_SYNC",
+            ExistingPeriodicWorkPolicy.KEEP,
             PeriodicWorkRequest.Builder(
                 SMSSyncWorker::class.java,
                 Duration.ofMinutes(15),
