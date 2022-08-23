@@ -10,6 +10,7 @@ import app.expense.domain.suggestion.detector.SuggestionDetector
 import app.expense.domain.suggestion.mappers.SMSMessageDataMapper
 import app.expense.domain.suggestion.models.Suggestion
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -33,10 +34,11 @@ class SyncSuggestionUseCase(
      */
     @RequiresPermission(Manifest.permission.READ_SMS)
     fun sync(): Flow<List<Suggestion>> = flow {
-        suggestionSyncAPI.getLastSyncedTime().collect { lastSyncedTime ->
-            val startTime = calendar.timeInMillis
-            val suggestions: List<Suggestion> =
-                smsReadAPI.getAllSms(lastSyncedTime?:TimeUnit.DAYS.toMillis(2)).mapNotNull { smsMessageDTO ->
+        val lastSyncedTime = suggestionSyncAPI.getLastSyncedTime().first()
+        val startTime = calendar.timeInMillis
+        val suggestions: List<Suggestion> =
+            smsReadAPI.getAllSms(lastSyncedTime ?: TimeUnit.DAYS.toMillis(2))
+                .mapNotNull { smsMessageDTO ->
                     suggestionDetector.detectSuggestions(
                         dataMapper.mapToSMSMessage(
                             smsMessageDTO
@@ -44,21 +46,20 @@ class SyncSuggestionUseCase(
                     )
                 }
 
-            suggestionsAPI.storeSuggestions(
-                suggestions.map { suggestion ->
-                    SuggestionDTO(
-                        amount = suggestion.amount,
-                        paidTo = suggestion.paidTo,
-                        time = suggestion.time,
-                        referenceMessage = suggestion.referenceMessage,
-                        referenceMessageSender = suggestion.referenceMessageSender
-                    )
-                }
-            )
+        suggestionsAPI.storeSuggestions(
+            suggestions.map { suggestion ->
+                SuggestionDTO(
+                    amount = suggestion.amount,
+                    paidTo = suggestion.paidTo,
+                    time = suggestion.time,
+                    referenceMessage = suggestion.referenceMessage,
+                    referenceMessageSender = suggestion.referenceMessageSender
+                )
+            }
+        )
 
-            suggestionSyncAPI.setLastSyncedTime(startTime)
+        suggestionSyncAPI.setLastSyncedTime(startTime)
 
-            emit(suggestions)
-        }
+        emit(suggestions)
     }
 }
