@@ -18,10 +18,10 @@ interface ExpenseDAO {
     @Update
     suspend fun update(expense: ExpenseDTO): Int
 
-    @Query("SELECT * FROM `expense` WHERE time > :from AND time < :to ORDER BY time DESC")
+    @Query("SELECT * FROM `expense` WHERE time > :from AND time < :to ORDER BY time DESC LIMIT 100")
     fun fetchExpenses(from: Long, to: Long): Flow<List<ExpenseDTO>>
 
-    @Query("SELECT * FROM `expense` WHERE time > :from  ORDER BY time DESC")
+    @Query("SELECT * FROM `expense` WHERE time > :from  ORDER BY time DESC LIMIT 100")
     fun fetchExpenses(from: Long): Flow<List<ExpenseDTO>>
 
     @Query("SELECT * FROM `expense` WHERE id = :id")
