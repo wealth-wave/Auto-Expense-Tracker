@@ -14,7 +14,7 @@ import app.expense.db.model.SuggestionDTO
 
 @Database(
     entities = [SuggestionDTO::class, ExpenseDTO::class, CategoryDTO::class, PaidToDTO::class],
-    version = 1,
+    version = 1
 )
 @TypeConverters(ModelConverter::class)
 abstract class AppDatabase : RoomDatabase() {

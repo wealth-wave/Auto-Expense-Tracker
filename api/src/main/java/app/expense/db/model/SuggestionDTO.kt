@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "suggestion")
 class SuggestionDTO(
-    @PrimaryKey val id: Long? = null,
+    @PrimaryKey val id: Long,
     @ColumnInfo(name = "amount") val amount: Double,
     @ColumnInfo(name = "paid_to") val paidTo: String?,
     @ColumnInfo(name = "time") val time: Long,

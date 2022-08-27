@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface SuggestionDAO {
 
     @Insert
-    fun insertAll(suggestions: List<SuggestionDTO>)
+    suspend fun insertAll(suggestions: List<SuggestionDTO>)
 
     @Query("SELECT * FROM `suggestion` WHERE time > :from AND time < :to ORDER BY time DESC LIMIT 100")
     fun fetchSuggestions(from: Long, to: Long): Flow<List<SuggestionDTO>>
