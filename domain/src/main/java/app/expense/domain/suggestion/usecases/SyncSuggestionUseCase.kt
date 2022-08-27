@@ -10,6 +10,7 @@ import app.expense.domain.suggestion.detector.SuggestionDetector
 import app.expense.domain.suggestion.mappers.SMSMessageDataMapper
 import app.expense.domain.suggestion.models.Suggestion
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import java.util.*
@@ -49,6 +50,7 @@ class SyncSuggestionUseCase(
         suggestionsAPI.storeSuggestions(
             suggestions.map { suggestion ->
                 SuggestionDTO(
+                    id = suggestion.id,
                     amount = suggestion.amount,
                     paidTo = suggestion.paidTo,
                     time = suggestion.time,
@@ -56,7 +58,7 @@ class SyncSuggestionUseCase(
                     referenceMessageSender = suggestion.referenceMessageSender
                 )
             }
-        )
+        ).collect()
 
         suggestionSyncAPI.setLastSyncedTime(startTime)
 

@@ -39,17 +39,15 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun syncSMS() {
-        val workManager =
-            WorkManager.getInstance(this)
-
-        workManager.enqueueUniquePeriodicWork(
-            "SMS_SYNC",
-            ExistingPeriodicWorkPolicy.KEEP,
-            PeriodicWorkRequest.Builder(
-                SMSSyncWorker::class.java,
-                Duration.ofMinutes(15),
-                Duration.ofMinutes(5)
-            ).build()
-        )
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "SMS_SYNC",
+                ExistingPeriodicWorkPolicy.KEEP,
+                PeriodicWorkRequest.Builder(
+                    SMSSyncWorker::class.java,
+                    Duration.ofMinutes(15),
+                    Duration.ofMinutes(5)
+                ).build()
+            )
     }
 }

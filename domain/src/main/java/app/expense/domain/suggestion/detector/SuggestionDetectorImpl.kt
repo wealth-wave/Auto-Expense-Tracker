@@ -19,6 +19,7 @@ class SuggestionDetectorImpl(private val regexHelper: RegexHelper) :
 
         if (isExpense && spent != null) {
             return Suggestion(
+                id = generateUniqueId(smsMessage),
                 amount = spent,
                 paidTo = paidToName,
                 time = smsMessage.time,
@@ -29,4 +30,7 @@ class SuggestionDetectorImpl(private val regexHelper: RegexHelper) :
 
         return null
     }
+
+    private fun generateUniqueId(smsMessage: SMSMessage) =
+        smsMessage.body.hashCode().toLong().plus(smsMessage.time)
 }

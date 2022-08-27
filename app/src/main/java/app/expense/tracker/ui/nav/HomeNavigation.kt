@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import app.expense.tracker.ui.utils.ScreenRoute
 import app.expense.tracker.ui.views.addExpense.AddExpenseScreen
 import app.expense.tracker.ui.views.home.HomeScreen
@@ -13,11 +14,15 @@ import app.expense.tracker.ui.views.home.HomeScreen
 @Composable
 fun HomeNavigation() {
     val navController = rememberNavController()
+    val deepLinkUri = "expense://"
     NavHost(
         navController = navController,
         startDestination = ScreenRoute.Home.TEMPLATE,
     ) {
-        composable(ScreenRoute.Home.TEMPLATE) {
+        composable(
+            route = ScreenRoute.Home.TEMPLATE,
+            deepLinks = listOf(navDeepLink { uriPattern = deepLinkUri + ScreenRoute.Home.TEMPLATE })
+        ) {
             HomeScreen(
                 onAddExpense = { navController.navigate(ScreenRoute.AddExpense.TEMPLATE) },
                 onEditExpense = { expenseId ->

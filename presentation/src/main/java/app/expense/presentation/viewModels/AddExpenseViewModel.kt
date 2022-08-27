@@ -11,6 +11,7 @@ import app.expense.presentation.viewStates.AddExpenseViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +32,7 @@ class AddExpenseViewModel @Inject constructor(
         suggestionId: Long? = null
     ) {
         if (expenseId != null) {
-            fetchExpenseUseCase.getExpense(expenseId).collect { expense ->
+            fetchExpenseUseCase.getExpense(expenseId).first().also { expense ->
 
                 if (expense != null) {
                     _addExpenseViewStateFlow.value = AddExpenseViewState(
@@ -43,7 +44,7 @@ class AddExpenseViewModel @Inject constructor(
                 }
             }
         } else if (suggestionId != null) {
-            fetchSuggestionUseCase.getSuggestion(suggestionId).collect { suggestion ->
+            fetchSuggestionUseCase.getSuggestion(suggestionId).first().also { suggestion ->
                 // TODO Get category based on paidTo by ML or other intelligent way
                 if (suggestion != null) {
                     _addExpenseViewStateFlow.value = AddExpenseViewState(

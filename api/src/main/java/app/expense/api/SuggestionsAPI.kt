@@ -3,6 +3,7 @@ package app.expense.api
 import app.expense.db.daos.SuggestionDAO
 import app.expense.db.model.SuggestionDTO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * API Class to expose Suggestions related logics.
@@ -12,8 +13,8 @@ class SuggestionsAPI(private val suggestionDAO: SuggestionDAO) {
     /**
      * Store Suggestions to DB.
      */
-    suspend fun storeSuggestions(suggestions: List<SuggestionDTO>) {
-        suggestionDAO.insertAll(suggestions)
+    fun storeSuggestions(suggestions: List<SuggestionDTO>): Flow<Unit> {
+        return flow { suggestionDAO.insertAll(suggestions) }
     }
 
     /**

@@ -1,7 +1,7 @@
 package app.expense.domain.suggestion.models
 
 data class Suggestion(
-    val id: Long? = null,
+    val id: Long,
     val amount: Double,
     val paidTo: String?,
     val time: Long,

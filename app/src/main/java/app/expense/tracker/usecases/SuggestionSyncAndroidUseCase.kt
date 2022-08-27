@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import app.expense.domain.suggestion.usecases.SyncSuggestionUseCase
 import app.expense.tracker.utils.NotificationUtils
+import kotlinx.coroutines.flow.first
 
 class SuggestionSyncAndroidUseCase(
     private val context: Context,
@@ -16,13 +17,11 @@ class SuggestionSyncAndroidUseCase(
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS)
             == PackageManager.PERMISSION_GRANTED
         ) {
-            syncSuggestionUseCase.sync().collect { suggestions ->
-                suggestions.forEach { suggestion ->
-                    notificationUtils.showNewSuggestionNotification(
-                        suggestionId = suggestion.id ?: 0L,
-                        amount = suggestion.amount
-                    )
-                }
+            syncSuggestionUseCase.sync().first().forEach { suggestion ->
+                notificationUtils.showNewSuggestionNotification(
+                    suggestionId = suggestion.id,
+                    amount = suggestion.amount
+                )
             }
         }
     }

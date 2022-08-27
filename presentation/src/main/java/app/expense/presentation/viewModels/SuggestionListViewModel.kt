@@ -45,7 +45,7 @@ class SuggestionListViewModel @Inject constructor(
             .mapValues { mapEntry ->
                 mapEntry.value.map { suggestion ->
                     SuggestionListState.Item(
-                        id = suggestion.id ?: 0,
+                        id = suggestion.id,
                         amount = NumberFormat.getCurrencyInstance().format(suggestion.amount),
                         message = suggestion.referenceMessage
                     )
