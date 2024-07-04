@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,7 +53,9 @@ fun CategoryInputDialog(
                             }
                         },
                         onCategorySelect = { value ->
-                            category.value = value
+                            if(value.isNotEmpty()) {
+                                onCategoryEntered(value)
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
